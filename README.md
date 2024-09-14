@@ -1,4 +1,4 @@
-This is a project by Team Strongest.
+This is a project by strongest team.
 
 
 
