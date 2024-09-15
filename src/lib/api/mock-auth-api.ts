@@ -13,11 +13,11 @@ export const mockLogin = async (role: "manager" | "admin") => {
 
     try {
         var data: any;
-        if (role = "admin") {
+        if (role == "admin") {
             data = {
                 role: "admin"
             }
-        } else if (role = "manager") {
+        } else if (role == "manager") {
             data = {
                 role: "manager"
             }
