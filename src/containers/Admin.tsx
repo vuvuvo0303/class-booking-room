@@ -7,6 +7,7 @@ const Admin = () => {
     <AdminLayout>
       <Routes>
         <Route path="/" element={<AdminDashboardPage />} />
+        <Route path="/dashboard" element={<AdminDashboardPage />} />
         <Route path="/user" element={<AdminUserPage />} />
       </Routes>
     </AdminLayout>
