@@ -1,27 +1,45 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { Button } from "@/components/ui/button";
-import { auth, googleProvider } from "@/config/firebase";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { Link } from "react-router-dom";
+import { mockLogin } from "@/lib/api/mock-auth-api";
+import useAuthStore from "@/store/AuthStore";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const hanldeLoginWithGoogle = () => {
-    signInWithPopup(auth, googleProvider)
-      .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        console.log(credential);
-        
-        console.log(result);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const navigate = useNavigate();
+  const loggedUser = useAuthStore((state) => state.user);
+  const setUser = useAuthStore((state) => state.setUser);
+  const mockLoginAsManager = async () => {
+    const { data } = await mockLogin("manager");
+    localStorage.setItem("loggedUser", JSON.stringify(data));
+    setUser(data);
+    navigate("/manager");
+  };
+  const mockLoginAsAdmin = async () => {
+    const { data } = await mockLogin("admin");
+    localStorage.setItem("loggedUser", JSON.stringify(data));
+    setUser(data);
+    navigate("/admin");
+  };
+  const logout = () => {
+    localStorage.removeItem("loggedUser");
+    window.location.reload();
   };
   return (
-    <MaxWidthWrapper>
-      <Link to={"/"}></Link>
-      <Button onClick={hanldeLoginWithGoogle}>Login Google</Button>
+    <MaxWidthWrapper className="flex gap-2">
+      <Link to={"/"}>
+        <Button>Home</Button>
+      </Link>
+      {!loggedUser && (
+        <>
+          <Button onClick={mockLoginAsManager}>Mock Login as Manager</Button>
+          <Button onClick={mockLoginAsAdmin}>Mock Login as Admin</Button>
+        </>
+      )}
+      {loggedUser && (
+        <>
+          <Button onClick={logout}>Logout</Button>
+        </>
+      )}
     </MaxWidthWrapper>
   );
 };

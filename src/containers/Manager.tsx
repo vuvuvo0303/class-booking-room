@@ -7,19 +7,17 @@ import {
   AdminGroupPage,
   AdminRoomPage,
   AdminSlotPage,
-  AdminStaffPage,
   AdminStudentDetailPage,
   AdminStudentPage,
   AdminTeamDetailPage,
   AdminTeamPage,
-  AdminUserPage,
 } from "@/pages";
 import useAuthStore from "@/store/AuthStore";
 import { Route, Routes } from "react-router-dom";
 
-const Admin = () => {
+const Manager = () => {
   const loggedUser = useAuthStore((state) => state.user);
-  if (loggedUser == null || loggedUser.role != "admin") {
+  if (loggedUser == null || loggedUser.role != "manager") {
     return <NotFound />;
   }
   return (
@@ -27,7 +25,6 @@ const Admin = () => {
       <Routes>
         <Route path="/" element={<AdminDashboardPage />} />
         <Route path="/dashboard" element={<AdminDashboardPage />} />
-        <Route path="/user" element={<AdminUserPage />} />
         <Route path="/group" element={<AdminGroupPage />} />
         <Route path="/room" element={<AdminRoomPage />} />
         <Route path="/slot" element={<AdminSlotPage />} />
@@ -43,13 +40,10 @@ const Admin = () => {
           path="/booking/:bookingId"
           element={<AdminBookingDetailPage />}
         />
-        <Route
-          path="/staff"
-          element={<AdminStaffPage />}
-        />
+        <Route path="*" element={<NotFound/>}/>
       </Routes>
     </AdminLayout>
   );
 };
 
-export default Admin;
+export default Manager;
