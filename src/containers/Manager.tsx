@@ -10,7 +10,6 @@ import {
   AdminStudentPage,
   AdminTeamDetailPage,
   AdminTeamPage,
-  AdminUserPage,
 } from "@/pages";
 import { Route, Routes } from "react-router-dom";
 
