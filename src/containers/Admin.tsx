@@ -7,6 +7,7 @@ import {
   AdminGroupPage,
   AdminRoomPage,
   AdminSlotPage,
+  AdminStaffPage,
   AdminStudentDetailPage,
   AdminStudentPage,
   AdminTeamDetailPage,
@@ -41,6 +42,10 @@ const Admin = () => {
         <Route
           path="/booking/:bookingId"
           element={<AdminBookingDetailPage />}
+        />
+        <Route
+          path="/staff"
+          element={<AdminStaffPage />}
         />
       </Routes>
     </AdminLayout>

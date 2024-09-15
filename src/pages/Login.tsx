@@ -1,22 +1,29 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { Button } from "@/components/ui/button";
 import { mockLogin } from "@/lib/api/mock-auth-api";
+import useAuthStore from "@/store/AuthStore";
 import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
-  var loggedUser = localStorage.getItem("loggedUser");
+  const loggedUser = useAuthStore((state) => state.user);
+  const setUser = useAuthStore((state) => state.setUser);
   const mockLoginAsManager = async () => {
     const { data } = await mockLogin("manager");
     localStorage.setItem("loggedUser", JSON.stringify(data));
+    setUser(data);
     navigate("/manager");
   };
   const mockLoginAsAdmin = async () => {
     const { data } = await mockLogin("admin");
     localStorage.setItem("loggedUser", JSON.stringify(data));
+    setUser(data);
     navigate("/admin");
   };
-
+  const logout = () => {
+    localStorage.removeItem("loggedUser");
+    window.location.reload();
+  };
   return (
     <MaxWidthWrapper className="flex gap-2">
       <Link to={"/"}>
@@ -30,13 +37,7 @@ const Login = () => {
       )}
       {loggedUser && (
         <>
-          <Button
-            onClick={() => {
-              localStorage.removeItem("loggedUser");
-            }}
-          >
-            Logout
-          </Button>
+          <Button onClick={logout}>Logout</Button>
         </>
       )}
     </MaxWidthWrapper>

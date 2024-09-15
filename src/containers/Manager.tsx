@@ -40,6 +40,7 @@ const Manager = () => {
           path="/booking/:bookingId"
           element={<AdminBookingDetailPage />}
         />
+        <Route path="*" element={<NotFound/>}/>
       </Routes>
     </AdminLayout>
   );
