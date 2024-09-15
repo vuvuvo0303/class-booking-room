@@ -1,3 +1,4 @@
+import NotFound from "@/components/NotFound";
 import AdminLayout from "@/layouts/AdminLayout";
 import {
   AdminBookingDetailPage,
@@ -11,9 +12,14 @@ import {
   AdminTeamDetailPage,
   AdminTeamPage,
 } from "@/pages";
+import useAuthStore from "@/store/AuthStore";
 import { Route, Routes } from "react-router-dom";
 
 const Manager = () => {
+  const loggedUser = useAuthStore((state) => state.user);
+  if (loggedUser == null || loggedUser.role != "manager") {
+    return <NotFound />;
+  }
   return (
     <AdminLayout>
       <Routes>
