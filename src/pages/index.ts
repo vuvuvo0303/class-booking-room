@@ -12,3 +12,5 @@ export { default as AdminStudentPage } from "./admin/Student";
 export { default as AdminStudentDetailPage } from "./admin/StudentDetail";
 export { default as AdminTeamPage } from "./admin/Team";
 export { default as AdminTeamDetailPage } from "./admin/TeamDetail";
+export { default as AdminBookingPage } from "./admin/Booking";
+export { default as AdminBookingDetailPage } from "./admin/BookingDetail";
