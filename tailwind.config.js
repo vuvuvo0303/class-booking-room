@@ -52,7 +52,11 @@ export default {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
-  			}
+  			},
+			o: "#FF6600",
+			w: "#F5F5F5",
+			g: "#8FD14F",
+			b: "#604CC3",
   		}
   	}
   },
