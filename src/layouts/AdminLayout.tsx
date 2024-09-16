@@ -16,6 +16,12 @@ import {
 import { cn } from "@/lib/utils";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "@/store/AuthStore";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+
 type NavItemType = {
   title?: string;
   to?: string;
@@ -23,15 +29,17 @@ type NavItemType = {
   type?: "divider" | "item" | null;
   isAdminOnly?: boolean;
 };
+import { useLocation } from "react-router-dom";
 const AdminLayout = ({ children }: { children: ReactNode }) => {
   const loggedUser = useAuthStore((state) => state.user);
+  const location = useLocation();
   const setUser = useAuthStore((state) => state.setUser);
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const navItems: NavItemType[] = [
     {
       title: "Dashboard",
-      to: "",
+      to: "dashboard",
       icon: <LayoutGrid />,
     },
     {
@@ -85,32 +93,36 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
     <div className="flex h-screen">
       <div
         className={cn(
-          "bg-blue-950 text-white p-5 transition-all duration-300 overflow-hidden flex flex-col",
-          isCollapsed ? "w-16" : "w-1/4"
+          "bg-blue-950 text-white transition-all duration-300 overflow-auto flex flex-col p-3"
         )}
       >
-        <div className="flex gap-2">
-          <button onClick={() => setIsCollapsed(!isCollapsed)}>
-            <MenuIcon
-              className={cn("transition-transform duration-300", {
-                "rotate-180": isCollapsed,
-              })}
-            />
-          </button>
+        <div className="flex justify-center">
+          <div>
+            <button
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className="hover:bg-blue-900 active:bg-blue-800 py-2 px-3 rounded-md"
+            >
+              <MenuIcon
+                className={cn("transition-transform duration-300", {
+                  "rotate-180": isCollapsed,
+                })}
+              />
+            </button>
+          </div>
           <div
             className={cn(
-              "flex gap-2 items-center transition-opacity duration-300",
-              { "opacity-0": isCollapsed }
+              "flex gap-2 items-center transition-all duration-300 overflow-hidden",
+              isCollapsed ? "w-0 ms-0" : "w-[200px] ms-2"
             )}
           >
-            <img src={LockImage} alt="" className="w-10 h-10" />
+            {/* <img src={LockImage} alt="" className="w-10 h-10" /> */}
             <div>
               <p className="font-bold text-xl text-nowrap">FU Booking Room</p>
               <p className="text-sm">Quản lí</p>
             </div>
           </div>
         </div>
-        <div className="flex flex-col mt-5 flex-1">
+        <div className="flex flex-col mt-5 flex-1 gap-1">
           {navItems.map((item) => {
             if (
               !item.isAdminOnly ||
@@ -121,59 +133,65 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
               }
               return (
                 <Link to={item.to!} key={item.to}>
-                  <div
-                    className={cn(
-                      "flex gap-2 hover:bg-blue-900  active:bg-blue-800 transition-all duration-300",
-                      {
-                        "px-3 py-2": !isCollapsed,
-                        "my-2 rounded-md": isCollapsed,
-                      }
-                    )}
-                  >
-                    <div>{item.icon}</div>
-                    <p
+                  <HoverCard>
+                    <HoverCardTrigger>
+                      <div
+                        className={cn(
+                          "flex hover:bg-blue-900  active:bg-blue-800 transition-all duration-300 justify-center",
+                          isCollapsed ? "rounded-md p-2" : "px-3 py-2",
+                          {
+                            "bg-blue-700": location.pathname.includes(item.to!),
+                          }
+                        )}
+                      >
+                        <div>{item.icon}</div>
+                        <p
+                          className={cn(
+                            "transition-all duration-300 text-nowrap overflow-hidden",
+                            isCollapsed ? "w-0 ms-0" : "w-[200px] ms-2"
+                          )}
+                        >
+                          {item.title}
+                        </p>
+                      </div>
+                    </HoverCardTrigger>
+                    <HoverCardContent
                       className={cn(
-                        "transition-opacity duration-300 text-nowrap",
-                        {
-                          "opacity-0": isCollapsed,
-                        }
+                        "text-white bg-blue-900 border-none drop-shadow-lg font-semibold",
+                        !isCollapsed && "hidden"
                       )}
                     >
                       {item.title}
-                    </p>
-                  </div>
+                    </HoverCardContent>
+                  </HoverCard>
                 </Link>
               );
             }
           })}
         </div>
-        <div>
-          <button
+        <button
+          className={cn(
+            "flex hover:bg-blue-900  active:bg-blue-800 transition-all duration-300 justify-center",
+            isCollapsed ? "rounded-md p-2" : "px-3 py-2"
+          )}
+          onClick={() => {
+            localStorage.removeItem("loggedUser");
+            navigate("/login");
+            setUser(null);
+          }}
+        >
+          <div>
+            <DoorOpen />
+          </div>
+          <p
             className={cn(
-              "flex gap-2 hover:bg-blue-900 active:bg-blue-800 transition-all duration-300 w-full",
-              {
-                "px-3 py-2": !isCollapsed,
-                "my-2 rounded-md": isCollapsed,
-              }
+              "transition-all duration-300 text-nowrap overflow-hidden text-start",
+              isCollapsed ? "w-0 ms-0" : "w-[200px] ms-2"
             )}
-            onClick={() => {
-              localStorage.removeItem("loggedUser");
-              navigate("/login");
-              setUser(null);
-            }}
           >
-            <div>
-              <DoorOpen />
-            </div>
-            <p
-              className={cn("transition-opacity duration-300 text-nowrap", {
-                "opacity-0": isCollapsed,
-              })}
-            >
-              Đăng xuất
-            </p>
-          </button>
-        </div>
+            Đăng xuất
+          </p>
+        </button>
       </div>
       <div className="flex-1">{children}</div>
     </div>
