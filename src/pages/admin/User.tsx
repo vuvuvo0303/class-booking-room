@@ -1,11 +1,16 @@
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import Header from "@/components/admin/Header";
+import useAuthStore from "@/store/AuthStore";
 
 const User = () => {
+  const loggedUser = useAuthStore((state) => state.user);
+  const basePath = "/" + loggedUser.role;
   return (
-    <Link to={"/admin/"}>
-      <Button>Dashboard</Button>
-    </Link>
+    <div>
+      <Header
+        currentPage="Tài khoản"
+        breadcrumbItems={[{ title: "Trang chủ", to: basePath }]}
+      />
+    </div>
   );
 };
 
