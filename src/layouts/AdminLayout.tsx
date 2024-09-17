@@ -97,12 +97,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
               })}
             />
           </button>
-          <div
-            className={cn(
-              "flex gap-2 items-center transition-opacity duration-300",
-              { "opacity-0": isCollapsed }
-            )}
-          >
+          <div className={cn("flex gap-2 items-center transition-opacity duration-300", { "opacity-0": isCollapsed })}>
             <img src={LockImage} alt="" className="w-10 h-10" />
             <div>
               <p className="font-bold text-xl text-nowrap">FU Booking Room</p>
@@ -112,32 +107,23 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
         </div>
         <div className="flex flex-col mt-5 flex-1">
           {navItems.map((item) => {
-            if (
-              !item.isAdminOnly ||
-              (loggedUser && loggedUser.role == "admin")
-            ) {
+            if (!item.isAdminOnly || (loggedUser && loggedUser.role == "admin")) {
               if (item.type == "divider") {
                 return <div className="border h-px border-white my-2" />;
               }
               return (
                 <Link to={item.to!} key={item.to}>
                   <div
-                    className={cn(
-                      "flex gap-2 hover:bg-blue-900  active:bg-blue-800 transition-all duration-300",
-                      {
-                        "px-3 py-2": !isCollapsed,
-                        "my-2 rounded-md": isCollapsed,
-                      }
-                    )}
+                    className={cn("flex gap-2 hover:bg-blue-900  active:bg-blue-800 transition-all duration-300", {
+                      "px-3 py-2": !isCollapsed,
+                      "my-2 rounded-md": isCollapsed,
+                    })}
                   >
                     <div>{item.icon}</div>
                     <p
-                      className={cn(
-                        "transition-opacity duration-300 text-nowrap",
-                        {
-                          "opacity-0": isCollapsed,
-                        }
-                      )}
+                      className={cn("transition-opacity duration-300 text-nowrap", {
+                        "opacity-0": isCollapsed,
+                      })}
                     >
                       {item.title}
                     </p>
@@ -149,13 +135,10 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
         </div>
         <div>
           <button
-            className={cn(
-              "flex gap-2 hover:bg-blue-900 active:bg-blue-800 transition-all duration-300 w-full",
-              {
-                "px-3 py-2": !isCollapsed,
-                "my-2 rounded-md": isCollapsed,
-              }
-            )}
+            className={cn("flex gap-2 hover:bg-blue-900 active:bg-blue-800 transition-all duration-300 w-full", {
+              "px-3 py-2": !isCollapsed,
+              "my-2 rounded-md": isCollapsed,
+            })}
             onClick={() => {
               localStorage.removeItem("loggedUser");
               navigate("/login");
