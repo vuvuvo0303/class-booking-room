@@ -14,11 +14,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "@/store/AuthStore";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 
 type NavItemType = {
   title?: string;
@@ -33,7 +29,7 @@ const navItems: NavItemType[] = [
   {
     title: "Dashboard",
     to: "dashboard",
-    icon: <LayoutGrid />,
+    icon: <LayoutGrid  />,
   },
   {
     type: "divider",
@@ -94,11 +90,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(false);
   return (
-    <div
-      className={cn(
-        "transition-all duration-300 overflow-auto flex flex-col p-3 shadow-lg"
-      )}
-    >
+    <div className={cn("transition-all duration-300 overflow-auto flex flex-col p-3 shadow-lg")}>
       <div className="flex justify-center text-[#604CC3]">
         <div>
           <button
@@ -140,8 +132,7 @@ const Sidebar = () => {
                         "flex hover:bg-orange-200  active:bg-orange-100 transition-colors duration-300 justify-center text-[#604CC3]",
                         isCollapsed ? "rounded-md p-2" : "px-3 py-2",
                         {
-                          "bg-[#FF6600] hover:bg-orange-400 text-[#F5F5F5]":
-                            location.pathname.includes(item.to!),
+                          "bg-[#FF6600] hover:bg-orange-400 text-[#F5F5F5]": location.pathname.includes(item.to!),
                         }
                       )}
                     >
@@ -157,10 +148,7 @@ const Sidebar = () => {
                     </div>
                   </HoverCardTrigger>
                   <HoverCardContent
-                    className={cn(
-                      "text-[#604CC3] border-none drop-shadow-lg font-semibold",
-                      !isCollapsed && "hidden"
-                    )}
+                    className={cn("text-[#604CC3] border-none drop-shadow-lg font-semibold", !isCollapsed && "hidden")}
                   >
                     {item.title}
                   </HoverCardContent>
