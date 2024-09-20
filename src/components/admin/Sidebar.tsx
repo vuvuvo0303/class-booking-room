@@ -85,6 +85,7 @@ const navItems: NavItemType[] = [
 ];
 const Sidebar = () => {
   const loggedUser = useAuthStore((state) => state.user);
+
   const location = useLocation();
   const setUser = useAuthStore((state) => state.setUser);
   const navigate = useNavigate();
