@@ -1,30 +1,27 @@
-import { mockLogin } from "@/lib/api/mock-auth-api";
-import useAuthStore from "@/store/AuthStore";
-import { Link, useNavigate } from "react-router-dom";
+// import { mockLogin } from "@/lib/api/mock-auth-api";
+// import useAuthStore from "@/store/AuthStore";
+import { useNavigate } from "react-router-dom";
 import background from "../assets/background.png";
-import logofpt from "../assets/logofpt.svg";
+import logofpt from "../assets/fptu_white_logo.png";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import Lottie from "lottie-react";
 import { toast } from "@/hooks/use-toast";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import wellcome from "../assets/wellcome.json";
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+
 const Login = () => {
   const navigate = useNavigate();
-  const loggedUser = useAuthStore((state) => state.user);
-  const setUser = useAuthStore((state) => state.setUser);
+  // const loggedUser = useAuthStore((state) => state.user);
+  // const setUser = useAuthStore((state) => state.setUser);
 
   // const mockLoginAsManager = async () => {
   //   const { data } = await mockLogin("manager");
@@ -40,10 +37,10 @@ const Login = () => {
   //   navigate("/admin");
   // };
 
-  const logout = () => {
-    localStorage.removeItem("loggedUser");
-    window.location.reload();
-  };
+  // const logout = () => {
+  //   localStorage.removeItem("loggedUser");
+  //   window.location.reload();
+  // };
 
   const FormSchema = z.object({
     email: z.string().min(2, {
@@ -63,6 +60,7 @@ const Login = () => {
     });
 
     function onSubmit(data: z.infer<typeof FormSchema>) {
+      navigate("/");
       toast({
         title: "You submitted the following values:",
         description: (
@@ -75,7 +73,10 @@ const Login = () => {
 
     return (
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="w-1/2 space-y-6">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="w-full space-y-6"
+        >
           <FormField
             control={form.control}
             name="email"
@@ -102,7 +103,7 @@ const Login = () => {
               </FormItem>
             )}
           />
-          <FormItem>
+          {/* <FormItem>
             <FormLabel>Campus</FormLabel>
 
             <div className="flex pb-5 ">
@@ -123,7 +124,7 @@ const Login = () => {
                 </SelectContent>
               </Select>
             </div>
-          </FormItem>
+          </FormItem> */}
 
           <Button type="submit" className="w-full h-10 ">
             Submit
@@ -134,58 +135,46 @@ const Login = () => {
   }
 
   return (
-    <div className="">
-      <Link to={"/"}>{/* <Button>Home</Button> */}</Link>
-      {!loggedUser && (
-        <>
-          {/* <Button onClick={mockLoginAsManager}>Mock Login as Manager</Button> */}
-          {/* <Button onClick={mockLoginAsAdmin}>Mock Login as Admin</Button> */}
-
-          <div className="flex w-auto h-screen overflow-hidden">
-            <div className="h-full w-[600px] bg-contain ">
-              <img src={background} alt="" className="h-full w-full relative" />
-
-              <img src={logofpt} width={180} className="absolute top-5 left-5" />
-              <span className="absolute bottom-5 left-8  text-[18px] bg-gradient-to-r from-blue-800 via-orange-700 to-green-500 bg-clip-text text-transparent ">fu-booking-room.vercel.app</span>
-              <Lottie
-                className="absolute top-44 left-40"
-                animationData={wellcome}
-                loop={true}
-                style={{ height: "300px", width: "300px" }}
-              />
-            </div>
-            <div className="   flex-1 h-full py-14 ">
-              <div className="flex justify-center h-20 ">
-                <span className="text-6xl font-bold bg-gradient-to-r from-blue-800 via-orange-700 to-green-500 bg-clip-text text-transparent">Login </span>
-              </div>
-              <div className="flex justify-center pb-4  ">
-                <span className="bg-gradient-to-r from-orange-500 to-green-300 bg-clip-text text-transparent">
-                "  Ready for a global career "
-                </span>
-              </div>
-              <div className="flex justify-center ">
-                <InputForm />
-              </div>
-
-              <div className="flex justify-center items-center py-6">
-                <hr className="border-black w-1/4 border-t-1" />
-                <span className="text-center mx-2">or</span>
-                <hr className="border-black w-1/4 border-t-1" />
-              </div>
-              <div className="flex justify-center">
-                <Button className="flex w-1/2 bg-gradient-to-r from-[#e2e8f0] to-[#f1f5f9] gap-9 drop-shadow-lg h-12 ">
-                  <img
-                    src="https://techdocs.akamai.com/identity-cloud/img/social-login/identity-providers/iconfinder-new-google-favicon-682665.png"
-                    width={20}
-                  />
-                  <span className="text-black ">Login with Google</span>
-                </Button>
-              </div>
-            </div>
+    <div className="flex w-auto overflow-hidden md:p-10 justify-center">
+      {/* <Button onClick={mockLoginAsManager}>Mock Login as Manager</Button> */}
+      {/* <Button onClick={mockLoginAsAdmin}>Mock Login as Admin</Button> */}
+      <div className="flex w-full md:w-[85%] bg-white drop-shadow-[0_0_10px_rgba(0,0,0,0.5)] rounded-xl overflow-hidden h-screen">
+        <div className="bg-contain relative hidden md:block">
+          <img src={background} alt="" className="h-full relative select-none" />
+          <img src={logofpt} width={100} className="absolute top-5 left-5" />
+          <span className="text-white absolute top-[220px] left-24 text-5xl font-semibold">Welcome</span>
+          <span className="text-white absolute top-[280px] left-56">Log-in to continue</span>
+          <span className="absolute bottom-5 left-8  text-[18px] text-white">
+            fu-booking-room.vercel.app
+          </span>
+        </div>
+        <div className="flex-1 h-full py-14 overflow-auto px-10">
+          <div className="flex justify-center h-20 ">
+            <span className="text-6xl font-bold text-o">Login</span>
           </div>
-        </>
-      )}
-      {loggedUser && <>{/* <Button onClick={logout}>Logout</Button> */}</>}
+          <div className="flex justify-center pb-4  ">
+            <span className="">"Ready for a global career"</span>
+          </div>
+          <div className="flex justify-center ">
+            <InputForm />
+          </div>
+          <div className="flex justify-center items-center py-6">
+            <hr className="border-gray-500 w-1/4 border-t-1" />
+            <span className="text-gray-500 text-center mx-2">or</span>
+            <hr className="border-gray-500 w-1/4 border-t-1" />
+          </div>
+          <div className="flex justify-center">
+            <Button className="flex w-full bg-gray-50 hover:bg-gray-100 gap-9 drop-shadow-lg h-12 justify-between">
+              <img
+                src="https://techdocs.akamai.com/identity-cloud/img/social-login/identity-providers/iconfinder-new-google-favicon-682665.png"
+                width={20}
+              />
+              <span className="text-black ">Login with Google Account</span>
+              <span></span>
+            </Button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
