@@ -79,23 +79,22 @@ const Dashboard = () => {
           headerStyle="bg-yellow-500"
         />
       </div>
-      <div className="flex">
-        <div className="p-3 w-1/2 drop-shadow-lg">
+      <div className="grid grid-cols-2">
+        <div className="p-3 drop-shadow-lg">
           <Card className="">
             <CardContent className="">
-              <CardTitle className="flex justify-center mt-3">
-                Statistics on the number of rooms booked
+              <CardTitle className="flex justify-center mt-3 text-lg">
+                Number of Rooms booked by Month
               </CardTitle>
-
               <VerticalBarChart data={data} />
             </CardContent>
           </Card>
         </div>
-        <div className="p-3 w-1/2 drop-shadow-lg">
+        <div className="p-3 drop-shadow-lg">
           <Card className="">
             <CardContent className="py-2">
-              <CardTitle className="flex justify-center mb-">
-                Statistics on the number of rooms booked
+              <CardTitle className="flex justify-center text-lg">
+                Number of rooms booked by Cohort
               </CardTitle>
               <div className="">
                 <PieChart />
@@ -381,7 +380,7 @@ const DashboardCard = ({
   const [number, setNumber] = useState(0);
   const startNumber = 0;
   const endNumber = value;
-  const duration = Math.floor(Math.random() * (1000 - 500 + 1)) + 500;;
+  const duration = Math.floor(Math.random() * (1000 - 500 + 1)) + 500;
   useEffect(() => {
     const increment = (endNumber - startNumber) / (duration / 100);
     let currentNumber = startNumber;

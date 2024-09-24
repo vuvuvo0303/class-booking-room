@@ -1,12 +1,12 @@
 import { ResponsiveBar } from "@nivo/bar";
 
-const VerticalBarChart = ({ data }) => (
+const VerticalBarChart = ({ data }: any) => (
   <div style={{ height: "350px" }}>
     <ResponsiveBar
       data={data}
-      keys={["bookings"]} 
-      indexBy="month"     
-      layout="horizontal"  
+      keys={["bookings"]}
+      indexBy="month"
+      layout="horizontal"
       margin={{ top: 10, right: 110, bottom: 40, left: 70 }}
       padding={0.2}
       valueScale={{ type: "linear" }}
@@ -22,7 +22,7 @@ const VerticalBarChart = ({ data }) => (
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        
+
         legendPosition: "middle",
         legendOffset: 32,
       }}
@@ -30,7 +30,7 @@ const VerticalBarChart = ({ data }) => (
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        
+
         legendPosition: "middle",
         legendOffset: -40,
       }}
