@@ -9,7 +9,7 @@ import {
   MenuIcon,
   ReceiptText,
   UserSearch,
-  Users,
+  
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link, useNavigate } from "react-router-dom";
@@ -35,18 +35,18 @@ const navItems: NavItemType[] = [
     type: "divider",
   },
   {
-    title: "Tài khoản",
+    title: "Manage Account",
     to: "user",
     icon: <UserSearch />,
   },
   {
-    title: "Sinh viên",
+    title: "Student's Request",
     to: "student",
     icon: <BookUser />,
     isAdminOnly: true,
   },
   {
-    title: "Nhân viên quản lí",
+    title: "Staff's Request",
     to: "staff",
     icon: <Contact />,
     isAdminOnly: true,
@@ -55,12 +55,12 @@ const navItems: NavItemType[] = [
     type: "divider",
   },
   {
-    title: "Phòng",
+    title: "Rooms",
     to: "room",
     icon: <Box />,
   },
   {
-    title: "Đặt phòng",
+    title: "Bookings History",
     to: "booking",
     icon: <ReceiptText />,
   },
@@ -68,20 +68,25 @@ const navItems: NavItemType[] = [
     type: "divider",
   },
   {
-    title: "Group",
+    title: "Bookings Request",
     to: "group",
     icon: <Group />,
   },
-  {
-    title: "Team",
-    to: "team",
-    icon: <Users />,
-  },
+  // {
+  //   title: "Team",
+  //   to: "team",
+  //   icon: <Users />,
+  // },
   {
     title: "Slot",
     to: "slot",
     icon: <CalendarClock />,
   },
+  // {
+  //   title: "News",
+  //   to: "news",
+  //   icon: <CalendarClock />,
+  // },
 ];
 const Sidebar = () => {
   const loggedUser = useAuthStore((state) => state.user);
