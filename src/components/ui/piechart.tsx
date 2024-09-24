@@ -1,4 +1,3 @@
-import React from "react";
 import { ResponsivePie } from "@nivo/pie";
 
 const data = [

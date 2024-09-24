@@ -1,6 +1,9 @@
-import { ResponsiveBar } from "@nivo/bar";
+import { BarDatum, ResponsiveBar } from "@nivo/bar";
+interface VerticalBarChartProps {
+  data: BarDatum[]; 
+}
 
-const VerticalBarChart = ({ data }) => (
+const VerticalBarChart = ({ data }: VerticalBarChartProps) => (
   <div style={{ height: "350px" }}>
     <ResponsiveBar
       data={data}
