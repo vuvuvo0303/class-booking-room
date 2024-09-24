@@ -5,7 +5,7 @@ import PieChart from "@/components/ui/piechart";
 import VerticalBarChart from "@/components/ui/verticalbarchart";
 import { cn } from "@/lib/utils";
 import useAuthStore from "@/store/AuthStore";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 const Dashboard = () => {
   const loggedUser = useAuthStore((state) => state.user);
@@ -36,7 +36,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-4 gap-3 p-3">
         <DashboardCard
           title="Emtpy Rooms"
-          number={15}
+          value={15}
           icon={
             <img
               src="https://static.thenounproject.com/png/46945-200.png"
@@ -47,7 +47,7 @@ const Dashboard = () => {
         />
         <DashboardCard
           title="Booked Rooms"
-          number={15}
+          value={15}
           icon={
             <img
               src="https://static.thenounproject.com/png/46945-200.png"
@@ -58,7 +58,7 @@ const Dashboard = () => {
         />
         <DashboardCard
           title="Total Rooms"
-          number={15}
+          value={15}
           icon={
             <img
               src="https://static.thenounproject.com/png/46945-200.png"
@@ -69,7 +69,7 @@ const Dashboard = () => {
         />
         <DashboardCard
           title="Maintained rooms"
-          number={15}
+          value={15}
           icon={
             <img
               src="https://cdn.iconscout.com/icon/premium/png-256-thumb/maintenance-room-4340748-3596230.png?f=webp&w=256"
@@ -369,15 +369,34 @@ const Dashboard = () => {
 
 const DashboardCard = ({
   title,
-  number,
+  value,
   icon,
   headerStyle,
 }: {
   title: string;
-  number: number;
+  value: number;
   icon: ReactNode;
   headerStyle?: string;
 }) => {
+  const [number, setNumber] = useState(0);
+  const startNumber = 0;
+  const endNumber = value;
+  const duration = Math.floor(Math.random() * (1000 - 500 + 1)) + 500;;
+  useEffect(() => {
+    const increment = (endNumber - startNumber) / (duration / 100);
+    let currentNumber = startNumber;
+    const interval = setInterval(() => {
+      if (currentNumber >= endNumber) {
+        clearInterval(interval);
+        setNumber(endNumber);
+      } else {
+        currentNumber += increment;
+        setNumber(Math.round(currentNumber));
+      }
+    }, 100);
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, [startNumber, endNumber]);
   return (
     <Card className="drop-shadow-lg relative overflow-hidden">
       <CardHeader className={cn("text-white py-5 rounded-md", headerStyle)}>
@@ -385,7 +404,7 @@ const DashboardCard = ({
       </CardHeader>
       <CardContent className="py-7">
         <div className="flex items-center gap-4 justify-center">
-          <span className="text-3xl">{number}</span> {icon}
+          <span className="text-4xl font-light">{number}</span> {icon}
         </div>
       </CardContent>
     </Card>
