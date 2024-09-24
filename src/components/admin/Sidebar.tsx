@@ -97,7 +97,7 @@ const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   return (
     <div className={cn("transition-all duration-300 overflow-auto flex flex-col p-3 shadow-lg")}>
-      <div className="flex justify-center text-[#604CC3]">
+      <div className="flex justify-center">
         <div>
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
@@ -127,7 +127,7 @@ const Sidebar = () => {
         {navItems.map((item, index) => {
           if (!item.isAdminOnly || (loggedUser && loggedUser.role == "admin")) {
             if (item.type == "divider") {
-              return <div key={index} className="border h-px border-[#604CC3] my-2" />;
+              return <div key={index} className="border h-px my-2" />;
             }
             return (
               <Link to={item.to!} key={item.to}>
@@ -135,7 +135,7 @@ const Sidebar = () => {
                   <HoverCardTrigger asChild>
                     <div
                       className={cn(
-                        "flex hover:bg-orange-200  active:bg-orange-100 transition-colors duration-300 justify-center text-[#604CC3]",
+                        "flex hover:bg-orange-200  active:bg-orange-100 justify-center",
                         isCollapsed ? "rounded-md p-2" : "px-3 py-2",
                         {
                           "bg-[#FF6600] hover:bg-orange-400 text-[#F5F5F5]": location.pathname.includes(item.to!),
@@ -154,7 +154,7 @@ const Sidebar = () => {
                     </div>
                   </HoverCardTrigger>
                   <HoverCardContent
-                    className={cn("text-[#604CC3] border-none drop-shadow-lg font-semibold", !isCollapsed && "hidden")}
+                    className={cn("border-none drop-shadow-lg font-semibold", !isCollapsed && "hidden")}
                   >
                     {item.title}
                   </HoverCardContent>
