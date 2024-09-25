@@ -33,7 +33,7 @@ const Dashboard = () => {
           breadcrumbItems={[{ title: "Admin", to: basePath }]}
         />
       </div>
-      <div className="grid grid-cols-4 gap-3 p-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 p-3">
         <DashboardCard
           title="Emtpy Rooms"
           value={15}
@@ -79,7 +79,7 @@ const Dashboard = () => {
           headerStyle="bg-green-600"
         />
       </div>
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-1 lg:grid-cols-2">
         <div className="p-3 drop-shadow-lg">
           <Card className="">
             <CardContent className="">
@@ -104,10 +104,10 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 mt-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 mt-5">
         <div>
           <div className="pl-3">
-            <span className="text-xl font-bold">
+            <span className="text-2xl font-bold">
               Recent Report in the System
             </span>
           </div>
@@ -152,7 +152,7 @@ const Dashboard = () => {
         </div>
         <div>
           <div>
-            <span className="text-xl font-bold px-4">
+            <span className="text-2xl font-bold px-4">
               Recent Bookings in the Sytem
             </span>
           </div>
