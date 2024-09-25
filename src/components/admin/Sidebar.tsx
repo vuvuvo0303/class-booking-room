@@ -9,7 +9,6 @@ import {
   MenuIcon,
   ReceiptText,
   UserSearch,
-  
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link, useNavigate } from "react-router-dom";
@@ -29,7 +28,7 @@ const navItems: NavItemType[] = [
   {
     title: "Dashboard",
     to: "dashboard",
-    icon: <LayoutGrid  />,
+    icon: <LayoutGrid />,
   },
   {
     type: "divider",
@@ -65,12 +64,12 @@ const navItems: NavItemType[] = [
     icon: <ReceiptText />,
   },
   {
-    type: "divider",
-  },
-  {
     title: "Bookings Request",
     to: "group",
     icon: <Group />,
+  },
+  {
+    type: "divider",
   },
   // {
   //   title: "Team",
@@ -96,12 +95,14 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(false);
   return (
-    <div className={cn("transition-all duration-300 overflow-auto flex flex-col p-3 shadow-lg")}>
+    <div
+      className={cn("transition-all duration-300 overflow-auto flex flex-col p-3 shadow-lg bg-orange-500 text-white")}
+    >
       <div className="flex justify-center">
         <div>
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="hover:bg-orange-200  active:bg-orange-100 py-2 px-3 rounded-md transition-all"
+            className="hover:bg-orange-500  active:bg-orange-400 py-2 px-3 rounded-md transition-all"
           >
             <MenuIcon
               className={cn("transition-transform duration-300", {
@@ -135,10 +136,10 @@ const Sidebar = () => {
                   <HoverCardTrigger asChild>
                     <div
                       className={cn(
-                        "flex hover:bg-orange-200  active:bg-orange-100 justify-center",
+                        "flex hover:bg-orange-400  active:bg-orange-300 justify-center",
                         isCollapsed ? "rounded-md p-2" : "px-3 py-2",
                         {
-                          "bg-[#FF6600] hover:bg-orange-400 text-[#F5F5F5]": location.pathname.includes(item.to!),
+                          "bg-white hover:bg-orange-400 text-black": location.pathname.includes(item.to!),
                         }
                       )}
                     >
@@ -166,7 +167,7 @@ const Sidebar = () => {
       </div>
       <button
         className={cn(
-          "flex hover:bg-orange-200 active:bg-orange-100 transition-all duration-300 justify-center mt-5 text-red-500",
+          "flex hover:bg-orange-400 active:bg-orange-300 transition-all duration-300 justify-center mt-5 text-white",
           isCollapsed ? "rounded-md p-2" : "px-3 py-2"
         )}
         onClick={() => {
