@@ -1,11 +1,11 @@
 import Header from "@/components/admin/Header";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import BookingContent from "@/components/admin/dashboard/BookingContent";
+import DashboardCard from "@/components/admin/dashboard/DashboardCard";
+import ReportContent from "@/components/admin/dashboard/ReportContent";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import PieChart from "@/components/ui/piechart";
 import VerticalBarChart from "@/components/ui/verticalbarchart";
-import { cn } from "@/lib/utils";
 import useAuthStore from "@/store/AuthStore";
-import { ReactNode, useEffect, useState } from "react";
 
 const Dashboard = () => {
   const loggedUser = useAuthStore((state) => state.user);
@@ -57,17 +57,6 @@ const Dashboard = () => {
           headerStyle="bg-orange-600"
         />
         <DashboardCard
-          title="Total Rooms"
-          value={15}
-          icon={
-            <img
-              src="https://static.thenounproject.com/png/46945-200.png"
-              width={40}
-            />
-          }
-          headerStyle="bg-green-600"
-        />
-        <DashboardCard
           title="Maintained rooms"
           value={15}
           icon={
@@ -77,6 +66,17 @@ const Dashboard = () => {
             />
           }
           headerStyle="bg-yellow-500"
+        />
+        <DashboardCard
+          title="Total Rooms"
+          value={45}
+          icon={
+            <img
+              src="https://static.thenounproject.com/png/46945-200.png"
+              width={40}
+            />
+          }
+          headerStyle="bg-green-600"
         />
       </div>
       <div className="grid grid-cols-2">
@@ -103,114 +103,54 @@ const Dashboard = () => {
           </Card>
         </div>
       </div>
-      <div className="flex">
-        <div className="w-1/2">
+
+      <div className="grid grid-cols-2 mt-5">
+        <div>
           <div className="pl-3">
             <span className="text-xl font-bold">
               Recent Report in the System
             </span>
           </div>
-
           <div className="p-3">
-            <Card>
-              <CardContent>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3 pt-3">
-                    <Avatar>
-                      <AvatarImage src="https://github.com/shadcn.png" />
-                    </Avatar>
-                    <span>Ngo Gia Huy</span>
-                  </div>
-                  <div className="mt-3">
-                    <span className="text-green-600">
-                      Report date :22/8/2024
-                    </span>
-                  </div>
-                </div>
-                <div></div>
-                <div className="flex py-3 ">
-                  <span className="w-100 break-words">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Molestias molestiae reprehenderit voluptates doloribus
-                    laboriosam necessitatibus hic optio rerum voluptatibus
-                    perferendis ratione, nam delectus iusto ducimus fugit.
-                    Labore saepe sit amet!
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 bg-red-500 rounded-full"></span>
-
-                  <span className="mb-1 text-red-500">Reject</span>
-                </div>
-              </CardContent>
-              <hr className="w-full border-stone-300  " />
-              <CardContent>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3 pt-3">
-                    <Avatar>
-                      <AvatarImage src="https://github.com/shadcn.png" />
-                    </Avatar>
-                    <span>Ngo Gia Huy</span>
-                  </div>
-                  <div className="mt-3">
-                    <span className="text-green-600">
-                      Report date :22/8/2024
-                    </span>
-                  </div>
-                </div>
-                <div></div>
-                <div className="flex py-3 ">
-                  <span className="w-100 break-words">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Molestias molestiae reprehenderit voluptates doloribus
-                    laboriosam necessitatibus hic optio rerum voluptatibus
-                    perferendis ratione, nam delectus iusto ducimus fugit.
-                    Labore saepe sit amet!
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 bg-yellow-500 rounded-full"></span>
-
-                  <span className="mb-1 text-yellow-500">
-                    Not processed yet
-                  </span>
-                </div>
-              </CardContent>
-              <hr className="w-full border-stone-300  " />
-              <CardContent>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3 pt-3">
-                    <Avatar>
-                      <AvatarImage src="https://github.com/shadcn.png" />
-                    </Avatar>
-                    <span>Ngo Gia Huy</span>
-                  </div>
-                  <div className="mt-3">
-                    <span className="text-green-600">
-                      Report date :22/8/2024
-                    </span>
-                  </div>
-                </div>
-                <div></div>
-                <div className="flex py-3 ">
-                  <span className="w-100 break-words">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Molestias molestiae reprehenderit voluptates doloribus
-                    laboriosam necessitatibus hic optio rerum voluptatibus
-                    perferendis ratione, nam delectus iusto ducimus fugit.
-                    Labore saepe sit amet!
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 bg-green-500 rounded-full"></span>
-
-                  <span className="mb-1 text-green-500">Processed</span>
-                </div>
-              </CardContent>
+            <Card className="overflow-hidden">
+              <ReportContent
+                content="Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Molestias molestiae reprehenderit voluptates doloribus
+              laboriosam necessitatibus hic optio rerum voluptatibus
+              perferendis ratione, nam delectus iusto ducimus fugit.
+              Labore saepe sit amet!"
+                fullName="Mai Van Quoc Tinh"
+                profileImageURL="https://github.com/shadcn.png"
+                reportDate={new Date()}
+                status="rejected"
+              />
+              <hr className="w-full border-stone-300" />
+              <ReportContent
+                content="Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Molestias molestiae reprehenderit voluptates doloribus
+              laboriosam necessitatibus hic optio rerum voluptatibus
+              perferendis ratione, nam delectus iusto ducimus fugit.
+              Labore saepe sit amet!"
+                fullName="Mai Van Quoc Tinh"
+                profileImageURL="https://github.com/shadcn.png"
+                reportDate={new Date()}
+                status="not_processed_yet"
+              />
+              <ReportContent
+                content="Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Molestias molestiae reprehenderit voluptates doloribus
+              laboriosam necessitatibus hic optio rerum voluptatibus
+              perferendis ratione, nam delectus iusto ducimus fugit.
+              Labore saepe sit amet!"
+                fullName="Mai Van Quoc Tinh"
+                profileImageURL="https://github.com/shadcn.png"
+                reportDate={new Date()}
+                status="processed"
+              />
             </Card>
           </div>
         </div>
-        <div className="w-1/2">
+        <div>
           <div>
             <span className="text-xl font-bold px-4">
               Recent Bookings in the Sytem
@@ -218,195 +158,46 @@ const Dashboard = () => {
           </div>
           <div className="p-3">
             <Card>
-              <CardContent>
-                <div className="flex items-center gap-3 pt-3">
-                  <Avatar>
-                    <AvatarImage src="https://github.com/shadcn.png" />
-                  </Avatar>
-                  <span>Ngo Gia Huy</span>
-                </div>
-
-                <div className="flex justify-between pt-5">
-                  <div className="flex flex-col gap-1">
-                    <div className="flex gap-2">
-                      <span>Room:</span>
-                      <span className="text-stone-400">611</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span>Room type:</span>
-                      <span className="text-stone-400">Self-Study room</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span>Department:</span>
-                      <span className="text-stone-400">IT</span>
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <div className="flex gap-2">
-                      <span>Activity:</span>
-                      <span className="text-stone-400">Self Study</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span>Slot:</span>
-                      <span className="text-stone-400">1(7h-9h15)</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span>Booking Date:</span>
-                      <span className="text-stone-400">22/1/2024</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 pt-5">
-                  <span className="w-3 h-3 bg-green-500 rounded-full"></span>
-
-                  <span className="mb-1 text-green-500">
-                    Booking Sucessfully
-                  </span>
-                </div>
-              </CardContent>
+              <BookingContent
+                fullName="Mai Van Quoc Tinh"
+                profileImageURL="https://github.com/shadcn.png"
+                activity="Self Study"
+                bookingDate={new Date()}
+                department="IT"
+                room="611"
+                roomType="Self-Study room"
+                slot="1 (07:00AM - 09:15AM)"
+                status="accepted"
+              />
               <hr className="w-full border-stone-300  " />
-              <CardContent>
-                <div className="flex items-center gap-3 pt-3">
-                  <Avatar>
-                    <AvatarImage src="https://github.com/shadcn.png" />
-                  </Avatar>
-                  <span>Ngo Gia Huy</span>
-                </div>
-
-                <div className="flex justify-between pt-5">
-                  <div className="flex flex-col gap-1">
-                    <div className="flex gap-2">
-                      <span>Room:</span>
-                      <span className="text-stone-400">611</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span>Room type:</span>
-                      <span className="text-stone-400">Self-Study room</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span>Department:</span>
-                      <span className="text-stone-400">IT</span>
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <div className="flex gap-2">
-                      <span>Activity:</span>
-                      <span className="text-stone-400">Self Study</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span>Slot:</span>
-                      <span className="text-stone-400">1(7h-9h15)</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span>Booking Date:</span>
-                      <span className="text-stone-400">22/1/2024</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 pt-5">
-                  <span className="w-3 h-3 bg-green-500 rounded-full"></span>
-
-                  <span className="mb-1 text-green-500">
-                    Booking Sucessfully
-                  </span>
-                </div>
-              </CardContent>
+              <BookingContent
+                fullName="Mai Van Quoc Tinh"
+                profileImageURL="https://github.com/shadcn.png"
+                activity="Self Study"
+                bookingDate={new Date()}
+                department="IT"
+                room="611"
+                roomType="Self-Study room"
+                slot="1 (07:00AM - 09:15AM)"
+                status="pending"
+              />
               <hr className="w-full border-stone-300  " />
-              <CardContent>
-                <div className="flex items-center gap-3 pt-3">
-                  <Avatar>
-                    <AvatarImage src="https://github.com/shadcn.png" />
-                  </Avatar>
-                  <span>Ngo Gia Huy</span>
-                </div>
-
-                <div className="flex justify-between pt-5">
-                  <div className="flex flex-col gap-1">
-                    <div className="flex gap-2">
-                      <span>Room:</span>
-                      <span className="text-stone-400">611</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span>Room type:</span>
-                      <span className="text-stone-400">Self-Study room</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span>Department:</span>
-                      <span className="text-stone-400">IT</span>
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <div className="flex gap-2">
-                      <span>Activity:</span>
-                      <span className="text-stone-400">Self Study</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span>Slot:</span>
-                      <span className="text-stone-400">1(7h-9h15)</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span>Booking Date:</span>
-                      <span className="text-stone-400">22/1/2024</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 pt-5">
-                  <span className="w-3 h-3 bg-green-500 rounded-full"></span>
-
-                  <span className="mb-1 text-green-500">
-                    Booking Sucessfully
-                  </span>
-                </div>
-              </CardContent>
+              <BookingContent
+                fullName="Mai Van Quoc Tinh"
+                profileImageURL="https://github.com/shadcn.png"
+                activity="Self Study"
+                bookingDate={new Date()}
+                department="IT"
+                room="611"
+                roomType="Self-Study room"
+                slot="1 (07:00AM - 09:15AM)"
+                status="rejected"
+              />
             </Card>
           </div>
         </div>
       </div>
     </div>
-  );
-};
-
-const DashboardCard = ({
-  title,
-  value,
-  icon,
-  headerStyle,
-}: {
-  title: string;
-  value: number;
-  icon: ReactNode;
-  headerStyle?: string;
-}) => {
-  const [number, setNumber] = useState(0);
-  const startNumber = 0;
-  const endNumber = value;
-  const duration = Math.floor(Math.random() * (1000 - 500 + 1)) + 500;
-  useEffect(() => {
-    const increment = (endNumber - startNumber) / (duration / 100);
-    let currentNumber = startNumber;
-    const interval = setInterval(() => {
-      if (currentNumber >= endNumber) {
-        clearInterval(interval);
-        setNumber(endNumber);
-      } else {
-        currentNumber += increment;
-        setNumber(Math.round(currentNumber));
-      }
-    }, 100);
-
-    return () => clearInterval(interval); // Cleanup on unmount
-  }, [startNumber, endNumber]);
-  return (
-    <Card className="drop-shadow-lg relative overflow-hidden">
-      <CardHeader className={cn("text-white py-5 rounded-md", headerStyle)}>
-        <CardTitle className="flex justify-center">{title}</CardTitle>
-      </CardHeader>
-      <CardContent className="py-7">
-        <div className="flex items-center gap-4 justify-center">
-          <span className="text-4xl font-light">{number}</span> {icon}
-        </div>
-      </CardContent>
-    </Card>
   );
 };
 

@@ -166,7 +166,7 @@ const Sidebar = () => {
       </div>
       <button
         className={cn(
-          "flex hover:bg-orange-200 active:bg-orange-100 transition-all duration-300 justify-center mt-5 text-[#604CC3]",
+          "flex hover:bg-orange-200 active:bg-orange-100 transition-all duration-300 justify-center mt-5 text-red-500",
           isCollapsed ? "rounded-md p-2" : "px-3 py-2"
         )}
         onClick={() => {
