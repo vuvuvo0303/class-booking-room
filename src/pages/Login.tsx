@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { toast } from "@/hooks/use-toast";
 import {
   Form,
   FormField,
@@ -17,6 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { login } from "@/lib/api/auth-api";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -59,17 +59,10 @@ const Login = () => {
       },
     });
 
-    function onSubmit(data: z.infer<typeof FormSchema>) {
-      navigate("/");
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-          </pre>
-        ),
-      });
-    }
+    const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+      const result = await login(data.email, data.password);
+      console.log(result);
+    };
 
     return (
       <Form {...form}>
@@ -186,13 +179,9 @@ const Login = () => {
         </div>
       </div>
       <div className="bg-black flex justify-end gap-2 text-white">
-        <button onClick={mockLoginAsAdmin}>
-          Mock login as Admin
-        </button>
+        <button onClick={mockLoginAsAdmin}>Mock login as Admin</button>
         <span>|</span>
-        <button onClick={mockLoginAsManager}>
-          Mock login as Manager
-        </button>
+        <button onClick={mockLoginAsManager}>Mock login as Manager</button>
       </div>
     </>
   );
