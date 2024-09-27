@@ -1,8 +1,12 @@
 export { default as LoginPage } from "./Login";
 export { default as RoomListPage } from "./RoomList";
 export { default as RoomDetailPage } from "./RoomDetail";
+export { default as HomePage } from "./Home";
+export { default as NewsPage } from "./News";
 export { default as StudentProfilePage } from "./student/Profile";
 export { default as StudentBookingHistoryPage } from "./student/BookingHistory";
+export { default as StudentReportHistoryPage } from "./student/ReportHistory";
+
 export { default as AdminDashboardPage } from "./admin/Dashboard";
 export { default as AdminUserPage } from "./admin/User";
 export { default as AdminGroupPage } from "./admin/Group";
