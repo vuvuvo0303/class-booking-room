@@ -9,6 +9,7 @@ import {
   MenuIcon,
   ReceiptText,
   UserSearch,
+  Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link, useNavigate } from "react-router-dom";
@@ -71,11 +72,11 @@ const navItems: NavItemType[] = [
   {
     type: "divider",
   },
-  // {
-  //   title: "Team",
-  //   to: "team",
-  //   icon: <Users />,
-  // },
+  {
+    title: "Cohort",
+    to: "cohort",
+    icon: <Users />,
+  },
   {
     title: "Slot",
     to: "slot",

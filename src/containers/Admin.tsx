@@ -3,6 +3,7 @@ import AdminLayout from "@/layouts/AdminLayout";
 import {
   AdminBookingDetailPage,
   AdminBookingPage,
+  AdminCohortPage,
   AdminDashboardPage,
   AdminGroupPage,
   AdminRoomPage,
@@ -31,6 +32,7 @@ const Admin = () => {
         <Route path="/group" element={<AdminGroupPage />} />
         <Route path="/room" element={<AdminRoomPage />} />
         <Route path="/slot" element={<AdminSlotPage />} />
+        <Route path="/cohort" element={<AdminCohortPage />} />
         <Route
           path="/student/:studentId"
           element={<AdminStudentDetailPage />}

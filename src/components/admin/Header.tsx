@@ -23,7 +23,7 @@ const Header = ({ breadcrumbItems = [], currentPage }: HeaderProps) => {
         <BreadcrumbList>
           {breadcrumbItems.map((item) => {
             return (
-              <React.Fragment>
+              <React.Fragment key={item.to}>
                 <BreadcrumbItem>
                   <BreadcrumbLink href={item.to}>{item.title}</BreadcrumbLink>
                 </BreadcrumbItem>
