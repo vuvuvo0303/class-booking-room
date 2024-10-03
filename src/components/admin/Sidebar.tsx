@@ -97,7 +97,7 @@ const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   return (
     <div
-      className={cn("transition-all duration-300 overflow-auto flex flex-col p-3 shadow-lg bg-orange-500 text-white")}
+      className={cn("transition-all duration-300 overflow-auto flex flex-col p-3 shadow-lg bg-orange-500 bg-gradient-to-t from-orange-600 text-white")}
     >
       <div className="flex justify-center">
         <div>
@@ -140,7 +140,7 @@ const Sidebar = () => {
                         "flex hover:bg-orange-400  active:bg-orange-300 justify-center",
                         isCollapsed ? "rounded-md p-2" : "px-3 py-2",
                         {
-                          "bg-white hover:bg-orange-400 text-black": location.pathname.includes(item.to!),
+                          "bg-white/80 bg-gradient-to-r from-white/100 hover:bg-orange-400 text-black": location.pathname.includes(item.to!),
                         }
                       )}
                     >
