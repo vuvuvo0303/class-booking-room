@@ -7,20 +7,15 @@ import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { login } from "@/lib/api/auth-api";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
-  // const loggedUser = useAuthStore((state) => state.user);
+  const loggedUser = useAuthStore((state) => state.user);
   const setUser = useAuthStore((state) => state.setUser);
 
   const mockLoginAsManager = async () => {
@@ -38,7 +33,7 @@ const Login = () => {
   };
 
   // const logout = () => {
-  //   localStorage.removeItem("loggedUser");
+  //   localStorage.removeItem("accessToken");
   //   window.location.reload();
   // };
 
@@ -61,15 +56,26 @@ const Login = () => {
 
     const onSubmit = async (data: z.infer<typeof FormSchema>) => {
       const result = await login(data.email, data.password);
-      console.log(result);
+      if (result.error) {
+        toast.error(result.error);
+      } else {
+        localStorage.setItem("accessToken", result.data);
+        toast.success("Login Successfully")
+      }
     };
+    useEffect(() => {
+      if (loggedUser) {
+        if (loggedUser.role == "Admin") {
+          navigate("/admin");
+        } else if (loggedUser.role == "Manager") {
+          navigate("/manager");
+        }
+      }
+    }, []);
 
     return (
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full space-y-6"
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
           <FormField
             control={form.control}
             name="email"
@@ -134,21 +140,11 @@ const Login = () => {
         {/* <Button onClick={mockLoginAsAdmin}>Mock Login as Admin</Button> */}
         <div className="flex w-full md:w-[85%] bg-white drop-shadow-[0_0_10px_rgba(0,0,0,0.5)] rounded-xl overflow-hidden h-screen">
           <div className="bg-contain relative hidden md:block">
-            <img
-              src={background}
-              alt=""
-              className="h-full relative select-none"
-            />
+            <img src={background} alt="" className="h-full relative select-none" />
             <img src={logofpt} width={100} className="absolute top-5 left-5" />
-            <span className="text-white absolute top-[220px] left-24 text-5xl font-semibold">
-              Welcome
-            </span>
-            <span className="text-white absolute top-[280px] left-56">
-              Log-in to continue
-            </span>
-            <span className="absolute bottom-5 left-8  text-[18px] text-white">
-              fu-booking-room.vercel.app
-            </span>
+            <span className="text-white absolute top-[220px] left-24 text-5xl font-semibold">Welcome</span>
+            <span className="text-white absolute top-[280px] left-56">Log-in to continue</span>
+            <span className="absolute bottom-5 left-8  text-[18px] text-white">fu-booking-room.vercel.app</span>
           </div>
           <div className="flex-1 h-full py-14 overflow-auto px-10">
             <div className="flex justify-center h-20 ">

@@ -3,13 +3,17 @@ import { LoginPage } from "./pages";
 import { Admin, Home, Manager } from "./containers";
 import useAuthStore from "./store/AuthStore";
 import { useEffect } from "react";
+import { checkToken } from "./lib/api/auth-api";
 
 function App() {
   const setUser = useAuthStore((state) => state.setUser);
-  const loggedUser = localStorage.getItem("loggedUser");
   useEffect(() => {
-    setUser(loggedUser ? JSON.parse(loggedUser) : null);
-  }, [loggedUser]);
+    const fetchData = async () => {
+      const userResult = await checkToken();
+      setUser(userResult.data ? userResult.data : null);
+    };
+    fetchData();
+  }, [setUser]);
   return (
     <Routes>
       <Route path="login" element={<LoginPage />} />

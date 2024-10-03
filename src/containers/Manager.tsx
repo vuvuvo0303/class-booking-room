@@ -17,7 +17,7 @@ import { Route, Routes } from "react-router-dom";
 
 const Manager = () => {
   const loggedUser = useAuthStore((state) => state.user);
-  if (loggedUser == null || loggedUser.role != "manager") {
+  if (loggedUser == null || loggedUser.role != "Manager") {
     return <NotFound />;
   }
   return (
@@ -28,19 +28,13 @@ const Manager = () => {
         <Route path="/group" element={<AdminGroupPage />} />
         <Route path="/room" element={<AdminRoomPage />} />
         <Route path="/slot" element={<AdminSlotPage />} />
-        <Route
-          path="/student/:studentId"
-          element={<AdminStudentDetailPage />}
-        />
+        <Route path="/student/:studentId" element={<AdminStudentDetailPage />} />
         <Route path="/student" element={<AdminStudentPage />} />
         <Route path="/team" element={<AdminTeamPage />} />
         <Route path="/team/:teamId" element={<AdminTeamDetailPage />} />
         <Route path="/booking" element={<AdminBookingPage />} />
-        <Route
-          path="/booking/:bookingId"
-          element={<AdminBookingDetailPage />}
-        />
-        <Route path="*" element={<NotFound/>}/>
+        <Route path="/booking/:bookingId" element={<AdminBookingDetailPage />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </AdminLayout>
   );

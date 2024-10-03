@@ -2,10 +2,14 @@ import MainLayout from "@/layouts/MainLayout";
 import { HomePage, NewsPage, RoomDetailPage, RoomListPage } from "@/pages";
 import { Route, Routes } from "react-router-dom";
 import { StudentProfile } from ".";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const Home = () => {
   return (
     <MainLayout>
+        <Navbar/>
+
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/room" element={<RoomListPage />} />
@@ -13,6 +17,8 @@ const Home = () => {
         <Route path="/room/:roomId" element={<RoomDetailPage />} />
         <Route path="/profile/*" element={<StudentProfile />} />
       </Routes>
+      <Footer/>
+
     </MainLayout>
   );
 };
