@@ -52,7 +52,7 @@ const Cohort = () => {
           </Dialog>
         </div>
         <div className="drop-shadow-md">
-          <DataTable data={data} />
+          <DataTable data={data} rerender={rerender}/>
         </div>
       </div>
     </div>
