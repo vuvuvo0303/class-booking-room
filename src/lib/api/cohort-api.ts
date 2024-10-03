@@ -28,8 +28,7 @@ export const getCohortById = async (id: number) => {
     }
 }
 export const createCohort = async (formData: {
-    name: string,
-    departmentId: number
+    cohortCode: string,
 }) => {
     try {
         const { data } = await axiosClient.post(`/api/cohorts`, formData);
@@ -40,8 +39,7 @@ export const createCohort = async (formData: {
 }
 
 export const updateCohort = async (id: number, formData: {
-    name: string,
-    departmentId: number
+    cohortCode: string,
 }) => {
     try {
         const { data } = await axiosClient.put(`/api/cohorts/${id}`, formData);

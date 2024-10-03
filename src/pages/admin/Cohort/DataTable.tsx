@@ -7,7 +7,7 @@ import { Table } from "antd";
 
 const columns = [
   {
-    title: "Cohort Code",
+    title: "Cohort code",
     dataIndex: "cohortCode",
     key: "cohortCode",
     render: (cohortCode: string) => {

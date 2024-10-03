@@ -9,11 +9,13 @@ import AddCohort from "./AddCohort";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Loader from "@/components/Loader";
+import useRerender from "@/hooks/use-rerender";
 
 const Cohort = () => {
   const loggedUser = useAuthStore((state) => state.user);
   const [data, setData] = useState<CohortType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const { renderKey, rerender } = useRerender();
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -23,35 +25,35 @@ const Cohort = () => {
         console.log(result.error);
       } else {
         setData(result.data);
-        console.log(result.data);
       }
     };
     fetchData();
-  }, []);
+  }, [renderKey]);
   const basePath = "/" + loggedUser.role;
-  if (isLoading) return <Loader text="Loading cohorts data..."/>;
+  if (isLoading) return <Loader text="Loading cohorts data..." />;
   return (
-    <div>
+    <div className="bg-white">
       <Header
         currentPage="Slot"
         breadcrumbItems={[{ title: "Trang chủ", to: basePath }]}
       />
-      <div className="flex justify-center py-3">
-        <span className="text-4xl font-bold">Manage Cohorts</span>
-      </div>
-      <div className="flex justify-end p-3">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>
-              {" "}
-              <Plus className="me-1" /> Add Cohort
-            </Button>
-          </DialogTrigger>
-          <AddCohort />
-        </Dialog>
-      </div>
-      <div className="px-3">
-        <DataTable data={data} />
+      <div className="p-3">
+        <div className="flex">
+          <span className="text-4xl font-semibold">Manage Cohorts</span>
+        </div>
+        <div className="flex justify-end mb-3">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus className="me-1" /> Add Cohort
+              </Button>
+            </DialogTrigger>
+            <AddCohort rerender={rerender} />
+          </Dialog>
+        </div>
+        <div className="drop-shadow-md">
+          <DataTable data={data} />
+        </div>
       </div>
     </div>
   );
