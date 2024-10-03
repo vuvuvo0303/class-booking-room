@@ -6,6 +6,8 @@ import { Cohort } from "@/types/cohort";
 import { getRandomColor } from "@/utils/color";
 import { Table } from "antd";
 import DeleteCohort from "./DeleteCohort";
+import UpdateCohort from "./UpdateCohort";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
 const DataTable = ({
   data,
@@ -33,7 +35,7 @@ const DataTable = ({
       dataIndex: "createAt",
       key: "createAt",
       render: (createAt: string) => (
-        <span>{new Date(createAt).toLocaleDateString()}</span>
+        <span>{new Date(createAt).toLocaleString()}</span>
       ),
     },
     {
@@ -41,7 +43,7 @@ const DataTable = ({
       dataIndex: "updatedAt",
       key: "updatedAt",
       render: (updatedAt: string) => (
-        <span>{new Date(updatedAt).toLocaleDateString()}</span>
+        <span>{new Date(updatedAt).toLocaleString()}</span>
       ),
     },
     {
@@ -50,7 +52,12 @@ const DataTable = ({
       key: "action",
       render: (_: any, record: Cohort) => (
         <div className="flex gap-2">
-          <Button>Edit</Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>Edit</Button>
+            </DialogTrigger>
+            <UpdateCohort cohort={record} rerender={rerender} />
+          </Dialog>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant={"destructive"}>Delete</Button>
