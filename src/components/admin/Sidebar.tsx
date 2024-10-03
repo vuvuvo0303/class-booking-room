@@ -172,7 +172,7 @@ const Sidebar = () => {
           isCollapsed ? "rounded-md p-2" : "px-3 py-2"
         )}
         onClick={() => {
-          localStorage.removeItem("loggedUser");
+          localStorage.removeItem("accessToken");
           navigate("/login");
           setUser(null);
         }}
