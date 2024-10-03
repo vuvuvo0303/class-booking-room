@@ -43,7 +43,7 @@ const Dashboard = () => {
               width={40}
             />
           }
-          headerStyle="bg-blue-600"
+          headerStyle="bg-blue-600 bg-gradient-to-l from-blue-400"
         />
         <DashboardCard
           title="Booked Rooms"
@@ -54,7 +54,7 @@ const Dashboard = () => {
               width={40}
             />
           }
-          headerStyle="bg-orange-600"
+          headerStyle="bg-orange-600 bg-gradient-to-l from-orange-400"
         />
         <DashboardCard
           title="Maintained rooms"
@@ -65,7 +65,7 @@ const Dashboard = () => {
               width={30}
             />
           }
-          headerStyle="bg-yellow-500"
+          headerStyle="bg-yellow-500 bg-gradient-to-l from-yellow-400"
         />
         <DashboardCard
           title="Total Rooms"
@@ -76,7 +76,7 @@ const Dashboard = () => {
               width={40}
             />
           }
-          headerStyle="bg-green-600"
+          headerStyle="bg-green-600 bg-gradient-to-l from-green-400"
         />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2">
