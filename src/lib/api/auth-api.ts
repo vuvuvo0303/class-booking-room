@@ -14,6 +14,7 @@ export const handleApiError = (error: any) => {
 export const login = async (email: string, password: string) => {
   try {
     const { data } = await axiosClient.post(`/api/auth/login`, { email: email, password: password });
+    
     return { error: null, data: data, success: true };
   } catch (error) {
     return handleApiError(error);

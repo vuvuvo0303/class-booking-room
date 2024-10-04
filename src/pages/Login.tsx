@@ -32,11 +32,6 @@ const Login = () => {
     navigate("/admin");
   };
 
-  // const logout = () => {
-  //   localStorage.removeItem("accessToken");
-  //   window.location.reload();
-  // };
-
   const FormSchema = z.object({
     email: z.string().min(2, {
       message: "Email must be at least 2 characters.",
@@ -56,11 +51,12 @@ const Login = () => {
 
     const onSubmit = async (data: z.infer<typeof FormSchema>) => {
       const result = await login(data.email, data.password);
+      console.log(result);
       if (result.error) {
         toast.error(result.error);
       } else {
         localStorage.setItem("accessToken", result.data);
-        toast.success("Login Successfully")
+        toast.success("Login Successfully");
       }
     };
     useEffect(() => {
@@ -102,28 +98,6 @@ const Login = () => {
               </FormItem>
             )}
           />
-          {/* <FormItem>
-            <FormLabel>Campus</FormLabel>
-
-            <div className="flex pb-5 ">
-              {" "}
-              <Select>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a Campus" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Campus</SelectLabel>
-                    <SelectItem value="HCM">Fu-Hồ Chí Minh</SelectItem>
-                    <SelectItem value="HN">Fu-Hà Nội</SelectItem>
-                    <SelectItem value="CT">Fu-Cần Thơ</SelectItem>
-                    <SelectItem value="DN">Fu-Đà Nẵng</SelectItem>
-                    <SelectItem value="QN">Fu-Quy Nhơn</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-          </FormItem> */}
 
           <Button type="submit" className="w-full h-10 ">
             Submit
