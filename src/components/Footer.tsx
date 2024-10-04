@@ -1,7 +1,8 @@
-import footerweb from "../assets/footerweb.png";
+import footerweb from "../assets/footer-background.svg";
+import MaxWidthWrapper from "./MaxWidthWrapper";
 const Footer = () => {
   return (
-    <>
+    <div>
       <div className="relative w-full pb-50 pt-12 border-y-0.5 border-black">
         <div className="flex justify-center pb-3">
           <img
@@ -9,19 +10,16 @@ const Footer = () => {
             width={200}
           />
         </div>
-        <div className="flex flex-col items-center  gap-3">
-          
-            <span>The website was built by a team of FPTU HCM students with the subject SWD392</span>
-          
+        <div className="flex flex-col items-center gap-3 mb-10">
+            <span>Built by SWD392 team</span>
         </div>
-
-        <div className="flex justify-around px-10 py-5">
-          <div>
-            <div className="bg-blue-400 text-white py-2 px-5 rounded-full items-center flex justify-center">
-              <span>Contact me</span>
+        <MaxWidthWrapper className="grid grid-cols-12 pb-5">
+          <div className="col-span-4">
+            <div className="items-center flex justify-center mb-5">
+              <span className="bg-blue-400 text-white py-2 w-[200px] text-center rounded-full ">Contact us</span>
             </div>
             <div>
-              <div className="flex gap-6 pt-4">
+              <div className="flex gap-5 justify-center">
                 <img
                   src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Facebook_colored_svg_copy-256.png"
                   width={30}
@@ -38,9 +36,9 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div>
+          <div className="col-span-8">
             <div className="flex justify-center">
-              <span className="bg-blue-400  text-white py-2 px-12 rounded-full">Information</span>
+              <span className="bg-blue-400  text-white py-2 w-[200px] text-center rounded-full">Information</span>
             </div>
             <div className="flex gap-3 pt-4">
               <div className="w-52 ">
@@ -57,13 +55,12 @@ const Footer = () => {
               </div>
             </div>
           </div>
-        </div>
-
+        </MaxWidthWrapper>
         <div className="absolute bottom-0 w-full -z-20">
           <img className=" w-full" src={footerweb} alt="" />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

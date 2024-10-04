@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
+import MaxWidthWrapper from "./MaxWidthWrapper";
 
 const Navbar = () => {
   return (
-    <>
-      <div className="flex justify-between px-6 py-5 items-center  z-20 w-full fixed bg-white/20 backdrop-blur-md">
-        <div>
+    <div className=" px-6 py-4 z-20 w-full h-auto fixed bg-white/20 backdrop-blur-md">
+      <MaxWidthWrapper className="flex justify-between items-center">
+        <div className="animate-bounce">
           <span className="text-2xl">FPT Booking room</span>
         </div>
         <div className="flex gap-10">
@@ -30,8 +31,8 @@ const Navbar = () => {
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
         </div>
-      </div>
-    </>
+      </MaxWidthWrapper>
+    </div>
   );
 };
 
