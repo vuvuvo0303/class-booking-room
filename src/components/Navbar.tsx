@@ -24,7 +24,9 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="flex gap-6 items-center">
-          <Button>Login</Button>
+          <Link to="/login">
+            <Button>Login</Button>
+          </Link>
           <Avatar>
             <AvatarImage src="https://github.com/shadcn.png" />
             <AvatarFallback>CN</AvatarFallback>
