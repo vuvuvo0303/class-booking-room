@@ -12,6 +12,8 @@ import { Input } from "@/components/ui/input";
 import { login } from "@/lib/api/auth-api";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import { auth, googleProvider } from "@/config/firebase";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -106,7 +108,20 @@ const Login = () => {
       </Form>
     );
   }
-
+  const handleLoginGoogle = () => {
+    signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        console.log(credential);
+        
+        console.log(result);
+        
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <>
       <div className="flex w-auto overflow-hidden md:p-10 justify-center">
@@ -136,12 +151,12 @@ const Login = () => {
               <hr className="border-gray-500 w-1/4 border-t-1" />
             </div>
             <div className="flex justify-center">
-              <Button className="flex w-full bg-gray-50 hover:bg-gray-100 gap-9 drop-shadow-lg h-12 justify-between">
+              <Button className="flex w-full bg-gray-50 hover:bg-gray-100 gap-9 drop-shadow-lg h-12 justify-between" onClick={handleLoginGoogle}>
                 <img
                   src="https://techdocs.akamai.com/identity-cloud/img/social-login/identity-providers/iconfinder-new-google-favicon-682665.png"
                   width={20}
                 />
-                <span className="text-black ">Login with Google Account</span>
+                <span className="text-black " >Login with Google Account</span>
                 <span></span>
               </Button>
             </div>
