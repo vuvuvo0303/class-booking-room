@@ -1,7 +1,6 @@
-export type RoomType = {
+export type RoomTypes = {
     id: number,
     name: string,
-    departmentId: number,
     createdAt: string,
     deletedAt?: string,
     updatedAt: string
