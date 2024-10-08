@@ -21,9 +21,9 @@ Welcome to the University Room Booking System! This web application allows stude
 
 ## Technologies Used
 
-- **Frontend**: HTML, CSS, JavaScript
-- **Backend**: Node.js, Express
-- **Database**: MongoDB
+- **Frontend**: Reactjs, Tailwindcss, shadcn,Antd
+- **Backend**: C#
+- **Database**: SQL Server
 - **Authentication**: JWT (JSON Web Tokens)
 
 ## Installation
