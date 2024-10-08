@@ -54,14 +54,15 @@ const DataTable = ({
       key: 'status',
       render: (status: string) => {
         let color = 'green';
-        if (status === 'booked') {
-          color = 'volcano';
-        } else if (status === 'under maintenance') {
-          color = 'geekblue';
+        if (status === 'inactive') {
+          color = 'red'; 
+        } else if (status === 'repairing') {
+          color = 'orange'; 
         }
         return <Tag color={color}>{status.toUpperCase()}</Tag>;
       },
     },
+    
     {
       title: "Action",
       width: "50px",

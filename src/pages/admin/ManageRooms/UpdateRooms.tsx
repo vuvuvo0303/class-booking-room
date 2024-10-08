@@ -12,39 +12,38 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { createRoom } from "@/lib/api/room-api";
-import { useEffect, useState } from "react";
-import { getAllRoomType } from "@/lib/api/room-type-api";
 import { RoomTypes } from "@/types/room-type";
+import { getAllRoomType } from "@/lib/api/room-type-api";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useEffect, useState } from "react";
+import { Room } from "@/types/room";
+import { updateRoom } from "@/lib/api/room-api";
 
 const formSchema = z.object({
   roomName: z
     .string()
-    .min(2, {
-      message: "RoomName must be at least 2 characters.",
-    })
-    .max(10, {
-      message: "RoomName must not contain more than 10 characters.",
-    }),
-  capacity: z
+    .min(2, { message: "RoomName must be at least 2 characters." })
+    .max(10, { message: "RoomName must not contain more than 10 characters." }),
+  capacity: z.coerce
     .number({
       required_error: "Capacity is required.",
       invalid_type_error: "Capacity must be a number.",
     })
     .min(1, "Capacity must be at least 1."),
-  roomTypeId: z.string().nonempty({ message: "Room Type is required." }),
-  status: z.string().nonempty({ message: "Room Type is required." }),
+  roomTypeId: z.number({
+    required_error: "Room Type is required.",
+  }),
+  status: z.string().nonempty({ message: "Status is required." }),
 });
 
-const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
+const UpdateRoom = ({ room, rerender }: { room: Room; rerender: () => void }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      roomName: "",
-      status: "active",
-      capacity: undefined,
-      roomTypeId: "",
+      roomName: room.roomName,
+      status: room.status,
+      capacity: room.capacity,
+      roomTypeId: room.roomTypeId,
     },
   });
 
@@ -60,10 +59,10 @@ const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
       }
     };
     fetchRoomTypes();
-  }, []);
+  }, [room]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await createRoom(values);
+    await updateRoom(room.id, values);
     setTimeout(() => {
       rerender();
     }, 500);
@@ -74,7 +73,7 @@ const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <DialogHeader>
-            <DialogTitle>Create new room</DialogTitle>
+            <DialogTitle>Update Room</DialogTitle>
 
             <DialogDescription asChild>
               <FormField
@@ -101,11 +100,7 @@ const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
                   <FormItem>
                     <label>Capacity</label>
                     <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="Enter Capacity"
-                        onChange={(e) => field.onChange(parseInt(e.target.value, 10))}
-                      />
+                      <Input type="number" placeholder="Enter Capacity" {...field} />
                     </FormControl>
                     <FormDescription />
                     <FormMessage />
@@ -122,7 +117,7 @@ const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
                   <FormItem>
                     <label>Room Type</label>
                     <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
+                      <Select onValueChange={field.onChange} value={field.value + ""}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select Room Type" />
                         </SelectTrigger>
@@ -141,6 +136,7 @@ const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
                 )}
               />
             </DialogDescription>
+
             <DialogDescription asChild>
               <FormField
                 control={form.control}
@@ -149,7 +145,16 @@ const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
                   <FormItem>
                     <label>Status</label>
                     <FormControl>
-                      <Input defaultValue="active" {...field} disabled/>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="active">Active</SelectItem>
+                          <SelectItem value="inactive">Inactive</SelectItem>
+                          <SelectItem value="repairing">Repairing</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormDescription />
                     <FormMessage />
@@ -161,7 +166,7 @@ const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
 
           <DialogFooter>
             <DialogClose>
-              <Button type="submit">Create</Button>
+              <Button type="submit">Update</Button>
             </DialogClose>
           </DialogFooter>
         </form>
@@ -170,4 +175,4 @@ const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
   );
 };
 
-export default AddNewRoom;
+export default UpdateRoom;
