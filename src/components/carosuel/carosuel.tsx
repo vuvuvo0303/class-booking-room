@@ -22,8 +22,7 @@ export default function Carosuel() {
       >
         <SwiperSlide className="h-full">
           <Badge.Ribbon text="FPTU HCM " color="orange">
-            <Card className="w-[100%] shadow-lg shadow-orange-400">
-              <CardContent className="p-0 ">
+          <Card className="w-[100%] shadow-lg shadow-orange-400 transition-transform transform hover:scale-105 hover:shadow-orange-600 duration-300 ease-in-out">              <CardContent className="p-0 ">
                 <div className=" ">
                   <img
                     className="object-cover w-full h-full"

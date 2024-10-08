@@ -5,6 +5,7 @@ import {
   Contact,
   DoorOpen,
   Group,
+  Layers3,
   LayoutGrid,
   MenuIcon,
   ReceiptText,
@@ -56,8 +57,13 @@ const navItems: NavItemType[] = [
   },
   {
     title: "Rooms",
-    to: "room",
+    to: "rooms",
     icon: <Box />,
+  },
+  {
+    title: "Room Types",
+    to: "room-types",
+    icon: <Layers3/>,
   },
   {
     title: "Bookings History",

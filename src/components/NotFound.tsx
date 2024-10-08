@@ -13,7 +13,7 @@ const NotFound = () => {
 
         <div className="flex flex-col items-center text-center pt-80 gap-12">
           <span className="text-4xl font-semibold mb-4">Opps! Page Not Found</span>
-          <Link to="/" className="bg-orange-600 py-3 px-9 rounded-full ">
+          <Link to="/" className="bg-orange-600 py-3 px-16 rounded-full drop-shadow-2xl ">
             <span className="text-white">Go Home</span>
           </Link>
         </div>

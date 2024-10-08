@@ -1,18 +1,14 @@
 import footerweb from "../assets/footerweb.png";
+
 const Footer = () => {
   return (
     <>
       <div className="relative w-full pb-50 pt-1 border-y-0.5 border-black">
-        <div className="flex justify-center pb-3">
-          <img
-          src="https://upload.wikimedia.org/wikipedia/vi/thumb/2/2d/Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_FPT.svg/1200px-Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_FPT.svg.png"
-            width={200}
-          />
+        <div className="flex justify-center ">
+          <img src="https://vietnamteachingjobs.com/wp-content/uploads/wpjobboard/company/2392/company-logo/img-logo-fe.png" width={200} />
         </div>
         <div className="flex flex-col items-center  gap-3">
-          
-            <span>The website was built by a team of FPTU HCM students with the subject SWD392</span>
-          
+          <span>The website was built by a team of FPTU HCM students with the subject SWD392</span>
         </div>
 
         <div className="flex justify-around px-10 py-5">
