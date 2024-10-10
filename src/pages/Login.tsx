@@ -1,4 +1,3 @@
-import { mockLogin } from "@/lib/api/mock-auth-api";
 import useAuthStore from "@/store/AuthStore";
 import { useNavigate } from "react-router-dom";
 import background from "../assets/background.png";
@@ -9,30 +8,16 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { login } from "@/lib/api/auth-api";
+import { login, loginGoogle } from "@/lib/api/auth-api";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { auth, googleProvider } from "@/config/firebase";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, UserCredential } from "firebase/auth";
 
 const Login = () => {
   const navigate = useNavigate();
   const loggedUser = useAuthStore((state) => state.user);
-  const setUser = useAuthStore((state) => state.setUser);
-
-  const mockLoginAsManager = async () => {
-    const { data } = await mockLogin("manager");
-    localStorage.setItem("loggedUser", JSON.stringify(data));
-    setUser(data);
-    navigate("/manager");
-  };
-
-  const mockLoginAsAdmin = async () => {
-    const { data } = await mockLogin("admin");
-    localStorage.setItem("loggedUser", JSON.stringify(data));
-    setUser(data);
-    navigate("/admin");
-  };
+  // const setUser = useAuthStore((state) => state.setUser);
 
   const FormSchema = z.object({
     email: z.string().min(2, {
@@ -59,6 +44,9 @@ const Login = () => {
       } else {
         localStorage.setItem("accessToken", result.data);
         toast.success("Login Successfully");
+        setTimeout(() => {
+          navigate(0);
+        }, 500);
       }
     };
     useEffect(() => {
@@ -67,6 +55,8 @@ const Login = () => {
           navigate("/admin");
         } else if (loggedUser.role == "Manager") {
           navigate("/manager");
+        } else if (loggedUser.role == "Student") {
+          navigate("/");
         }
       }
     }, []);
@@ -108,19 +98,30 @@ const Login = () => {
       </Form>
     );
   }
-  const handleLoginGoogle = () => {
+  const handleLoginGoogle = async () => {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         console.log(credential);
-        
+
         console.log(result);
-        
-        navigate("/");
+        handleGoogleLogin("Student", result.user.accessToken);
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+  const handleGoogleLogin = async (role: string, accessToken: string) => {
+    const result = await loginGoogle(role, accessToken);
+    if (result.error) {
+      toast.error(result.error);
+    } else {
+      localStorage.setItem("accessToken", result.data);
+      toast.success("Login Successfully");
+      setTimeout(() => {
+        navigate(0);
+      }, 500);
+    }
   };
   return (
     <>
@@ -151,22 +152,20 @@ const Login = () => {
               <hr className="border-gray-500 w-1/4 border-t-1" />
             </div>
             <div className="flex justify-center">
-              <Button className="flex w-full bg-gray-50 hover:bg-gray-100 gap-9 drop-shadow-lg h-12 justify-between" onClick={handleLoginGoogle}>
+              <Button
+                className="flex w-full bg-gray-50 hover:bg-gray-100 gap-9 drop-shadow-lg h-12 justify-between"
+                onClick={handleLoginGoogle}
+              >
                 <img
                   src="https://techdocs.akamai.com/identity-cloud/img/social-login/identity-providers/iconfinder-new-google-favicon-682665.png"
                   width={20}
                 />
-                <span className="text-black " >Login with Google Account</span>
+                <span className="text-black ">Login with Google Account</span>
                 <span></span>
               </Button>
             </div>
           </div>
         </div>
-      </div>
-      <div className="bg-black flex justify-end gap-2 text-white">
-        <button onClick={mockLoginAsAdmin}>Mock login as Admin</button>
-        <span>|</span>
-        <button onClick={mockLoginAsManager}>Mock login as Manager</button>
       </div>
     </>
   );
