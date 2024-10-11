@@ -11,9 +11,6 @@ import {
   AdminStaffPage,
   AdminStudentDetailPage,
   AdminStudentPage,
-  AdminTeamDetailPage,
-  AdminTeamPage,
-  AdminUserPage,
 } from "@/pages";
 import ManageReport from "@/pages/admin/Managereport/Report";
 import Report from "@/pages/admin/Managereport/Report";
@@ -31,7 +28,7 @@ const Admin = () => {
       <Routes>
         <Route path="/" element={<AdminDashboardPage />} />
         <Route path="/dashboard" element={<AdminDashboardPage />} />
-        <Route path="/user" element={<AdminUserPage />} />
+        {/* <Route path="/user" element={<AdminUserPage />} /> */}
         <Route path="/group" element={<AdminGroupPage />} />
         <Route path="/rooms" element={<AdminRoomPage />} />
         <Route path="/room-types" element={<ManageRoomTypes />} />
@@ -44,8 +41,6 @@ const Admin = () => {
         />
         <Route path="/student/:studentId" element={<AdminStudentDetailPage />} />
         <Route path="/student" element={<AdminStudentPage />} />
-        <Route path="/team" element={<AdminTeamPage />} />
-        <Route path="/team/:teamId" element={<AdminTeamDetailPage />} />
         <Route path="/booking" element={<AdminBookingPage />} />
         <Route path="/booking/:bookingId" element={<AdminBookingDetailPage />} />
         <Route path="/staff" element={<AdminStaffPage />} />

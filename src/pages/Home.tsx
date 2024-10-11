@@ -2,26 +2,27 @@ import { Button } from "@/components/ui/button";
 import Decore from "../assets/Decore.png";
 
 import { Card, CardContent } from "@/components/ui/card";
-import Carosuel from "@/components/carosuel/carosuel";
-import Search from "antd/es/transfer/search";
+import Carousel from "@/components/carosuel/Carousel";
 const Home = () => {
   return (
     <>
-      <div
-        className=" 
-    "
-      >
+      <div>
         <img
           className="w-full h-[780px] relative object-cover"
           src="https://daihoc.fpt.edu.vn/wp-content/uploads/2022/08/dai-hoc-fpt-tp-hcm-1.jpeg"
           alt=""
         />
         <div className="absolute top-[22%] left-0 z-10 flex flex-col gap-6 pl-10 ">
-          <span className="text-orange-500 text-xl font-bold  p-2">Leading FaceID booking system</span>
-          <span className="text-6xl font-bold w-[600px]">Quick room registration, easy identification!</span>
+          <span className="text-orange-500 text-xl font-bold  p-2">
+            Leading FaceID booking system
+          </span>
+          <span className="text-6xl font-bold w-[600px]">
+            Quick room registration, easy identification!
+          </span>
           <span className="w-96 text-black ">
-            It is a facial recognition system to reserve classrooms made by students of FPT University and has only been
-            applied at FPT University Ho Chi Minh campus.
+            It is a facial recognition system to reserve classrooms made by
+            students of FPT University and has only been applied at FPT
+            University Ho Chi Minh campus.
           </span>
           <div className="pl-28">
             <Button className="hover:bg-green-500 ">Booking Now</Button>
@@ -52,7 +53,8 @@ const Home = () => {
               <span className=" text-xl font-bold">Identify with FaceID</span>
 
               <span className="pl-4 text-sm w-60">
-                Our system will be booking and checking in using FaceID making it safer and more convenient
+                Our system will be booking and checking in using FaceID making
+                it safer and more convenient
               </span>
             </div>
           </CardContent>
@@ -64,10 +66,12 @@ const Home = () => {
                 src="https://cdn0.iconfinder.com/data/icons/seo-web-4-1/128/Vigor_Shield-Protection-Web-Browser-Safezone-256.png"
                 width={50}
               />
-              <span className=" text-xl font-bold">User Information Security</span>
-
+              <span className=" text-xl font-bold">
+                User Information Security
+              </span>
               <span className="pl-4 text-sm w-64">
-                Our system will commit to protecting all user information when using the platform
+                Our system will commit to protecting all user information when
+                using the platform
               </span>
             </div>
           </CardContent>
@@ -79,10 +83,13 @@ const Home = () => {
                 src="https://cdn3.iconfinder.com/data/icons/business-insurance-9/64/business_insurance-09-256.png"
                 width={50}
               />
-              <span className=" text-xl font-bold">Always transparent policy</span>
+              <span className=" text-xl font-bold">
+                Always transparent policy
+              </span>
 
               <span className="pl-4 text-sm w-64">
-                We always have transparent policies, always putting students' privileges and interests first
+                We always have transparent policies, always putting students'
+                privileges and interests first
               </span>
             </div>
           </CardContent>
@@ -95,29 +102,27 @@ const Home = () => {
                 width={50}
               />
               <span className=" text-xl font-bold">Security by code</span>
-
               <span className="pl-4 text-sm w-64">
-                In addition to facial recognition, we also add code codes on the front doors of the rooms, in case of
-                recognition errors, we can still use the code we provide to open the door.
+                In addition to facial recognition, we also add code codes on the
+                front doors of the rooms, in case of recognition errors, we can
+                still use the code we provide to open the door.
               </span>
             </div>
           </CardContent>
         </Card>
       </div>
-
-      {/*  */}
       <div className="flex flex-col justify-center items-center pb-5 pt-8 ">
         <span className="text-3xl mb-4">Available Rooms</span>
       </div>
       <div>
-        <Carosuel />
+        <Carousel />
       </div>
-      <div className="flex flex-col justify-center items-center pb-5  ">
+      {/* <div className="flex flex-col justify-center items-center pb-5  ">
         <span className="text-3xl mb-4">Rooms are being repaired or have full slots</span>
       </div>
       <div>
         <Carosuel />
-      </div>
+      </div> */}
       <div className=" flex flex-col pb-44 gap-6">
         <span className="flex justify-center text-3xl text-stone-400">
           The system is trusted for use by schools of the FPT education system
@@ -127,12 +132,18 @@ const Home = () => {
             src="https://upload.wikimedia.org/wikipedia/vi/2/2d/Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_FPT.svg"
             width={150}
           />
-          <img src="https://logowik.com/content/uploads/images/university-of-greenwich2357.jpg" width={200} />
+          <img
+            src="https://logowik.com/content/uploads/images/university-of-greenwich2357.jpg"
+            width={200}
+          />
           <img
             src="https://blob-careerlinkvn.careerlink.vn/company_logos/aedbaad1bf7526aa7fa3d85ad9c5c5dc.png"
             width={150}
           />
-          <img src="https://static.unimates.edu.vn/wp-content/uploads/2021/03/Melbourne-Polytechnic.png" width={150} />
+          <img
+            src="https://static.unimates.edu.vn/wp-content/uploads/2021/03/Melbourne-Polytechnic.png"
+            width={150}
+          />
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROlK278Xt7DKb1h5y75CIjdUKdPU2DmyS_sw&s"
             width={300}
