@@ -15,6 +15,8 @@ import {
   AdminTeamPage,
   AdminUserPage,
 } from "@/pages";
+import ManageReport from "@/pages/admin/Managereport/Report";
+import Report from "@/pages/admin/Managereport/Report";
 import ManageRoomTypes from "@/pages/admin/ManageRoomType/ManageRoomTypes";
 import useAuthStore from "@/store/AuthStore";
 import { Route, Routes } from "react-router-dom";
@@ -35,6 +37,7 @@ const Admin = () => {
         <Route path="/room-types" element={<ManageRoomTypes />} />
         <Route path="/slot" element={<AdminSlotPage />} />
         <Route path="/cohort" element={<AdminCohortPage />} />
+        <Route path="/report" element={<ManageReport />} />
         <Route
           path="/student/:studentId"
           element={<AdminStudentDetailPage />}

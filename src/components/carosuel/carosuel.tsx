@@ -7,6 +7,7 @@ import "swiper/css/autoplay";
 import { Navigation, Autoplay } from "swiper/modules";
 import { Card, CardContent } from "../ui/card";
 import { Badge, Tag } from "antd";
+import { Button } from "../ui/button";
 
 export default function Carosuel() {
   return (
@@ -18,7 +19,7 @@ export default function Carosuel() {
         navigation={true}
         autoplay={{ delay: 3000, disableOnInteraction: false }}
         modules={[Navigation, Autoplay]}
-        className="mySwiper w-full max-w-full h-[500px] rounded-lg overflow-hidden"
+        className="mySwiper w-full max-w-full h-[520px] rounded-lg overflow-hidden"
       >
         <SwiperSlide className="h-full">
           <Badge.Ribbon text="FPTU HCM " color="orange">
@@ -58,6 +59,9 @@ export default function Carosuel() {
                     <Tag>3(9h15-11h45)</Tag>
                     <Tag>4(9h15-11h45)</Tag>
                   </div>
+                </div>
+                <div className="flex justify-center pb-3">
+                  <Button> Booking</Button>
                 </div>
               </CardContent>
             </Card>
@@ -103,6 +107,7 @@ export default function Carosuel() {
                     <Tag>4(9h15-11h45)</Tag>
                   </div>
                 </div>
+              
               </CardContent>
             </Card>
           </Badge.Ribbon>

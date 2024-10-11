@@ -35,7 +35,7 @@ const ManageRoomTypes = () => {
     <div className="bg-white">
       <Header
         currentPage="Room Types"
-        breadcrumbItems={[{ title: "Trang chủ", to: basePath }]}
+        breadcrumbItems={[{ title: "Dashboard", to: basePath }]}
       />
       <div className="p-3">
         <div className="flex">

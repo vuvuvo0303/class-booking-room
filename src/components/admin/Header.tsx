@@ -7,6 +7,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import useAuthStore from "@/store/AuthStore";
 import React from "react";
 type HeaderProps = {
   breadcrumbItems: BreadcrumbItemType[];
@@ -17,6 +18,8 @@ type BreadcrumbItemType = {
   to: string;
 };
 const Header = ({ breadcrumbItems = [], currentPage }: HeaderProps) => {
+  const loggedUser = useAuthStore((state) => state.user);
+
   return (
     <div className="bg-white shadow-md p-3 flex justify-between items-center">
       <Breadcrumb>
@@ -37,9 +40,9 @@ const Header = ({ breadcrumbItems = [], currentPage }: HeaderProps) => {
         </BreadcrumbList>
       </Breadcrumb>
       <div className="flex justify-end items-center gap-2">
-        <p className="font-semibold">Lê Văn Hoàng Vũ</p>
+        <p className="font-semibold">{loggedUser.fullName}</p>
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarImage src={loggedUser.profileImageURL} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </div>

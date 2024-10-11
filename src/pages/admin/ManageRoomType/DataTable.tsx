@@ -25,13 +25,13 @@ const DataTable = ({
       title: "Created at",
       dataIndex: "createAt",
       key: "createAt",
-      render: (createAt: string) => <span>{new Date(createAt).toLocaleString()}</span>,
+      render: (createAt: string) => <span>{new Date(createAt).toLocaleDateString()}</span>,
     },
     {
       title: "Updated at",
       dataIndex: "updatedAt",
       key: "updatedAt",
-      render: (updatedAt: string) => <span>{new Date(updatedAt).toLocaleString()}</span>,
+      render: (updatedAt: string) => <span>{new Date(updatedAt).toLocaleDateString()}</span>,
     },
     
     {

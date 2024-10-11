@@ -18,7 +18,6 @@ const Home = () => {
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/room/:roomId" element={<RoomDetailPage />} />
         <Route path="/profile/*" element={<StudentProfile />} />
-        <Route path="/booking-history" element={<BookingHistory />} />
       </Routes>
       <Footer/>
 

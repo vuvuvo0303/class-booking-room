@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import Decore from "../assets/Decore.png";
+
 import { Card, CardContent } from "@/components/ui/card";
 import Carosuel from "@/components/carosuel/carosuel";
+import Search from "antd/es/transfer/search";
 const Home = () => {
   return (
     <>
@@ -29,7 +31,14 @@ const Home = () => {
           <img src={Decore} alt="" />
         </div>
       </div>
-      <div className="flex justify-center font-serif pt-3">
+      {/* <div className="absolute w-full bottom-[-100px] bg-white/20 backdrop-blur-sm">
+        <span className="text-black text-5xl flex justify-center ">Filter room</span>
+        <div>
+          <Search placeholder="input search text"  />
+        </div>
+        <div></div>
+      </div> */}
+      <div className="flex justify-center font-serif pt-36">
         <span className="text-3xl">The System we have</span>
       </div>
       <div className="flex gap-5 px-20 py-3">
@@ -95,6 +104,8 @@ const Home = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/*  */}
       <div className="flex flex-col justify-center items-center pb-5 pt-8 ">
         <span className="text-3xl mb-4">Available Rooms</span>
       </div>

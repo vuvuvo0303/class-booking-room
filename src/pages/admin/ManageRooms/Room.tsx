@@ -34,8 +34,8 @@ const Rooms = () => {
   return (
     <div className="bg-white">
       <Header
-        currentPage="Slot"
-        breadcrumbItems={[{ title: "Trang chủ", to: basePath }]}
+        currentPage="Rooms"
+        breadcrumbItems={[{ title: "Dashboard", to: basePath }]}
       />
       <div className="p-3">
         <div className="flex">

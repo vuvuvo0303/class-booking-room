@@ -12,7 +12,7 @@ export const handleApiError = (error: any) => {
 
 export const getAllDepartments = async () => {
     try {
-        const { data } = await axiosClient.get(`/api/department`);
+        const { data } = await axiosClient.get(`/api/departments`);
         return { error: null, data: data, success: true };
     } catch (error) {
         return handleApiError(error);

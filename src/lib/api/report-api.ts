@@ -28,3 +28,18 @@ export const deleteReport = async (id: number) => {
     return handleApiError(error);
   }
 };
+export const updateReport = async (
+  id: number,
+  formData: {
+    status: string;
+  }
+) => {
+  try {
+    const { data } = await axiosClient.put(`/api/reports/${id}`, formData);
+    toast.success("Updated Report  Successfully");
+
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};

@@ -6,7 +6,7 @@ export type Report = {
     studentFirstName: string,
     studentLastName: string,
     studentEmail: string,
-    description: number;
+    description: string;
     status: string;
     createdAt: string;
     deletedAt?: string;

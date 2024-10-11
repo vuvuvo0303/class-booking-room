@@ -14,6 +14,7 @@ function App() {
     };
     fetchData();
   }, [setUser]);
+  
   return (
     <Routes>
       <Route path="login" element={<LoginPage />} />

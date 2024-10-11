@@ -1,9 +1,10 @@
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Report } from "@/types/report";
-
-import { Table, Tag } from "antd";
+import { Table } from "antd";
 import DeleteReport from "./DeleteReport";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { updateReport } from "@/lib/api/report-api";
 
 const DataTable = ({ data, rerender }: { data: Report[]; rerender: () => void }) => {
   const columns = [
@@ -13,14 +14,9 @@ const DataTable = ({ data, rerender }: { data: Report[]; rerender: () => void })
       key: "title",
     },
     {
-      title: "Student First Name",
-      dataIndex: "studentFirstName",
-      key: "studentFirstName",
-    },
-    {
-      title: "Student Last Name",
-      dataIndex: "studentLastName",
-      key: "studentLastName",
+      title: "Full Name",
+      dataIndex: "studentFullName",
+      key: "studentFullName",
     },
     {
       title: "Student Email",
@@ -36,20 +32,48 @@ const DataTable = ({ data, rerender }: { data: Report[]; rerender: () => void })
       title: "Status",
       dataIndex: "status",
       key: "status",
-      render: (status: string) => {
-        const color = status === "Pending" ? "orange" : status === "Reject" ? "red" : "green";
-        return <Tag color={color}>{status.toUpperCase()}</Tag>;
+      render: (status: string, record: Report) => {
+        return (
+          <Select
+            value={status}
+            onValueChange={async (newValue) => {
+              try {
+                
+                await updateReport(record.id, { status: newValue });
+              
+                rerender();
+              } catch (error) {
+                console.error("Failed to update report status:", error);
+              }
+            }}
+          >
+            <SelectTrigger className="w-[120px]">
+              <SelectValue placeholder="Select a status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Pending">
+                <span className="text-orange-500">Pending</span>
+              </SelectItem>
+              <SelectItem value="Reject">
+                <span className="text-red-600">Reject</span>
+              </SelectItem>
+              <SelectItem value="Approved">
+                <span className="text-green-400">Approved</span>
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        );
       },
     },
     {
       title: "Created At",
       dataIndex: "createAt",
-      render: (createAt: string) => <span>{new Date(createAt).toLocaleString()}</span>,
+      render: (createAt: string) => <span>{new Date(createAt).toLocaleDateString()}</span>,
     },
     {
       title: "Updated At",
       dataIndex: "updatedAt",
-      render: (updatedAt: string) => <span>{new Date(updatedAt).toLocaleString()}</span>,
+      render: (updatedAt: string) => <span>{new Date(updatedAt).toLocaleDateString()}</span>,
     },
     {
       title: "Action",
@@ -67,6 +91,7 @@ const DataTable = ({ data, rerender }: { data: Report[]; rerender: () => void })
       ),
     },
   ];
+
   return <Table columns={columns} dataSource={data} rowKey={"id"} />;
 };
 
