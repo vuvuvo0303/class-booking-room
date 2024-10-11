@@ -23,7 +23,7 @@ const formSchema = z.object({
   roomName: z
     .string()
     .min(2, { message: "RoomName must be at least 2 characters." })
-    .max(10, { message: "RoomName must not contain more than 10 characters." }),
+    .max(20, { message: "RoomName must not contain more than 20 characters." }),
   capacity: z.coerce
     .number({
       required_error: "Capacity is required.",

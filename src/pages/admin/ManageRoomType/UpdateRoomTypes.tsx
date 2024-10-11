@@ -26,10 +26,10 @@ import { updateRoomType } from "@/lib/api/room-type-api";
     name: z
       .string()
       .min(2, {
-        message: "Cohort code must be at least 2 characters.",
+        message: "Room type name must be at least 2 characters.",
       })
-      .max(10, {
-        message: "Cohort code must not contain no more than 10 characters.",
+      .max(20, {
+        message: "Room type name must not contain no more than 20 characters.",
       }),
   });
   const UpdateRoomTypes = ({
@@ -56,7 +56,7 @@ import { updateRoomType } from "@/lib/api/room-type-api";
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>
-              <DialogTitle>Update cohort</DialogTitle>
+              <DialogTitle>Update room type</DialogTitle>
               <DialogDescription asChild>
                 <FormField
                   control={form.control}
@@ -64,7 +64,7 @@ import { updateRoomType } from "@/lib/api/room-type-api";
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input placeholder="Enter Room Types" {...field} />
+                        <Input placeholder="Enter room type name" {...field} />
                       </FormControl>
                       <FormDescription />
                       <FormMessage />

@@ -44,7 +44,6 @@ export const createRoomType = async (formData: {
 
 export const updateRoomType = async (id: number, formData: {
     name: string,
-    departmentId: number
 }) => {
     try {
         const { data } = await axiosClient.put(`/api/room-types/${id}`, formData);
