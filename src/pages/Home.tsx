@@ -3,7 +3,6 @@ import Decore from "../assets/Decore.png";
 
 import { Card, CardContent } from "@/components/ui/card";
 import Carosuel from "@/components/carosuel/carosuel";
-import Search from "antd/es/transfer/search";
 const Home = () => {
   return (
     <>
