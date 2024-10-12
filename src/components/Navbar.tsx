@@ -15,14 +15,16 @@ const Navbar = () => {
       <div className="flex justify-between px-6 py-5 items-center  z-20 w-full fixed bg-white/20 backdrop-blur-md">
         <div>
           <span className="">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/vi/2/2d/Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_FPT.svg"
-              width={150}
-            />
+            <Link to="/">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/vi/2/2d/Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_FPT.svg"
+                width={150}
+              />
+            </Link>
           </span>
         </div>
         <div className="flex gap-10">
-          <Link to="">
+          <Link to="/about-us">
             <span className="">About US</span>
           </Link>
           <Link to="">
