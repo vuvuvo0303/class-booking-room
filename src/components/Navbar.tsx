@@ -33,7 +33,7 @@ const Navbar = () => {
           <Link to="">
             <span>Booking Room</span>
           </Link>
-          <Link to="">
+          <Link to="/rules">
             <span>Rules</span>
           </Link>
         </div>

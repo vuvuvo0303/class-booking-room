@@ -1,9 +1,9 @@
 
 const Policy = () => {
   return (
-    <div className="min-h-screen bg-gray-100 py-20">
+    <div className="min-h-screen bg-gray-100 py-32">
       <div className="container mx-auto px-4">
-        <div className="bg-white rounded-lg shadow-lg p-8">
+        <div className="bg-white rounded-lg shadow-lg shadow-green-300 p-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
             Privacy Policy - Face ID Booking Room
           </h1>

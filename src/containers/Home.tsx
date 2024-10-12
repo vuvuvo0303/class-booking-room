@@ -5,8 +5,8 @@ import { StudentProfile } from ".";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AboutUs from "@/pages/student/AboutUs";
-import BookingHistory from "@/pages/student/BookingHistory";
 import Policy from "@/pages/student/Policy";
+import Rules from "@/pages/student/Rules";
 
 const Home = () => {
   return (
@@ -16,6 +16,7 @@ const Home = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/room" element={<RoomListPage />} />
+        <Route path="/rules" element={<Rules />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/policy" element={<Policy />} />
