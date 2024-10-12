@@ -12,7 +12,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="flex justify-between px-6 py-5 items-center  z-20 w-full fixed bg-white/20 backdrop-blur-md">
+      <div className="flex justify-between px-6 py-2 items-center  z-20 w-full fixed bg-white/20 backdrop-blur-md">
         <div>
           <span className="">
             <Link to="/">
@@ -27,7 +27,7 @@ const Navbar = () => {
           <Link to="/about-us">
             <span className="">About US</span>
           </Link>
-          <Link to="">
+          <Link to="/policy">
             <span>Policy</span>
           </Link>
           <Link to="">

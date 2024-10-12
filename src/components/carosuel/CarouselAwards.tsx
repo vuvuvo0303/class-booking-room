@@ -1,9 +1,8 @@
-
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css"; 
-import "swiper/css/autoplay"; 
-import { Autoplay } from "swiper/modules"; 
+import "swiper/css";
+import "swiper/css/autoplay";
+import { Autoplay } from "swiper/modules";
 
 const CarouselAwards: React.FC = () => {
   return (
@@ -11,7 +10,7 @@ const CarouselAwards: React.FC = () => {
       <Swiper
         modules={[Autoplay]}
         spaceBetween={0}
-        slidesPerView={4}
+        slidesPerView={3}
         autoplay={{ delay: 1, disableOnInteraction: false }}
         speed={3000}
         loop={true}
