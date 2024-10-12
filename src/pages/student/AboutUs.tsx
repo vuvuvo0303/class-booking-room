@@ -48,9 +48,9 @@ const AboutUs = () => {
         </div>
       </div>
 
-      {/* Container cho phần nội dung tiếp theo */}
+      
       <div className="relative pt-56">
-        {/* Nền màu đen */}
+      
         <div className="bg-orange-400 w-screen h-auto z-20">
           <div className="pt-72">
             <div className="flex justify-center pb-5">
@@ -122,7 +122,7 @@ const AboutUs = () => {
           </div>
         </div>
 
-        {/* Phần nội dung với absolute */}
+      
         <div className="absolute top-20 left-0 right-0 flex justify-between px-10 py-12 bg-stone-100 w-[75%] mx-auto rounded-2xl z-10">
           <div className="flex flex-col gap-8">
             <span className="text-3xl font-bold">About FPT University</span>
@@ -145,7 +145,7 @@ const AboutUs = () => {
         </div>
       </div>
 
-      {/* Phần Swiper */}
+    
       <div className="flex justify-center py-9">
         <span className="text-3xl font-bold">Articles about Us</span>
       </div>
