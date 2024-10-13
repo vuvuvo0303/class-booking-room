@@ -6,18 +6,24 @@ import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { login, loginGoogle } from "@/lib/api/auth-api";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { auth, googleProvider } from "@/config/firebase";
-import { GoogleAuthProvider, signInWithPopup, UserCredential } from "firebase/auth";
+import { signInWithPopup } from "firebase/auth";
 
 const Login = () => {
   const navigate = useNavigate();
   const loggedUser = useAuthStore((state) => state.user);
-  // const setUser = useAuthStore((state) => state.setUser);
 
   const FormSchema = z.object({
     email: z.string().min(2, {
@@ -33,6 +39,7 @@ const Login = () => {
       resolver: zodResolver(FormSchema),
       defaultValues: {
         email: "",
+        password: ""
       },
     });
 
@@ -63,7 +70,10 @@ const Login = () => {
 
     return (
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="w-full space-y-6"
+        >
           <FormField
             control={form.control}
             name="email"
@@ -90,7 +100,6 @@ const Login = () => {
               </FormItem>
             )}
           />
-
           <Button type="submit" className="w-full h-10 ">
             Submit
           </Button>
@@ -101,11 +110,10 @@ const Login = () => {
   const handleLoginGoogle = async () => {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        console.log(credential);
-
-        console.log(result);
-        handleGoogleLogin("Student", result.user.accessToken);
+        // const credential = GoogleAuthProvider.credentialFromResult(result);
+        // console.log(credential);
+        // console.log(result);
+        handleGoogleLogin("Student", (result.user as any).accessToken);
       })
       .catch((error) => {
         console.log(error);
@@ -130,11 +138,21 @@ const Login = () => {
         {/* <Button onClick={mockLoginAsAdmin}>Mock Login as Admin</Button> */}
         <div className="flex w-full md:w-[85%] bg-white drop-shadow-[0_0_10px_rgba(0,0,0,0.5)] rounded-xl overflow-hidden h-screen">
           <div className="bg-contain relative hidden md:block">
-            <img src={background} alt="" className="h-full relative select-none" />
+            <img
+              src={background}
+              alt=""
+              className="h-full relative select-none"
+            />
             <img src={logofpt} width={100} className="absolute top-5 left-5" />
-            <span className="text-white absolute top-[220px] left-24 text-5xl font-semibold">Welcome</span>
-            <span className="text-white absolute top-[280px] left-56">Log-in to continue</span>
-            <span className="absolute bottom-5 left-8  text-[18px] text-white">fu-booking-room.vercel.app</span>
+            <span className="text-white absolute top-[220px] left-24 text-5xl font-semibold">
+              Welcome
+            </span>
+            <span className="text-white absolute top-[280px] left-56">
+              Log-in to continue
+            </span>
+            <span className="absolute bottom-5 left-8  text-[18px] text-white">
+              fu-booking-room.vercel.app
+            </span>
           </div>
           <div className="flex-1 h-full py-14 overflow-auto px-10">
             <div className="flex justify-center h-20 ">

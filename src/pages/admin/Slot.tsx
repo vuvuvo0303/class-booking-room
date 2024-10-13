@@ -10,7 +10,7 @@ const Slot = () => {
       title: "Room",
       dataIndex: "room",
       key: "room",
-      render: (room:string) => <text>{room}</text>,
+      render: (room:string) => <span>{room}</span>,
     },
     {
       title: "Room Type",

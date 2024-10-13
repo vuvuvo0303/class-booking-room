@@ -10,6 +10,7 @@ export { default as AdminDashboardPage } from "./admin/Dashboard";
 export { default as AdminUserPage } from "./admin/ManageAccount/ManageAccount";
 export { default as AdminGroupPage } from "./admin/Group";
 export { default as AdminRoomPage } from "./admin/ManageRooms/Room";
+export { default as AdminRoomDetailPage } from "./admin/ManageRooms/RoomDetail";
 export { default as AdminSlotPage } from "./admin/Slot";
 export { default as AdminStudentPage } from "./admin/Student";
 export { default as AdminStudentDetailPage } from "./admin/StudentDetail";

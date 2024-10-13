@@ -150,9 +150,9 @@ const UpdateRoom = ({ room, rerender }: { room: Room; rerender: () => void }) =>
                           <SelectValue placeholder="Select Status" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="active">Active</SelectItem>
-                          <SelectItem value="inactive">Inactive</SelectItem>
-                          <SelectItem value="repairing">Repairing</SelectItem>
+                          <SelectItem value="Active">Active</SelectItem>
+                          <SelectItem value="Inactive">Inactive</SelectItem>
+                          <SelectItem value="Repairing">Repairing</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>

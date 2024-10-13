@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import { axiosClient } from "./config/axios-client";
+import { Slot } from "@/types/slot";
 
 export const handleApiError = (error: any) => {
   try {
@@ -15,6 +16,24 @@ export const getAllRoom = async () => {
   try {
     const { data } = await axiosClient.get(`/api/rooms`);
     return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+export const getRoomById = async (roomId: number) => {
+  try {
+    const { data } = await axiosClient.get(`/api/rooms/${roomId}`);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+export const getRoomSlots = async (roomId: number) => {
+  try {
+    const { data } = await axiosClient.get(`/api/rooms/${roomId}/slots`);
+    return { error: null, data: data as Slot[], success: true };
   } catch (error) {
     return handleApiError(error);
   }
@@ -44,6 +63,7 @@ export const deleteRoom = async (id: number) => {
     return handleApiError(error);
   }
 };
+
 export const updateRoom = async (
   id: number,
   formData: {
