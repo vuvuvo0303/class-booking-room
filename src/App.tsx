@@ -10,18 +10,23 @@ function App() {
   const setUser = useAuthStore((state) => state.setUser);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
     const fetchData = async () => {
       setIsLoading(true);
       const userResult = await checkToken();
       setUser(userResult.data ? userResult.data : null);
       setIsLoading(false);
     };
-    fetchData();
+    if (accessToken) {
+      fetchData();
+    } else {
+      setIsLoading(false);
+    }
   }, [setUser]);
   if (isLoading)
     return (
       <div className="h-screen">
-        <Loader />
+        <Loader text="Loading"/>
       </div>
     );
   return (

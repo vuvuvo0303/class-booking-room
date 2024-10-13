@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import { StudentProfile } from ".";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import BookingHistory from "@/pages/student/BookingHistory";
+import NotFound from "@/components/NotFound";
 
 const Home = () => {
   return (
@@ -15,6 +15,7 @@ const Home = () => {
         <Route path="/room" element={<RoomListPage />} />
         <Route path="/room/:roomId" element={<RoomDetailPage />} />
         <Route path="/profile/*" element={<StudentProfile />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer/>
     </MainLayout>

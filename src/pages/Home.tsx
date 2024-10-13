@@ -3,7 +3,18 @@ import Decore from "../assets/Decore.png";
 
 import { Card, CardContent } from "@/components/ui/card";
 import Carousel from "@/components/carosuel/Carousel";
+import useAuthStore from "@/store/AuthStore";
+import { useNavigate } from "react-router-dom";
 const Home = () => {
+  const loggedUser = useAuthStore((state) => state.user);
+  const navigate = useNavigate();
+  if (loggedUser != null) {
+    if (loggedUser.role == "Admin") {
+      navigate("/admin");
+    } else if (loggedUser.role == "Manager") {
+      navigate("/manager");
+    }
+  }
   return (
     <>
       <div>
