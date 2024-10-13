@@ -6,7 +6,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -16,7 +23,13 @@ import { createRoom } from "@/lib/api/room-api";
 import { useEffect, useState } from "react";
 import { getAllRoomType } from "@/lib/api/room-type-api";
 import { RoomTypes } from "@/types/room-type";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const formSchema = z.object({
   roomName: z
@@ -63,7 +76,7 @@ const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
   }, []);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await createRoom(values);
+    await createRoom({ ...values, roomTypeId: parseInt(values.roomTypeId) });
     setTimeout(() => {
       rerender();
     }, 500);
@@ -104,7 +117,9 @@ const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
                       <Input
                         type="number"
                         placeholder="Enter Capacity"
-                        onChange={(e) => field.onChange(parseInt(e.target.value, 10))}
+                        onChange={(e) =>
+                          field.onChange(parseInt(e.target.value, 10))
+                        }
                       />
                     </FormControl>
                     <FormDescription />
@@ -122,13 +137,19 @@ const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
                   <FormItem>
                     <label>Room Type</label>
                     <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Select Room Type" />
                         </SelectTrigger>
                         <SelectContent>
                           {dataRoomTypes.map((roomType) => (
-                            <SelectItem key={roomType.id} value={roomType.id + ""}>
+                            <SelectItem
+                              key={roomType.id}
+                              value={roomType.id + ""}
+                            >
                               {roomType.name}
                             </SelectItem>
                           ))}
@@ -149,7 +170,7 @@ const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
                   <FormItem>
                     <label>Status</label>
                     <FormControl>
-                      <Input defaultValue="active" {...field} disabled/>
+                      <Input defaultValue="active" {...field} disabled />
                     </FormControl>
                     <FormDescription />
                     <FormMessage />

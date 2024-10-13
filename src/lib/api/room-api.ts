@@ -43,7 +43,7 @@ export const createRoom = async (formData: {
   roomName: string;
   capacity: number;
   roomTypeId: number;
-  status: boolean;
+  status: string;
 }) => {
   try {
     const { data } = await axiosClient.post(`/api/rooms`, formData);
