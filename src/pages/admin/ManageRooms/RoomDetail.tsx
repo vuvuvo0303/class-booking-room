@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import CreateSlot from "./CreateSlot";
 import useRerender from "@/hooks/use-rerender";
+import SlotCard from "./SlotCard";
 
 const RoomDetail = () => {
   const loggedUser = useAuthStore((state) => state.user);
@@ -81,8 +82,10 @@ const RoomDetail = () => {
             <h3 className="text-xl font-semibold">Slots</h3>
             <CreateSlot roomId={roomDetail.id} rerender={rerender} />
           </div>
-          <div className="drop-shadow-md bg-blue-500 text-white p-3 rounded-md">
-            (07:00AM - 09:15AM)
+          <div className="flex flex-col gap-2">
+            {roomSlots?.map((slot: Slot, index: number) => {
+              return <SlotCard slot={slot} key={index} />;
+            })}
           </div>
         </div>
       </div>

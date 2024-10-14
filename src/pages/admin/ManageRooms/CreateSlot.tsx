@@ -3,7 +3,6 @@ import { Button, Form, FormProps, Modal, TimePicker } from "antd";
 import { Dayjs } from "dayjs";
 import { CirclePlus } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 type FieldType = {
@@ -20,7 +19,6 @@ const CreateSlot = ({
 }) => {
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate = useNavigate();
 
   const showModal = () => {
     setIsModalOpen(true);
