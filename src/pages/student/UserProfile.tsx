@@ -1,3 +1,4 @@
+import ProfileCarousel from "@/components/carosuel/ProfileUerCarousel";
 import useAuthStore from "@/store/AuthStore";
 import { Avatar, Button, Col, Form, Image, Input, Row } from "antd";
 import { useEffect } from "react";
@@ -22,7 +23,9 @@ const UserProfile = () => {
 
   return (
     <div className="pt-20">
-      <div className="bg-gradient-to-r from-orange-200 to-orange-100 h-20"></div>
+      <div className="bg-gradient-to-r from-orange-200 to-orange-100 h-20 flex items-center">
+        <ProfileCarousel/>
+      </div>
       <div className="flex items-center justify-between px-6 py-4">
         <div className="flex gap-4">
           <Avatar size={90} src={loggedUser?.profileImageURL || "https://default-avatar-url.com"} alt="avatar" />
