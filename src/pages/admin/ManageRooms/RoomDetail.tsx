@@ -9,6 +9,8 @@ import { Slot } from "@/types/slot";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import CreateSlot from "./CreateSlot";
+import useRerender from "@/hooks/use-rerender";
 
 const RoomDetail = () => {
   const loggedUser = useAuthStore((state) => state.user);
@@ -16,6 +18,7 @@ const RoomDetail = () => {
   const [roomSlots, setRoomSlots] = useState<Slot[]>();
   const [isLoading, setIsLoading] = useState(false);
   const { roomId } = useParams();
+  const { renderKey, rerender } = useRerender();
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -28,13 +31,13 @@ const RoomDetail = () => {
       const slotResult = await getRoomSlots(parseInt(roomId ?? ""));
       setIsLoading(false);
       if (slotResult.error) {
-        toast.error("False to retrieve room data");
+        toast.success("False to retrieve room data");
       } else {
         setRoomSlots(slotResult.data ?? []);
       }
     };
     fetchData();
-  }, []);
+  }, [renderKey]);
   const basePath = "/" + loggedUser.role;
   if (isLoading) return <Loader text="Loading room data..." />;
   if (roomDetail == null) return <NotFound />;
@@ -73,8 +76,15 @@ const RoomDetail = () => {
           <span className="font-semibold">Number of slots:</span>{" "}
           {roomSlots?.length} (slot)
         </p>
-        <div className="flex justify-end mb-3"></div>
-        <div className="drop-shadow-md"></div>
+        <div className="p-3">
+          <div className="flex justify-between mb-2 items-center">
+            <h3 className="text-xl font-semibold">Slots</h3>
+            <CreateSlot roomId={roomDetail.id} rerender={rerender} />
+          </div>
+          <div className="drop-shadow-md bg-blue-500 text-white p-3 rounded-md">
+            (07:00AM - 09:15AM)
+          </div>
+        </div>
       </div>
     </div>
   );

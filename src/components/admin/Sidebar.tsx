@@ -1,7 +1,6 @@
 import {
   BookUser,
   Box,
-  CalendarClock,
   Contact,
   DoorOpen,
   Group,
@@ -90,16 +89,6 @@ const navItems: NavItemType[] = [
     to: "cohort",
     icon: <Users />,
   },
-  {
-    title: "Slot",
-    to: "slot",
-    icon: <CalendarClock />,
-  },
-  // {
-  //   title: "News",
-  //   to: "news",
-  //   icon: <CalendarClock />,
-  // },
 ];
 const Sidebar = () => {
   const loggedUser = useAuthStore((state) => state.user);

@@ -82,3 +82,35 @@ export const updateRoom = async (
     return handleApiError(error);
   }
 };
+
+export const createRoomSlot = async (formData: {
+  startTime: string;
+  endTime: string
+  roomId: number;
+}) => {
+  try {
+    const { data } = await axiosClient.post(`/api/rooms/slots`, formData);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+export const updateRoomSlot = async (formData: {
+  startTime: string;
+  endTime: string
+}, roomSlotId: number) => {
+  try {
+    const { data } = await axiosClient.put(`/api/rooms/slots/${roomSlotId}`, formData);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+export const deleteRoomSlot = async (slotId: number) => {
+  try {
+    const { data } = await axiosClient.delete(`/api/rooms/slots${slotId}`);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
