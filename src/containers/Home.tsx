@@ -8,6 +8,7 @@ import AboutUs from "@/pages/student/AboutUs";
 import Policy from "@/pages/student/Policy";
 import Rules from "@/pages/student/Rules";
 import BookingRoom from "@/pages/student/BookingRoom";
+import StepProcess from "@/pages/student/step-process";
 
 const Home = () => {
   return (
@@ -21,6 +22,7 @@ const Home = () => {
         <Route path="/about-us" element={<AboutUs />} />
         {/* <Route path="/about-us" element={<AboutUs />} /> */}
         <Route path="/policy" element={<Policy />} />
+        <Route path="/step-process" element={<StepProcess />} />
         <Route path="/booking-room" element={<BookingRoom/>} />
         <Route path="/room/:roomId" element={<RoomDetailPage />} />
         <Route path="/profile/*" element={<StudentProfile />} />
