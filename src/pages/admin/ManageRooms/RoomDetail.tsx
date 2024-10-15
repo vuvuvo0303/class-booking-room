@@ -32,7 +32,7 @@ const RoomDetail = () => {
       const slotResult = await getRoomSlots(parseInt(roomId ?? ""));
       setIsLoading(false);
       if (slotResult.error) {
-        toast.success("False to retrieve room data");
+        toast.error("False to retrieve room data");
       } else {
         setRoomSlots(slotResult.data ?? []);
       }
@@ -84,7 +84,7 @@ const RoomDetail = () => {
           </div>
           <div className="flex flex-col gap-2">
             {roomSlots?.map((slot: Slot, index: number) => {
-              return <SlotCard slot={slot} key={index} />;
+              return <SlotCard slot={slot} key={index} rerender={rerender}/>;
             })}
           </div>
         </div>

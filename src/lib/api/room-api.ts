@@ -108,7 +108,7 @@ export const updateRoomSlot = async (formData: {
 };
 export const deleteRoomSlot = async (slotId: number) => {
   try {
-    const { data } = await axiosClient.delete(`/api/rooms/slots${slotId}`);
+    const { data } = await axiosClient.delete(`/api/rooms/slots/${slotId}`);
     return { error: null, data: data, success: true };
   } catch (error) {
     return handleApiError(error);

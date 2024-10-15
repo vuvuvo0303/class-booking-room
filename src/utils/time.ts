@@ -1,10 +1,10 @@
 export function formatDateToTimeString(date: Date, is24HourFormat: boolean) {
     // Convert the date to UTC+7
-    const utcOffset = -10 * 60; // UTC+7 in minutes
+    const utcOffset = 7 * 60; // UTC+7 in minutes
     const localDate = new Date(date.getTime() + (utcOffset * 60 * 1000));
 
-    const hoursUTC = localDate.getUTCHours();
-    const minutes = localDate.getUTCMinutes();
+    const hoursUTC = localDate.getHours();
+    const minutes = localDate.getMinutes();
 
     let hours;
     let amPm = '';

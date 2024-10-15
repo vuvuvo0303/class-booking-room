@@ -1,7 +1,9 @@
-import { createRoomSlot } from "@/lib/api/room-api";
+import { Button as ShadButton } from "@/components/ui/button";
+import { updateRoomSlot } from "@/lib/api/room-api";
+import { Slot } from "@/types/slot";
 import { Button, Form, FormProps, Modal, TimePicker } from "antd";
-import { Dayjs } from "dayjs";
-import { CirclePlus } from "lucide-react";
+import dayjs, { Dayjs } from "dayjs";
+import { PencilLine } from "lucide-react";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -10,11 +12,11 @@ type FieldType = {
 };
 
 const format = "HH:mm";
-const CreateSlot = ({
-  roomId,
+const UpdateSlot = ({
+  slot,
   rerender,
 }: {
-  roomId: number;
+  slot: Slot;
   rerender: () => void;
 }) => {
   const [form] = Form.useForm();
@@ -33,15 +35,17 @@ const CreateSlot = ({
   };
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values: any) => {
-    const createResult = await createRoomSlot({
-      startTime: values.slotTime[0].toDate().toISOString(),
-      endTime: values.slotTime[1].toDate().toISOString(),
-      roomId: roomId,
-    });
+    const createResult = await updateRoomSlot(
+      {
+        startTime: values.slotTime[0].toDate().toISOString(),
+        endTime: values.slotTime[1].toDate().toISOString(),
+      },
+      slot.id
+    );
     if (createResult.error) {
       toast.error(createResult.error);
     } else {
-      toast.success("Create slot successfully!");
+      toast.error("Create slot successfully!");
       setTimeout(() => {
         rerender();
       }, 1000);
@@ -57,14 +61,13 @@ const CreateSlot = ({
 
   return (
     <>
-      <Button
-        type="primary"
-        icon={<CirclePlus width={15} height={15} className="m-0" />}
+      <ShadButton
+        variant={"outline"}
         onClick={showModal}
-        className="flex items-center"
+        className="p-2 aspect-square rounded-full"
       >
-        Create new slot
-      </Button>
+        <PencilLine size={15} />
+      </ShadButton>
       <Modal
         title="Create new slot"
         open={isModalOpen}
@@ -85,6 +88,10 @@ const CreateSlot = ({
             label="Slot time"
             name="slotTime"
             rules={[{ required: true, message: "" }]}
+            initialValue={[
+              dayjs(new Date(slot.startTime).getTime()),
+              dayjs(new Date(slot.endTime).getTime()),
+            ]}
           >
             <TimePicker.RangePicker minuteStep={15} format={format} />
           </Form.Item>
@@ -104,4 +111,4 @@ const CreateSlot = ({
   );
 };
 
-export default CreateSlot;
+export default UpdateSlot;
