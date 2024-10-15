@@ -3,7 +3,8 @@ export type Room = {
   roomName: string;
   capacity: number;
   status: string;
-  roomTypeId:number;
+  roomTypeId: number;
+  roomTypeName: string;
   createdAt: string;
   deletedAt?: string;
   updatedAt: string;

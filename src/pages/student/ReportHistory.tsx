@@ -1,4 +1,4 @@
-import { Space, Table, Tag } from "antd";
+import { Table, Tag } from "antd";
 import type { TableProps } from "antd";
 
 interface DataType {
@@ -74,7 +74,7 @@ const ReportHistory = () => {
     },
   ];
 
-  const data: DataType[] = [
+  const data: any[] = [
     {
       key: "1",
       id: 1,

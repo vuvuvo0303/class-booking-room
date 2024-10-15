@@ -9,8 +9,6 @@ import {
   AdminSlotPage,
   AdminStudentDetailPage,
   AdminStudentPage,
-  AdminTeamDetailPage,
-  AdminTeamPage,
 } from "@/pages";
 import useAuthStore from "@/store/AuthStore";
 import { Route, Routes } from "react-router-dom";
@@ -30,8 +28,6 @@ const Manager = () => {
         <Route path="/slot" element={<AdminSlotPage />} />
         <Route path="/student/:studentId" element={<AdminStudentDetailPage />} />
         <Route path="/student" element={<AdminStudentPage />} />
-        <Route path="/team" element={<AdminTeamPage />} />
-        <Route path="/team/:teamId" element={<AdminTeamDetailPage />} />
         <Route path="/booking" element={<AdminBookingPage />} />
         <Route path="/booking/:bookingId" element={<AdminBookingDetailPage />} />
         <Route path="*" element={<NotFound />} />

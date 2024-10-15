@@ -6,17 +6,14 @@ import {
   AdminCohortPage,
   AdminDashboardPage,
   AdminGroupPage,
+  AdminRoomDetailPage,
   AdminRoomPage,
   AdminSlotPage,
   AdminStaffPage,
   AdminStudentDetailPage,
   AdminStudentPage,
-  AdminTeamDetailPage,
-  AdminTeamPage,
-  AdminUserPage,
 } from "@/pages";
 import ManageReport from "@/pages/admin/Managereport/Report";
-import Report from "@/pages/admin/Managereport/Report";
 import ManageRoomTypes from "@/pages/admin/ManageRoomType/ManageRoomTypes";
 import useAuthStore from "@/store/AuthStore";
 import { Route, Routes } from "react-router-dom";
@@ -31,9 +28,10 @@ const Admin = () => {
       <Routes>
         <Route path="/" element={<AdminDashboardPage />} />
         <Route path="/dashboard" element={<AdminDashboardPage />} />
-        <Route path="/user" element={<AdminUserPage />} />
+        {/* <Route path="/user" element={<AdminUserPage />} /> */}
         <Route path="/group" element={<AdminGroupPage />} />
         <Route path="/rooms" element={<AdminRoomPage />} />
+        <Route path="/rooms/:roomId" element={<AdminRoomDetailPage />} />
         <Route path="/room-types" element={<ManageRoomTypes />} />
         <Route path="/slot" element={<AdminSlotPage />} />
         <Route path="/cohort" element={<AdminCohortPage />} />
@@ -44,8 +42,6 @@ const Admin = () => {
         />
         <Route path="/student/:studentId" element={<AdminStudentDetailPage />} />
         <Route path="/student" element={<AdminStudentPage />} />
-        <Route path="/team" element={<AdminTeamPage />} />
-        <Route path="/team/:teamId" element={<AdminTeamDetailPage />} />
         <Route path="/booking" element={<AdminBookingPage />} />
         <Route path="/booking/:bookingId" element={<AdminBookingDetailPage />} />
         <Route path="/staff" element={<AdminStaffPage />} />

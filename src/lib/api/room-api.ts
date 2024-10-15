@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import { axiosClient } from "./config/axios-client";
+import { Slot } from "@/types/slot";
 
 export const handleApiError = (error: any) => {
   try {
@@ -20,11 +21,29 @@ export const getAllRoom = async () => {
   }
 };
 
+export const getRoomById = async (roomId: number) => {
+  try {
+    const { data } = await axiosClient.get(`/api/rooms/${roomId}`);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+export const getRoomSlots = async (roomId: number) => {
+  try {
+    const { data } = await axiosClient.get(`/api/rooms/${roomId}/slots`);
+    return { error: null, data: data as Slot[], success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
 export const createRoom = async (formData: {
   roomName: string;
   capacity: number;
   roomTypeId: number;
-  status: boolean;
+  status: string;
 }) => {
   try {
     const { data } = await axiosClient.post(`/api/rooms`, formData);
@@ -44,6 +63,7 @@ export const deleteRoom = async (id: number) => {
     return handleApiError(error);
   }
 };
+
 export const updateRoom = async (
   id: number,
   formData: {
@@ -57,6 +77,38 @@ export const updateRoom = async (
     const { data } = await axiosClient.put(`/api/rooms/${id}`, formData);
     toast.success("Update Room  Successfully");
 
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+export const createRoomSlot = async (formData: {
+  startTime: string;
+  endTime: string
+  roomId: number;
+}) => {
+  try {
+    const { data } = await axiosClient.post(`/api/rooms/slots`, formData);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+export const updateRoomSlot = async (formData: {
+  startTime: string;
+  endTime: string
+}, roomSlotId: number) => {
+  try {
+    const { data } = await axiosClient.put(`/api/rooms/slots/${roomSlotId}`, formData);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+export const deleteRoomSlot = async (slotId: number) => {
+  try {
+    const { data } = await axiosClient.delete(`/api/rooms/slots/${slotId}`);
     return { error: null, data: data, success: true };
   } catch (error) {
     return handleApiError(error);

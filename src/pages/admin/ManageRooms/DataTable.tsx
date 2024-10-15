@@ -5,13 +5,22 @@ import { Room } from "@/types/room";
 import { Table, Tag } from "antd";
 import DeleteRoom from "./DeleteRoom";
 import UpdateRoom from "./UpdateRooms";
+import { Link } from "react-router-dom";
 
-const DataTable = ({ data, rerender }: { data: Room[]; rerender: () => void }) => {
+const DataTable = ({
+  data,
+  rerender,
+}: {
+  data: Room[];
+  rerender: () => void;
+}) => {
   const columns = [
     {
       title: "Room Name",
-      dataIndex: "roomName",
       key: "roomName",
+      render: (record: Room) => (
+        <Link to={`/admin/rooms/${record.id}`} className="font-semibold text-blue-500 underline">{record.roomName}</Link>
+      ),
     },
     {
       title: "Capacity",
@@ -27,20 +36,29 @@ const DataTable = ({ data, rerender }: { data: Room[]; rerender: () => void }) =
       title: "Created at",
       dataIndex: "createAt",
       key: "createAt",
-      render: (createAt: string) => <span>{new Date(createAt).toLocaleDateString()}</span>,
+      render: (createAt: string) => (
+        <span>{new Date(createAt).toLocaleDateString()}</span>
+      ),
     },
     {
       title: "Updated at",
       dataIndex: "updatedAt",
       key: "updatedAt",
-      render: (updatedAt: string) => <span>{new Date(updatedAt).toLocaleDateString()}</span>,
+      render: (updatedAt: string) => (
+        <span>{new Date(updatedAt).toLocaleDateString()}</span>
+      ),
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
       render: (status: string) => {
-        const color = status === "inactive" ? "red" : status === "repairing" ? "orange" : "green";
+        const color =
+          status === "inactive"
+            ? "red"
+            : status === "repairing"
+            ? "orange"
+            : "green";
         return <Tag color={color}>{status.toLocaleUpperCase()}</Tag>;
       },
     },

@@ -23,7 +23,7 @@ const formSchema = z.object({
   roomName: z
     .string()
     .min(2, { message: "RoomName must be at least 2 characters." })
-    .max(10, { message: "RoomName must not contain more than 10 characters." }),
+    .max(20, { message: "RoomName must not contain more than 20 characters." }),
   capacity: z.coerce
     .number({
       required_error: "Capacity is required.",
@@ -150,9 +150,9 @@ const UpdateRoom = ({ room, rerender }: { room: Room; rerender: () => void }) =>
                           <SelectValue placeholder="Select Status" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="active">Active</SelectItem>
-                          <SelectItem value="inactive">Inactive</SelectItem>
-                          <SelectItem value="repairing">Repairing</SelectItem>
+                          <SelectItem value="Active">Active</SelectItem>
+                          <SelectItem value="Inactive">Inactive</SelectItem>
+                          <SelectItem value="Repairing">Repairing</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>

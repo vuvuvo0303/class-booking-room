@@ -49,7 +49,7 @@ const AddRoomTypes = ({ rerender }: { rerender: () => void }) => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Room Type Name</FormLabel>
+                    <FormLabel>Name</FormLabel>
                     <FormControl>
                       <Input placeholder="Enter room type name" {...field} />
                     </FormControl>
@@ -59,8 +59,6 @@ const AddRoomTypes = ({ rerender }: { rerender: () => void }) => {
                 )}
               />
             </DialogDescription>
-
-            
           </DialogHeader>
           <DialogFooter>
             <Button type="submit">Create</Button>
