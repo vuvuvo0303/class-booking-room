@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Carousel from "@/components/carosuel/Carousel";
 import useAuthStore from "@/store/AuthStore";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 const Home = () => {
   const loggedUser = useAuthStore((state) => state.user);
   const navigate = useNavigate();
@@ -36,20 +37,16 @@ const Home = () => {
             University Ho Chi Minh campus.
           </span>
           <div className="pl-28">
-            <Button className="hover:bg-green-500 ">Booking Now</Button>
+            <Link to="/booking-room">
+              <Button className="hover:bg-green-500 ">Booking Now</Button>
+            </Link>
           </div>
         </div>
         <div className="absolute top-0 left-[-20px] transform scale-x-[-1] ">
           <img src={Decore} alt="" />
         </div>
       </div>
-      {/* <div className="absolute w-full bottom-[-100px] bg-white/20 backdrop-blur-sm">
-        <span className="text-black text-5xl flex justify-center ">Filter room</span>
-        <div>
-          <Search placeholder="input search text"  />
-        </div>
-        <div></div>
-      </div> */}
+
       <div className="flex justify-center font-serif pt-36">
         <span className="text-3xl">The System we have</span>
       </div>
