@@ -7,6 +7,7 @@ const FaceRecognition = () => {
   // const [error, setError] = useState<any>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const captureRef = useRef<HTMLCanvasElement>(null);
   const [faceDescriptors, setFaceDescriptors] = useState<any[]>([]);
   const [emotion, setEmotion] = useState<string>("");
   useEffect(() => {
@@ -71,7 +72,7 @@ const FaceRecognition = () => {
           const { expressions } = resizedDetections[0];
           const descriptors = resizedDetections.map((d) => d.descriptor);
           const dominantEmotion = Object.keys(expressions).reduce((a, b) =>
-          // @ts-ignore
+            // @ts-ignore
             expressions[a] > expressions[b] ? a : b
           );
           setEmotion(dominantEmotion);
@@ -92,7 +93,24 @@ const FaceRecognition = () => {
   }, [videoRef, isLoading]);
   const handleLogData = () => {
     console.log("Face Descriptors:", faceDescriptors);
+    captureImage();
   };
+  const captureImage = () => {
+    const video = videoRef.current;
+    const canvas = captureRef.current;
+    if (canvas == null) return;
+    if (video == null) return;
+    const context = canvas.getContext("2d");
+    if (context == null) return;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    const imageDataUrl = canvas.toDataURL("image/png");
+    console.log(imageDataUrl);
+  };
+
   return (
     <div className="flex flex-col justify-center items-center min-h-screen">
       {isLoading && <p>Loading models...</p>}
@@ -109,6 +127,7 @@ const FaceRecognition = () => {
       <Button onClick={handleLogData} style={{ marginTop: "20px" }}>
         Log Face Data
       </Button>
+      <canvas ref={captureRef}  />
     </div>
   );
 };
