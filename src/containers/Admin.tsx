@@ -12,6 +12,7 @@ import {
   AdminStaffPage,
   AdminStudentDetailPage,
   AdminStudentPage,
+  AdminUserPage,
 } from "@/pages";
 import ManageReport from "@/pages/admin/Managereport/Report";
 import ManageRoomTypes from "@/pages/admin/ManageRoomType/ManageRoomTypes";
@@ -28,7 +29,7 @@ const Admin = () => {
       <Routes>
         <Route path="/" element={<AdminDashboardPage />} />
         <Route path="/dashboard" element={<AdminDashboardPage />} />
-        {/* <Route path="/user" element={<AdminUserPage />} /> */}
+        <Route path="/user" element={<AdminUserPage />} />
         <Route path="/group" element={<AdminGroupPage />} />
         <Route path="/rooms" element={<AdminRoomPage />} />
         <Route path="/rooms/:roomId" element={<AdminRoomDetailPage />} />

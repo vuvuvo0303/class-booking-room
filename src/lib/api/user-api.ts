@@ -27,16 +27,14 @@ export const getUserById = async (id: string) => {
     return handleApiError(error);
   }
 };
-// export const createUser = async (formData: {
-//     name: string,
-// }) => {
-//     try {
-//         const { data } = await axiosClient.post(`/api/user`, formData);
-//         return { error: null, data: data, success: true };
-//     } catch (error) {
-//         return handleApiError(error);
-//     }
-// }
+export const createUser = async (formData: { fullName: string; email: string; password: string; role: string }) => {
+  try {
+    const { data } = await axiosClient.post(`/api/users`, formData);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
 
 export const updateUser = async (
   id: string,
@@ -57,9 +55,9 @@ export const updateUser = async (
     return handleApiError(error);
   }
 };
-export const deleteUser = async (id: string) => {
+export const deleteUser = async (id: number) => {
   try {
-    const { data } = await axiosClient.delete(`/api/user/${id}`);
+    const { data } = await axiosClient.delete(`/api/users/${id}`);
     return { error: null, data: data, success: true };
   } catch (error) {
     return handleApiError(error);
