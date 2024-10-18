@@ -14,7 +14,7 @@ const ProfileCarousel = () => {
         delay: 0, 
         disableOnInteraction: false, 
       }}
-      speed={2000} 
+      speed={10000} 
       modules={[Autoplay]} 
       className="mySwiper"
     >

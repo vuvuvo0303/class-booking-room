@@ -1,13 +1,12 @@
 import Loader from "@/components/Loader";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import RoomCard from "@/components/RoomCard";
-import { Button } from "@/components/ui/button";
 import { getAllRoom } from "@/lib/api/room-api";
 import { getAllRoomType } from "@/lib/api/room-type-api";
 import useAuthStore from "@/store/AuthStore";
 import { Room } from "@/types/room";
 import { RoomTypes } from "@/types/room-type";
-import { Card, Image, Input, Select, Tag } from "antd";
+import { Input, Select } from "antd";
 import { SearchProps } from "antd/es/input";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";

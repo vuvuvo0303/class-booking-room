@@ -6,7 +6,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -14,10 +21,17 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { RoomTypes } from "@/types/room-type";
 import { getAllRoomType } from "@/lib/api/room-type-api";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import { Room } from "@/types/room";
 import { updateRoom } from "@/lib/api/room-api";
+import { toast } from "react-toastify";
 
 const formSchema = z.object({
   roomName: z
@@ -30,20 +44,26 @@ const formSchema = z.object({
       invalid_type_error: "Capacity must be a number.",
     })
     .min(1, "Capacity must be at least 1."),
-  roomTypeId: z.number({
+  roomTypeId: z.string({
     required_error: "Room Type is required.",
   }),
   status: z.string().nonempty({ message: "Status is required." }),
 });
 
-const UpdateRoom = ({ room, rerender }: { room: Room; rerender: () => void }) => {
+const UpdateRoom = ({
+  room,
+  rerender,
+}: {
+  room: Room;
+  rerender: () => void;
+}) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       roomName: room.roomName,
       status: room.status,
       capacity: room.capacity,
-      roomTypeId: room.roomTypeId,
+      roomTypeId: room.roomTypeId + "",
     },
   });
 
@@ -62,10 +82,17 @@ const UpdateRoom = ({ room, rerender }: { room: Room; rerender: () => void }) =>
   }, [room]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await updateRoom(room.id, values);
-    setTimeout(() => {
-      rerender();
-    }, 500);
+    const updateResult = await updateRoom(room.id, {
+      ...values,
+      roomTypeId: parseInt(values.roomTypeId),
+    });
+    if (updateResult.error) {
+      toast.error(updateResult.error);
+    } else {
+      setTimeout(() => {
+        rerender();
+      }, 500);
+    }
   }
 
   return (
@@ -100,7 +127,11 @@ const UpdateRoom = ({ room, rerender }: { room: Room; rerender: () => void }) =>
                   <FormItem>
                     <label>Capacity</label>
                     <FormControl>
-                      <Input type="number" placeholder="Enter Capacity" {...field} />
+                      <Input
+                        type="number"
+                        placeholder="Enter Capacity"
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription />
                     <FormMessage />
@@ -117,13 +148,19 @@ const UpdateRoom = ({ room, rerender }: { room: Room; rerender: () => void }) =>
                   <FormItem>
                     <label>Room Type</label>
                     <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value + ""}>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value + ""}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Select Room Type" />
                         </SelectTrigger>
                         <SelectContent>
                           {dataRoomTypes.map((roomType) => (
-                            <SelectItem key={roomType.id} value={roomType.id + ""}>
+                            <SelectItem
+                              key={roomType.id}
+                              value={roomType.id + ""}
+                            >
                               {roomType.name}
                             </SelectItem>
                           ))}
@@ -145,7 +182,10 @@ const UpdateRoom = ({ room, rerender }: { room: Room; rerender: () => void }) =>
                   <FormItem>
                     <label>Status</label>
                     <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Select Status" />
                         </SelectTrigger>
