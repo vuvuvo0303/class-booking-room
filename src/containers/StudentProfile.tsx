@@ -3,7 +3,6 @@ import { StudentBookingHistoryPage, StudentProfilePage, StudentReportHistoryPage
 import StudentProfileLayout from "@/layouts/StudentProfileLayout";
 import BookingHistory from "@/pages/student/BookingHistory";
 import ReportHistory from "@/pages/student/ReportHistory";
-import UserProfile from "@/pages/student/UserProfile";
 const StudentProfile = () => {
   return (
     <StudentProfileLayout>
@@ -13,8 +12,6 @@ const StudentProfile = () => {
         <Route path="/booking" element={<StudentBookingHistoryPage />} />
         <Route path="/booking-history" element={<BookingHistory />} />
         <Route path="/report-history" element={<ReportHistory />} />
-        <Route path="/user-profile" element={<UserProfile />} />
-
         <Route path="/report" element={<StudentReportHistoryPage />} />
       </Routes>
     </StudentProfileLayout>

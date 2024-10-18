@@ -1,3 +1,5 @@
+import { Slot } from "./slot";
+
 export type Room = {
   id: number;
   roomName: string;
@@ -8,4 +10,5 @@ export type Room = {
   createdAt: string;
   deletedAt?: string;
   updatedAt: string;
+  roomSlots: Slot[];
 };
