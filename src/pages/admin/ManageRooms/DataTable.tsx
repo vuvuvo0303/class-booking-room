@@ -34,8 +34,8 @@ const DataTable = ({
     },
     {
       title: "Created at",
-      dataIndex: "createAt",
-      key: "createAt",
+      dataIndex: "createdAt",
+      key: "createdAt",
       render: (createAt: string) => (
         <span>{new Date(createAt).toLocaleDateString()}</span>
       ),
