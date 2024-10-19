@@ -10,6 +10,7 @@ import Policy from "@/pages/student/Policy";
 import Rules from "@/pages/student/Rules";
 import BookingRoom from "@/pages/student/BookingRoom";
 import StepProcess from "@/pages/student/step-process";
+import FillUserInfo from "@/pages/student/FillUserInfo";
 
 const Home = () => {
   return (
@@ -25,6 +26,7 @@ const Home = () => {
         <Route path="/step-process" element={<StepProcess />} />
         <Route path="/booking-room" element={<BookingRoom/>} />
         <Route path="/room/:roomId" element={<RoomDetailPage />} />
+        <Route path="/fill-user-info" element={<FillUserInfo />} />
         <Route path="/profile/*" element={<StudentProfile />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
