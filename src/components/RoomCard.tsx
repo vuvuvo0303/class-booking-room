@@ -2,6 +2,7 @@ import { Room } from "@/types/room";
 import { Card } from "./ui/card";
 import { Tag } from "antd";
 import { Button } from "./ui/button";
+import { Link } from "react-router-dom";
 
 const RoomCard = ({ room }: { room: Room }) => {
   return (
@@ -25,7 +26,11 @@ const RoomCard = ({ room }: { room: Room }) => {
             <Tag color="success">{room.status}</Tag>
           </span>
         </div>
-        <Button className="bg-green-600 hover:bg-green-600">View detail</Button>
+        <Link to={`/room/${room.id}`}>
+          <Button className="bg-green-600 hover:bg-green-600 w-full">
+            View detail
+          </Button>
+        </Link>
       </div>
     </Card>
   );

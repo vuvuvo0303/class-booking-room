@@ -1,7 +1,7 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import ProfileCarousel from "@/components/carosuel/ProfileUerCarousel";
 import useAuthStore from "@/store/AuthStore";
-import { Avatar, Button, Col, Form, Image, Input, Row } from "antd";
+import { Avatar, Button, Form, Image, Input } from "antd";
 import { useEffect } from "react";
 
 const UserProfile = () => {
