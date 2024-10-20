@@ -2,8 +2,6 @@ import MainLayout from "@/layouts/MainLayout";
 import { HomePage, RoomDetailPage, RoomListPage } from "@/pages";
 import { Route, Routes } from "react-router-dom";
 import { StudentProfile } from ".";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import NotFound from "@/components/NotFound";
 import AboutUs from "@/pages/student/AboutUs";
 import Policy from "@/pages/student/Policy";
@@ -15,7 +13,6 @@ import FillUserInfo from "@/pages/student/FillUserInfo";
 const Home = () => {
   return (
     <MainLayout>
-        <Navbar/>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/room" element={<RoomListPage />} />
@@ -30,7 +27,6 @@ const Home = () => {
         <Route path="/profile/*" element={<StudentProfile />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <Footer/>
     </MainLayout>
   );
 };
