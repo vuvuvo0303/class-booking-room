@@ -8,4 +8,5 @@ export type Room = {
   createdAt: string;
   deletedAt?: string;
   updatedAt: string;
+  picture?: string;  
 };
