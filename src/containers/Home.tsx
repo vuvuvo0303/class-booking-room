@@ -9,6 +9,7 @@ import Rules from "@/pages/student/Rules";
 import BookingRoom from "@/pages/student/BookingRoom";
 import StepProcess from "@/pages/student/step-process";
 import FillUserInfo from "@/pages/student/FillUserInfo";
+import LoginAdmin from "@/pages/admin/LoginAdmin";
 
 const Home = () => {
   return (
@@ -18,6 +19,7 @@ const Home = () => {
         <Route path="/room" element={<RoomListPage />} />
         <Route path="/rules" element={<Rules />} />
         <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/login/admin" element={<LoginAdmin />} />
         {/* <Route path="/about-us" element={<AboutUs />} /> */}
         <Route path="/policy" element={<Policy />} />
         <Route path="/step-process" element={<StepProcess />} />
