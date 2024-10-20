@@ -191,7 +191,7 @@ const Sidebar = () => {
             isCollapsed ? "w-0 ms-0" : "w-[200px] ms-2"
           )}
         >
-          Đăng xuất
+          Log Out
         </p>
       </button>
     </div>
