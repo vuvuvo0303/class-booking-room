@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
 import { axiosClient } from "./config/axios-client";
 import { Slot } from "@/types/slot";
+import uploadFile from "@/utils/upload";
 
 export const handleApiError = (error: any) => {
   try {
@@ -44,9 +45,29 @@ export const createRoom = async (formData: {
   capacity: number;
   roomTypeId: number;
   status: string;
+  picture: FileList | string;
 }) => {
   try {
-    const { data } = await axiosClient.post(`/api/rooms`, formData);
+    let avatarUrl = formData.picture;
+
+    
+    if (formData.picture instanceof FileList && formData.picture.length > 0) {
+  
+      avatarUrl = await uploadFile(formData.picture[0]);
+    }
+
+    
+    const roomData = {
+      roomName: formData.roomName,
+      capacity: formData.capacity,
+      roomTypeId: formData.roomTypeId,
+      status: formData.status,
+      picture: avatarUrl, 
+    };
+
+    
+    const { data } = await axiosClient.post(`/api/rooms`, roomData);
+    toast.success("Create Room Successfully")
     return { error: null, data: data, success: true };
   } catch (error) {
     return handleApiError(error);
@@ -83,11 +104,7 @@ export const updateRoom = async (
   }
 };
 
-export const createRoomSlot = async (formData: {
-  startTime: string;
-  endTime: string
-  roomId: number;
-}) => {
+export const createRoomSlot = async (formData: { startTime: string; endTime: string; roomId: number }) => {
   try {
     const { data } = await axiosClient.post(`/api/rooms/slots`, formData);
     return { error: null, data: data, success: true };
@@ -95,10 +112,13 @@ export const createRoomSlot = async (formData: {
     return handleApiError(error);
   }
 };
-export const updateRoomSlot = async (formData: {
-  startTime: string;
-  endTime: string
-}, roomSlotId: number) => {
+export const updateRoomSlot = async (
+  formData: {
+    startTime: string;
+    endTime: string;
+  },
+  roomSlotId: number
+) => {
   try {
     const { data } = await axiosClient.put(`/api/rooms/slots/${roomSlotId}`, formData);
     return { error: null, data: data, success: true };

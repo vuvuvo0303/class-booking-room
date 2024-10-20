@@ -44,6 +44,7 @@ const UpdateRoom = ({ room, rerender }: { room: Room; rerender: () => void }) =>
       status: room.status,
       capacity: room.capacity,
       roomTypeId: room.roomTypeId,
+      
     },
   });
 

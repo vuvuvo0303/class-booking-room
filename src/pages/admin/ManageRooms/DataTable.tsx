@@ -2,7 +2,7 @@ import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Room } from "@/types/room";
-import { Table, Tag } from "antd";
+import { Image, Table, Tag } from "antd";
 import DeleteRoom from "./DeleteRoom";
 import UpdateRoom from "./UpdateRooms";
 import { Link } from "react-router-dom";
@@ -62,7 +62,12 @@ const DataTable = ({
         return <Tag color={color}>{status.toLocaleUpperCase()}</Tag>;
       },
     },
-
+    {
+      title: "Room Image",
+      dataIndex: "picture",
+      key: "picture",
+      render:(picture:string) => <Image src={picture} width={150}/>
+    },
     {
       title: "Action",
       width: "50px",
