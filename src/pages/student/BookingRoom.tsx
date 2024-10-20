@@ -27,7 +27,7 @@ const BookingRoom = () => {
       if (resultRoom.error) {
         toast.error(resultRoom.error);
       } else {
-        setRooms(resultRoom.data);
+        setRooms(resultRoom.data.filter((room: Room) => room.status != "Inactive"));
       }
       const roomTypeResult = await getAllRoomType();
       if (roomTypeResult.error) {

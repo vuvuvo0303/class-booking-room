@@ -49,7 +49,7 @@ const Calendar = ({ slots }: { slots: Slot[] }) => {
   };
 
   const handleSelectSlot = (slot: Slot) => {
-    if (!selectedSlots.find((s) => s.id == slot.id)) {
+    if (!selectedSlots.find((s) => s.id == slot.id)) {  
       setSelectedSlots([...selectedSlots, slot]);
     } else {
       setSelectedSlots(selectedSlots.filter((s) => s.id != slot.id));
