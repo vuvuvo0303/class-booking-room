@@ -5,6 +5,7 @@ import useAuthStore from "./store/AuthStore";
 import { useEffect, useState } from "react";
 import { checkToken } from "./lib/api/auth-api";
 import Loader from "./components/Loader";
+import LoginAdmin from "./pages/admin/LoginAdmin";
 
 function App() {
   const setUser = useAuthStore((state) => state.setUser);
@@ -31,6 +32,7 @@ function App() {
     );
   return (
     <Routes>
+      <Route path="/login/admin" element={<LoginAdmin />} />
       <Route path="login" element={<LoginPage />} />
       <Route path="/admin/*" element={<Admin />} />
       <Route path="/manager/*" element={<Manager />} />
