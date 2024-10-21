@@ -66,7 +66,7 @@ const UpdateRoom = ({
       roomName: room.roomName,
       status: room.status,
       capacity: room.capacity,
-      roomTypeId: room.roomTypeId + "",
+      roomTypeId: room.roomType.id + "",
       picture: null,
     },
   });

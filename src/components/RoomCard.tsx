@@ -7,7 +7,6 @@ import { useState } from "react";
 
 const RoomCard = ({ room }: { room: Room }) => {
   const [imgSrc, setImgSrc] = useState<string>(room.picture ?? "");
-
   const handleError = () => {
     setImgSrc("https://daihoc.fpt.edu.vn/wp-content/uploads/2023/08/nhung-tien-ich-tai-dh-fpt-hcm-3-650x433.jpeg");
   };
@@ -25,7 +24,7 @@ const RoomCard = ({ room }: { room: Room }) => {
         </div>
         <div className="flex items-center gap-2">
           <span className="font-semibold text-black">Room Type:</span>
-          <span className="text-black">{room.roomTypeName}</span>
+          <span className="text-black">{room.roomType.name}</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="font-semibold text-black">Status :</span>

@@ -29,8 +29,10 @@ const DataTable = ({
     },
     {
       title: "Room Type",
-      dataIndex: "roomTypeName",
       key: "roomTypeName",
+      render: (record: Room) => (
+       <span>{record.roomType.name}</span>
+      ),
     },
     {
       title: "Created at",

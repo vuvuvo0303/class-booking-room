@@ -4,7 +4,6 @@ import NotFound from "@/components/NotFound";
 import { Badge } from "@/components/ui/badge";
 import { getRoomById } from "@/lib/api/room-api";
 import { Room } from "@/types/room";
-import { Slot } from "@/types/slot";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -55,7 +54,7 @@ const RoomDetail = () => {
           </div>
           <p className="">
             <span className="font-semibold">Type:</span>{" "}
-            {roomDetail?.roomTypeName}
+            {roomDetail?.roomType.name}
           </p>
           <div className="">
             <span className="font-semibold">Status:</span>{" "}
