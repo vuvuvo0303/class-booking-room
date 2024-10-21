@@ -1,6 +1,7 @@
+import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import ProfileCarousel from "@/components/carosuel/ProfileUerCarousel";
 import useAuthStore from "@/store/AuthStore";
-import { Avatar, Button, Col, Form, Image, Input, Row } from "antd";
+import { Avatar, Button, Form, Image, Input } from "antd";
 import { useEffect } from "react";
 
 const UserProfile = () => {
@@ -22,103 +23,71 @@ const UserProfile = () => {
   }, [loggedUser, form]);
 
   return (
-    <div className="pt-20">
+    <div className="">
       <div className="bg-gradient-to-r from-orange-200 to-orange-100 h-20 flex items-center">
-        <ProfileCarousel/>
+        <ProfileCarousel />
       </div>
-      <div className="flex items-center justify-between px-6 py-4">
-        <div className="flex gap-4">
-          <Avatar size={90} src={loggedUser?.profileImageURL || "https://default-avatar-url.com"} alt="avatar" />
-          <div className="flex flex-col justify-center gap-2">
-            <span className="text-sx font-bold">{loggedUser?.fullName}</span>
-            <span className="text-xs">{loggedUser?.email}</span>
+      <MaxWidthWrapper className="py-5">
+        <div className="flex items-center justify-between">
+          <div className="flex gap-4">
+            <Avatar
+              size={90}
+              src={
+                loggedUser?.profileImageURL || "https://default-avatar-url.com"
+              }
+              alt="avatar"
+            />
+            <div className="flex flex-col justify-center gap-2">
+              <span className="text-sx font-bold">{loggedUser?.fullName}</span>
+              <span className="text-xs">{loggedUser?.email}</span>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="p-4">
-        <Form form={form} layout="vertical">
-          <Row gutter={16}>
-            <Col span={12} className="flex justify-center">
-              <Form.Item
-                label="Full Name"
-                name="name"
-                labelCol={{ span: 24 }}
-                wrapperCol={{ span: 24 }}
-                className="w-2/3"
-              >
-                <Input className="w-full h-10" disabled />
-              </Form.Item>
-            </Col>
-            <Col span={12} className="flex justify-center">
-              <Form.Item label="Email" name="email" labelCol={{ span: 24 }} wrapperCol={{ span: 24 }} className="w-2/3">
-                <Input className="w-full h-10" disabled />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={12} className="flex justify-center">
-              <Form.Item
-                label="Role"
-                name="role"
-                labelCol={{ span: 24 }}
-                wrapperCol={{ span: 24 }}
-                className="w-2/3"
-              >
-                <Input className="w-full h-10" disabled />
-              </Form.Item>
-            </Col>
-            <Col span={12} className="flex justify-center">
-              <Form.Item
-                label="Department"
-                name="department"
-                labelCol={{ span: 24 }}
-                wrapperCol={{ span: 24 }}
-                className="w-2/3"
-              >
-                <Input className="w-full h-10" disabled />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={12} className="flex justify-center">
-              <Form.Item
-                label="Create Date"
-                name="created_at"
-                labelCol={{ span: 24 }}
-                wrapperCol={{ span: 24 }}
-                className="w-2/3"
-              >
-                <Input className="w-full h-10" disabled />
-              </Form.Item>
-            </Col>
-            <Col span={12} className="flex justify-center">
-              <Form.Item
-                label="Cohort"
-                name="cohort"
-                labelCol={{ span: 24 }}
-                wrapperCol={{ span: 24 }}
-                className="w-2/3"
-              >
-                <Input className="w-full h-10" disabled />
-              </Form.Item>
-            </Col>
-          </Row>
-          <div className="flex pl-28 ml-2">
-            <Form.Item label="Avatar" name="avatar" labelCol={{ span: 24 }} wrapperCol={{ span: 24 }}>
+        <div className="mt-5">
+          <Form form={form} layout="vertical" className="grid grid-cols-12 gap-x-5">
+            <Form.Item label="Full Name" name="name" className="col-span-6">
+              <Input className="w-full h-10" disabled />
+            </Form.Item>
+            <Form.Item label="Email" name="email" className="col-span-6">
+              <Input className="w-full h-10" disabled />
+            </Form.Item>
+            <Form.Item label="Role" name="role" className="col-span-6">
+              <Input className="w-full h-10" disabled />
+            </Form.Item>
+            <Form.Item
+              label="Department"
+              name="department"
+              className="col-span-6"
+            >
+              <Input className="w-full h-10" disabled />
+            </Form.Item>
+            <Form.Item
+              label="Create Date"
+              name="created_at"
+              className="col-span-6"
+            >
+              <Input className="w-full h-10" disabled />
+            </Form.Item>
+            <Form.Item label="Cohort" name="cohort" className="col-span-6">
+              <Input className="w-full h-10" disabled />
+            </Form.Item>
+            <Form.Item label="Avatar" name="avatar" className="col-span-12">
               <Image
-                width={100}
-                src={loggedUser?.profileImageURL || "https://default-avatar-url.com"}
+                src={
+                  loggedUser?.profileImageURL ||
+                  "https://default-avatar-url.com"
+                }
                 alt="User Avatar"
               />
             </Form.Item>
-          </div>
-          <div className="flex pl-28 ml-2 ">
-            <Button className="" type="primary" htmlType="submit" >
-              Edit
-            </Button>
-          </div>
-        </Form>
-      </div>
+            <div className="flex">
+              <Button className="" type="primary" htmlType="submit">
+                Edit
+              </Button>
+            </div>
+          </Form>
+        </div>
+      </MaxWidthWrapper>
     </div>
   );
 };

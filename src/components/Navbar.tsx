@@ -28,7 +28,7 @@ const Navbar = () => {
     {
       key: "2",
       label: (
-        <Link to="/profile/user-profile" className="py-36 text-lg text-gray-700">
+        <Link to="/profile" className="py-36 text-lg text-gray-700">
           User Profile
         </Link>
       ),

@@ -1,16 +1,48 @@
-import { Button } from "@/components/ui/button";
+import Loader from "@/components/Loader";
+import MaxWidthWrapper from "@/components/MaxWidthWrapper";
+import RoomCard from "@/components/RoomCard";
+import { getAllRoom } from "@/lib/api/room-api";
+import { getAllRoomType } from "@/lib/api/room-type-api";
 import useAuthStore from "@/store/AuthStore";
-import { Card, Image, Input, Select, Tag } from "antd";
+import { Room } from "@/types/room";
+import { RoomTypes } from "@/types/room-type";
+import { Input, Select } from "antd";
 import { SearchProps } from "antd/es/input";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const BookingRoom = () => {
   const loggedUser = useAuthStore((state) => state.user);
-
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const [roomTypes, setRoomTypes] = useState<RoomTypes[]>([]);
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
   const { Search } = Input;
 
   const onSearch: SearchProps["onSearch"] = (value, _e, info) =>
     console.log(info?.source, value);
-
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      const resultRoom = await getAllRoom();
+      if (resultRoom.error) {
+        toast.error(resultRoom.error);
+      } else {
+        setRooms(resultRoom.data.filter((room: Room) => room.status != "Inactive"));
+      }
+      const roomTypeResult = await getAllRoomType();
+      if (roomTypeResult.error) {
+        toast.error(roomTypeResult.error);
+      } else {
+        setRoomTypes(roomTypeResult.data);
+      }
+      setIsLoading(false);
+    };
+    fetchData();
+  }, []);
+  const roomTypeOptions = roomTypes.map((x) => {
+    return { value: x.id, label: x.name };
+  });
+  if (isLoading) return <Loader />;
   return (
     <div className="py-20">
       <div className="w-screen bg-blue-900 rounded-md py-9">
@@ -77,11 +109,7 @@ const BookingRoom = () => {
                   .toLowerCase()
                   .includes(input.toLowerCase())
               }
-              options={[
-                { value: "1", label: "Open" },
-                { value: "2", label: "Close" },
-                { value: "3", label: "Repairing" },
-              ]}
+              options={roomTypeOptions}
             />
           </div>
           <div>
@@ -109,218 +137,11 @@ const BookingRoom = () => {
           </div>
         </div>
       </div>
-      <div className="py-3">
-        <Card className="w-full drop-shadow-lg bg-gradient-to-r from-orange-300 to-orange-500">
-          <div className="flex items-center justify-between">
-            <div className=" flex gap-16">
-              <div className="">
-                {" "}
-                <Image
-                  className="rounded-lg"
-                  src="https://daihoc.fpt.edu.vn/wp-content/uploads/2023/08/nhung-tien-ich-tai-dh-fpt-hcm-3-650x433.jpeg"
-                  width={300}
-                />
-              </div>
-              <div className="flex flex-col gap-3 pt-5 ">
-                <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold text-black">
-                    Room Name :
-                  </span>
-                  <span className="text-lg  text-black">615</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold text-black">
-                    Room Type :
-                  </span>
-                  <span className="text-lg  text-black">Musical</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold text-black">
-                    Status :
-                  </span>
-                  <span className="text-lg  text-black">
-                    <Tag color="success">Open</Tag>
-                  </span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold text-black">
-                    slot:
-                  </span>
-                  <span className="text-lg  text-black">
-                    <Tag>1(7h-9h15)</Tag>
-                    <Tag>2(9h15-11h45)</Tag>
-                    <Tag color="error">3(9h15-11h45)</Tag>
-                    <Tag>4(9h15-11h45)</Tag>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <Button className="bg-green-600 hover:bg-green-600">
-              {" "}
-              Booking
-            </Button>
-          </div>
-        </Card>
-      </div>
-      <div className="py-3">
-        <Card className="w-full drop-shadow-lg bg-gradient-to-r from-orange-300 to-orange-500">
-          <div className="flex items-center justify-between">
-            <div className=" flex gap-16">
-              <div className="">
-                {" "}
-                <Image
-                  className="rounded-lg"
-                  src="https://daihoc.fpt.edu.vn/wp-content/uploads/2023/08/nhung-tien-ich-tai-dh-fpt-hcm-3-650x433.jpeg"
-                  width={300}
-                />
-              </div>
-              <div className="flex flex-col gap-3 pt-5 ">
-                <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold text-black">
-                    Room Name :
-                  </span>
-                  <span className="text-lg  text-black">615</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold text-black">
-                    Room Type :
-                  </span>
-                  <span className="text-lg  text-black">Musical</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold text-black">
-                    Status :
-                  </span>
-                  <span className="text-lg  text-black">
-                    <Tag color="success">Open</Tag>
-                  </span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold text-black">
-                    slot:
-                  </span>
-                  <span className="text-lg  text-black">
-                    <Tag>1(7h-9h15)</Tag>
-                    <Tag>2(9h15-11h45)</Tag>
-                    <Tag color="error">3(9h15-11h45)</Tag>
-                    <Tag>4(9h15-11h45)</Tag>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <Button className="bg-green-600 hover:bg-green-600">
-              {" "}
-              Booking
-            </Button>
-          </div>
-        </Card>
-      </div>
-      <div className="py-3">
-        <Card className="w-full drop-shadow-lg bg-gradient-to-r from-orange-300 to-orange-500">
-          <div className="flex items-center justify-between">
-            <div className=" flex gap-16">
-              <div className="">
-                {" "}
-                <Image
-                  className="rounded-lg"
-                  src="https://daihoc.fpt.edu.vn/wp-content/uploads/2023/08/nhung-tien-ich-tai-dh-fpt-hcm-3-650x433.jpeg"
-                  width={300}
-                />
-              </div>
-              <div className="flex flex-col gap-3 pt-5 ">
-                <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold text-black">
-                    Room Name :
-                  </span>
-                  <span className="text-lg  text-black">615</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold text-black">
-                    Room Type :
-                  </span>
-                  <span className="text-lg  text-black">Musical</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold text-black">
-                    Status :
-                  </span>
-                  <span className="text-lg  text-black">
-                    <Tag color="success">Open</Tag>
-                  </span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold text-black">
-                    slot:
-                  </span>
-                  <span className="text-lg  text-black">
-                    <Tag>1(7h-9h15)</Tag>
-                    <Tag>2(9h15-11h45)</Tag>
-                    <Tag color="error">3(9h15-11h45)</Tag>
-                    <Tag>4(9h15-11h45)</Tag>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <Button className="bg-green-600 hover:bg-green-600">
-              {" "}
-              Booking
-            </Button>
-          </div>
-        </Card>
-      </div>
-      <div className="py-3">
-        <Card className="w-full drop-shadow-lg bg-gradient-to-r from-orange-300 to-orange-500">
-          <div className="flex items-center justify-between">
-            <div className=" flex gap-16">
-              <div className="">
-                {" "}
-                <Image
-                  className="rounded-lg"
-                  src="https://daihoc.fpt.edu.vn/wp-content/uploads/2023/08/nhung-tien-ich-tai-dh-fpt-hcm-3-650x433.jpeg"
-                  width={300}
-                />
-              </div>
-              <div className="flex flex-col gap-3 pt-5 ">
-                <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold text-black">
-                    Room Name :
-                  </span>
-                  <span className="text-lg  text-black">615</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold text-black">
-                    Room Type :
-                  </span>
-                  <span className="text-lg  text-black">Musical</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold text-black">
-                    Status :
-                  </span>
-                  <span className="text-lg  text-black">
-                    <Tag color="success">Open</Tag>
-                  </span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold text-black">
-                    slot:
-                  </span>
-                  <span className="text-lg  text-black">
-                    <Tag>1(7h-9h15)</Tag>
-                    <Tag>2(9h15-11h45)</Tag>
-                    <Tag color="error">3(9h15-11h45)</Tag>
-                    <Tag>4(9h15-11h45)</Tag>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <Button className="bg-green-600 hover:bg-green-600">
-              {" "}
-              Booking
-            </Button>
-          </div>
-        </Card>
-      </div>
+      <MaxWidthWrapper className="p-5 gap-2 grid grid-cols-12">
+        {rooms.map((room: Room) => {
+          return <RoomCard room={room} key={room.id} />;
+        })}
+      </MaxWidthWrapper>
     </div>
   );
 };

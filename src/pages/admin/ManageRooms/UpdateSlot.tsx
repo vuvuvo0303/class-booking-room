@@ -45,7 +45,7 @@ const UpdateSlot = ({
     if (createResult.error) {
       toast.error(createResult.error);
     } else {
-      toast.error("Create slot successfully!");
+      toast.success("Update slot successfully!");
       setTimeout(() => {
         rerender();
       }, 1000);
@@ -89,8 +89,16 @@ const UpdateSlot = ({
             name="slotTime"
             rules={[{ required: true, message: "" }]}
             initialValue={[
-              dayjs(new Date(slot.startTime).getTime()),
-              dayjs(new Date(slot.endTime).getTime()),
+              dayjs(
+                new Date(
+                  new Date(slot.startTime).getTime() + 7 * 60 * 60 * 1000
+                )
+              ),
+              dayjs(
+                new Date(
+                  new Date(slot.endTime).getTime() + 7 * 60 * 60 * 1000
+                )
+              ),
             ]}
           >
             <TimePicker.RangePicker minuteStep={15} format={format} />
@@ -101,7 +109,7 @@ const UpdateSlot = ({
             </Button>
             <Form.Item className="m-0">
               <Button type="primary" htmlType="submit">
-                Create
+                Update
               </Button>
             </Form.Item>
           </div>

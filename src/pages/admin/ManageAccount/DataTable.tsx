@@ -1,9 +1,8 @@
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { Room } from "@/types/room";
 import { User } from "@/types/user";
-import { Avatar, Image, Table, Tag } from "antd";
+import { Avatar, Table, Tag } from "antd";
 import DeleteAccount from "./DeleteAccount";
 // import DeleteRoom from "./DeleteRoom";
 // import UpdateRoom from "./UpdateRooms";

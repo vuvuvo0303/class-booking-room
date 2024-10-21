@@ -7,22 +7,20 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { deleteCohort } from "@/lib/api/cohort-api";
 import { deleteUser } from "@/lib/api/user-api";
-import { Cohort } from "@/types/cohort";
 import { User } from "@/types/user";
 
 const DeleteAccount = ({
   user,
   rerender,
 }: {
-  user:User;
+  user: User;
   rerender: () => void;
 }) => {
   async function handleDelete() {
     await deleteUser(user.id);
     setTimeout(() => {
-        rerender();
+      rerender();
     }, 500);
   }
   return (
@@ -37,7 +35,9 @@ const DeleteAccount = ({
       <AlertDialogDescription />
       <AlertDialogFooter>
         <AlertDialogCancel>Cancel</AlertDialogCancel>
-        <AlertDialogAction onClick={handleDelete} className="bg-red-500">Delete</AlertDialogAction>
+        <AlertDialogAction onClick={handleDelete} className="bg-red-500">
+          Delete
+        </AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
   );

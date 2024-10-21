@@ -47,7 +47,7 @@ const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       roomName: "",
-      status: "active",
+      status: "Active",
       capacity: undefined,
       roomTypeId: "",
       picture: null,
@@ -176,7 +176,7 @@ const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
                   <FormItem>
                     <label>Status</label>
                     <FormControl>
-                      <Input defaultValue="active" {...field} disabled />
+                      <Input defaultValue="Active" {...field} disabled />
                     </FormControl>
                     <FormDescription />
                     <FormMessage />

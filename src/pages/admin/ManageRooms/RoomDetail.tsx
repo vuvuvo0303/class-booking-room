@@ -67,7 +67,7 @@ const RoomDetail = () => {
         </div>
         <p className="">
           <span className="font-semibold">Type:</span>{" "}
-          {roomDetail?.roomTypeName}
+          {roomDetail?.roomType.name}
         </p>
         <div className="">
           <span className="font-semibold">Status:</span>{" "}

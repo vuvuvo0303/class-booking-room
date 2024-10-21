@@ -29,13 +29,15 @@ const DataTable = ({
     },
     {
       title: "Room Type",
-      dataIndex: "roomTypeName",
       key: "roomTypeName",
+      render: (record: Room) => (
+       <span>{record.roomType.name}</span>
+      ),
     },
     {
       title: "Created at",
-      dataIndex: "createAt",
-      key: "createAt",
+      dataIndex: "createdAt",
+      key: "createdAt",
       render: (createAt: string) => (
         <span>{new Date(createAt).toLocaleDateString()}</span>
       ),
