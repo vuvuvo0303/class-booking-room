@@ -1,35 +1,26 @@
 import Header from "@/components/admin/Header";
-import { getAllUsers } from "@/lib/api/user-api";
 import useAuthStore from "@/store/AuthStore";
-import { Space, Table, Switch, Button, Tag } from "antd";
 import { useEffect, useState } from "react";
-// import Loader from "@/components/Loader";
-// import useRerender from "@/hooks/use-rerender";
+import useRerender from "@/hooks/use-rerender";
+import Loader from "@/components/Loader";
+import { User } from "@/types/user";
+import DataTable from "./DataTable";
+import { getAllUsers } from "@/lib/api/user-api";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Plus } from "lucide-react";
+import AddAccount from "./AddAccount";
+import { Button } from "@/components/ui/button";
 
-interface User {
-  name: string;
-  email: string;
-  address: string;
-  status: boolean;
-  role: string;
-  is_verified: boolean;
-  id: number;
-}
-
-const User = () => {
+const ManageAccount = () => {
   const loggedUser = useAuthStore((state) => state.user);
-  const basePath = "/" + loggedUser.role;
-  // const [isLoading, setIsLoading] = useState(false);
-  // const { renderKey, rerender } = useRerender();
-
+  const [isLoading, setIsLoading] = useState(false);
+  const { renderKey, rerender } = useRerender();
   const [data, setData] = useState<User[]>([]);
   useEffect(() => {
     const fetchData = async () => {
-      // setIsLoading(true);
+      setIsLoading(true);
       const result = await getAllUsers();
-      console.log(result);
-
-      // setIsLoading(false);
+      setIsLoading(false);
       if (result.error) {
         console.log(result.error);
       } else {
@@ -37,122 +28,33 @@ const User = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [renderKey]);
+  if (isLoading) return <Loader text="Loading reports data..." />;
 
-  // if (isLoading) return <Loader text="Loading Account data..." />;
-
-  const columns = [
-    {
-      title: "Name",
-      dataIndex: "fullName",
-      key: "fullName",
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-    },
-    {
-      title: "Created at",
-      dataIndex: "createAt",
-      key: "createAt",
-      render: (createAt: string) => <span>{new Date(createAt).toLocaleDateString()}</span>,
-    },
-    {
-      title: "Updated at",
-      dataIndex: "updatedAt",
-      key: "updatedAt",
-      render: (updatedAt: string) => <span>{new Date(updatedAt).toLocaleDateString()}</span>,
-    },
-    {
-      title: "Role",
-      dataIndex: "role",
-      key: "role",
-      render: (role: string) => (
-        <Tag color={role === "Student" ? "green" : role === "Staff" ? "blue" : "gold"}>
-          {role === "Student" ? "Student" : role === "Staff" ? "Staff" : "Admin"}
-        </Tag>
-      ),
-    },
-    {
-      title: "Status",
-      key: "status",
-      dataIndex: "status",
-      width: "10%",
-      render: (status: boolean, record: User) => (
-        <Switch defaultChecked={status} onChange={(checked) => handleStatusChange(checked, record.id)} />
-      ),
-    },
-    {
-      title: "Verify",
-      dataIndex: "is_verified",
-      key: "is_verified",
-      render: (is_verified: boolean) => (
-        <span>
-          {is_verified ? (
-            <img src="https://cdn-icons-png.flaticon.com/512/7595/7595571.png" alt="verified" width="20" />
-          ) : (
-            <img src="https://cdn-icons-png.flaticon.com/128/4847/4847128.png" alt="not verified" width="20" />
-          )}
-        </span>
-      ),
-    },
-    {
-      title: "Action",
-      dataIndex: "id",
-      key: "action",
-      render: (id: number) => (
-        <Space>
-          <Button type="primary" onClick={() => handleEdit(id)}>
-            Edit
-          </Button>
-          <Button type="primary" danger onClick={() => handleDelete(id)}>
-            Delete
-          </Button>
-        </Space>
-      ),
-    },
-  ];
-
-  const handleStatusChange = (checked: boolean, id: number) => {
-    const updatedData = data.map((user) => {
-      if (user.id === id) {
-        return { ...user, status: checked };
-      }
-      return user;
-    });
-    setData(updatedData);
-  };
-
-  const handleEdit = (id: number) => {
-    console.log("Edit user with ID:", id);
-  };
-
-  const handleDelete = (id: number) => {
-    const updatedData = data.filter((user) => user.id !== id);
-    setData(updatedData);
-  };
-
-  const handleAddNewAccount = () => {
-    console.log("Adding new account...");
-  };
-
+  const basePath = "/" + loggedUser.role;
   return (
     <div>
-      <Header currentPage="Account" breadcrumbItems={[{ title: "Admin", to: basePath }]} />
-      <div className="flex justify-center">
-        <span className="text-4xl py-4 font-bold">Manage Account</span>
-      </div>
-      <div className="flex justify-end p-3">
-        <Button type="primary" onClick={handleAddNewAccount}>
-          Add New Account
-        </Button>
-      </div>
+      <Header currentPage="Report" breadcrumbItems={[{ title: "Dashboard", to: basePath }]} />
       <div className="p-3">
-        <Table columns={columns} dataSource={data} rowKey="id" />
+        <div className="flex">
+          <span className="text-4xl font-semibold">Manage Account</span>
+        </div>
+        <div className="flex justify-end mb-3">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus className="me-1" /> Add Account
+              </Button>
+            </DialogTrigger>
+            <AddAccount rerender={rerender} />
+          </Dialog>
+        </div>
+        <div className="drop-shadow-md pt-10">
+          <DataTable data={data} rerender={rerender} />
+        </div>
       </div>
     </div>
   );
 };
 
-export default User;
+export default ManageAccount;

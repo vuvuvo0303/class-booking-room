@@ -7,6 +7,7 @@ const StudentProfile = () => {
   return (
     <StudentProfileLayout>
       <Routes>
+        
         <Route path="/" element={<StudentProfilePage />} />
         <Route path="/booking" element={<StudentBookingHistoryPage />} />
         <Route path="/booking" element={<StudentBookingHistoryPage />} />

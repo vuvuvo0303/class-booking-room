@@ -11,4 +11,5 @@ export type Room = {
   deletedAt?: string;
   updatedAt: string;
   roomSlots: Slot[];
+  picture?: string;  
 };

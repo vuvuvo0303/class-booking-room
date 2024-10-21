@@ -32,6 +32,8 @@ import { useEffect, useState } from "react";
 import { Room } from "@/types/room";
 import { updateRoom } from "@/lib/api/room-api";
 import { toast } from "react-toastify";
+import { Image } from "antd";
+import uploadFile from "@/utils/upload";
 
 const formSchema = z.object({
   roomName: z
@@ -48,6 +50,7 @@ const formSchema = z.object({
     required_error: "Room Type is required.",
   }),
   status: z.string().nonempty({ message: "Status is required." }),
+  picture: z.any().optional(),
 });
 
 const UpdateRoom = ({
@@ -64,10 +67,12 @@ const UpdateRoom = ({
       status: room.status,
       capacity: room.capacity,
       roomTypeId: room.roomTypeId + "",
+      picture: null,
     },
   });
 
   const [dataRoomTypes, setDataRoomTypes] = useState<RoomTypes[]>([]);
+  const [imagePreview, setImagePreview] = useState<string | null>(room.picture || null); // Để preview ảnh
 
   useEffect(() => {
     const fetchRoomTypes = async () => {
@@ -93,8 +98,41 @@ const UpdateRoom = ({
         rerender();
       }, 500);
     }
-  }
+    let pictureUrl = room.picture; 
+  
 
+    if (values.picture && values.picture instanceof File) {
+      try {
+        pictureUrl = await uploadFile(values.picture);
+        setImagePreview(pictureUrl); 
+      } catch (error) {
+        console.error("Error uploading file: ", error);
+        return; 
+      }
+    }
+  
+    
+    await updateRoom(room.id, {
+      ...values,
+      picture: pictureUrl, 
+      roomTypeId: parseInt(values.roomTypeId)
+    });
+  
+  
+    setTimeout(() => {
+      rerender();
+    }, 500);
+  }
+  
+  
+  const handleImageChange = (files: FileList | null) => {
+    if (files && files[0]) {
+      const file = files[0];
+      const imageUrl = URL.createObjectURL(file);
+      setImagePreview(imageUrl); // Cập nhật preview ảnh
+      form.setValue("picture", file); // Gán giá trị file cho form
+    }
+  };
   return (
     <DialogContent>
       <Form {...form}>
@@ -196,6 +234,33 @@ const UpdateRoom = ({
                         </SelectContent>
                       </Select>
                     </FormControl>
+                    <FormDescription />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </DialogDescription>
+
+            <DialogDescription asChild>
+              <FormField
+                control={form.control}
+                name="picture"
+                render={() => (
+                  <FormItem>
+                    <label>Upload Image</label>
+                    <FormControl>
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => handleImageChange(e.target.files)}
+                      />
+                    </FormControl>
+                    {imagePreview && (
+                      <Image
+                        src={imagePreview}
+                        width={150}
+                      />
+                    )}
                     <FormDescription />
                     <FormMessage />
                   </FormItem>

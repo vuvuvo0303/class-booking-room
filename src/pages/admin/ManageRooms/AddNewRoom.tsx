@@ -6,14 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -23,13 +16,8 @@ import { createRoom } from "@/lib/api/room-api";
 import { useEffect, useState } from "react";
 import { getAllRoomType } from "@/lib/api/room-type-api";
 import { RoomTypes } from "@/types/room-type";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Image } from "antd";
 
 const formSchema = z.object({
   roomName: z
@@ -48,6 +36,10 @@ const formSchema = z.object({
     .min(1, "Capacity must be at least 1."),
   roomTypeId: z.string().nonempty({ message: "Room Type is required." }),
   status: z.string().nonempty({ message: "Room Type is required." }),
+  picture: z
+    .any()
+    .optional()
+    .refine((file) => file?.length > 0, { message: "Image is required" }),
 });
 
 const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
@@ -58,10 +50,12 @@ const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
       status: "active",
       capacity: undefined,
       roomTypeId: "",
+      picture: null,
     },
   });
 
   const [dataRoomTypes, setDataRoomTypes] = useState<RoomTypes[]>([]);
+  const [imagePreview, setImagePreview] = useState<string | null>(null); // State for image preview
 
   useEffect(() => {
     const fetchRoomTypes = async () => {
@@ -75,12 +69,31 @@ const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
     fetchRoomTypes();
   }, []);
 
+  const handleImageChange = (files: FileList | null) => {
+    if (files && files[0]) {
+      const file = files[0];
+      const imageUrl = URL.createObjectURL(file);
+      setImagePreview(imageUrl); 
+    }
+  };
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await createRoom({ ...values, roomTypeId: parseInt(values.roomTypeId) });
+    
+    const roomData = {
+      roomName: values.roomName,
+      capacity: values.capacity,
+      roomTypeId: parseInt(values.roomTypeId),
+      status: values.status,
+      picture: values.picture || "", 
+    };
+  
+    await createRoom(roomData); 
+    
     setTimeout(() => {
       rerender();
     }, 500);
   }
+  
 
   return (
     <DialogContent>
@@ -117,9 +130,7 @@ const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
                       <Input
                         type="number"
                         placeholder="Enter Capacity"
-                        onChange={(e) =>
-                          field.onChange(parseInt(e.target.value, 10))
-                        }
+                        onChange={(e) => field.onChange(parseInt(e.target.value, 10))}
                       />
                     </FormControl>
                     <FormDescription />
@@ -137,19 +148,13 @@ const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
                   <FormItem>
                     <label>Room Type</label>
                     <FormControl>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select Room Type" />
                         </SelectTrigger>
                         <SelectContent>
                           {dataRoomTypes.map((roomType) => (
-                            <SelectItem
-                              key={roomType.id}
-                              value={roomType.id + ""}
-                            >
+                            <SelectItem key={roomType.id} value={roomType.id + ""}>
                               {roomType.name}
                             </SelectItem>
                           ))}
@@ -162,6 +167,7 @@ const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
                 )}
               />
             </DialogDescription>
+
             <DialogDescription asChild>
               <FormField
                 control={form.control}
@@ -178,6 +184,38 @@ const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
                 )}
               />
             </DialogDescription>
+
+            <DialogDescription asChild>
+              <FormField
+                control={form.control}
+                name="picture"
+                render={({ field }) => (
+                  <FormItem>
+                    <label>Upload Room Picture</label>
+                    <FormControl>
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          field.onChange(e.target.files);
+                          handleImageChange(e.target.files); // Handle image change for preview
+                        }}
+                      />
+                    </FormControl>
+                    <FormDescription />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </DialogDescription>
+
+  
+            {imagePreview && (
+              <div className="flex flex-col">
+                <label>Image Preview:</label>
+                <Image src={imagePreview} alt="Room Image Preview" width={100} />
+              </div>
+            )}
           </DialogHeader>
 
           <DialogFooter>
