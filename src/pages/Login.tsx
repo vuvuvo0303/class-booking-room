@@ -6,18 +6,33 @@ import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { login, loginGoogle } from "@/lib/api/auth-api";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { auth, googleProvider } from "@/config/firebase";
 import { signInWithPopup } from "firebase/auth";
-import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select"; // import Select từ Shadcn
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select"; // import Select từ Shadcn
+import { Loader } from "lucide-react";
 
 const Login = () => {
   const navigate = useNavigate();
   const loggedUser = useAuthStore((state) => state.user);
+  const [isLoading, setIsLoading] = useState(false);
+  const [role, setRole] = useState("Student");
 
   const FormSchema = z.object({
     email: z.string().min(2, {
@@ -25,9 +40,6 @@ const Login = () => {
     }),
     password: z.string().min(6, {
       message: "Password must be at least 6 characters.",
-    }),
-    role: z.enum(["Manager", "Student"], {
-      errorMap: () => ({ message: "Please select a role" }),
     }),
   });
 
@@ -37,13 +49,12 @@ const Login = () => {
       defaultValues: {
         email: "",
         password: "",
-        role: "",
       },
     });
 
     const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+      setIsLoading(true);
       const result = await login(data.email, data.password);
-      console.log(result);
       if (result.error) {
         toast.error(result.error);
       } else {
@@ -53,6 +64,7 @@ const Login = () => {
           navigate(0);
         }, 500);
       }
+      setIsLoading(false);
     };
     useEffect(() => {
       if (loggedUser) {
@@ -89,36 +101,22 @@ const Login = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="Password" {...field} className="w-[400px]" />
+                  <Input
+                    type="password"
+                    placeholder="Password"
+                    {...field}
+                    className="w-[400px]"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="role"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Role</FormLabel>
-                <FormControl>
-                  <div className="flex justify-center">
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <SelectTrigger className="w-[150px]">{field.value}</SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Manager">Manager</SelectItem>
-                        <SelectItem value="Student">Student</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit" className="w-full h-10 ">
-            Submit
+          <Button type="submit" className="w-full h-10" disabled={isLoading}>
+            {
+              isLoading ? <Loader className="animate-spin"/> : "Login"
+            }
           </Button>
         </form>
       </Form>
@@ -130,16 +128,17 @@ const Login = () => {
         // const credential = GoogleAuthProvider.credentialFromResult(result);
         // console.log(credential);
         // console.log(result);
-        handleGoogleLogin("Student", (result.user as any).accessToken);
+        handleGoogleLogin(role, (result.user as any).accessToken);
       })
       .catch((error) => {
         console.log(error);
       });
   };
   const handleGoogleLogin = async (role: string, accessToken: string) => {
+    setIsLoading(true);
     const result = await loginGoogle(role, accessToken);
     if (result.error) {
-      toast.error(result.error);
+      toast.error("Login failed");
     } else {
       localStorage.setItem("accessToken", result.data);
       toast.success("Login Successfully");
@@ -147,6 +146,7 @@ const Login = () => {
         navigate(0);
       }, 500);
     }
+    setIsLoading(false);
   };
   return (
     <>
@@ -155,11 +155,21 @@ const Login = () => {
         {/* <Button onClick={mockLoginAsAdmin}>Mock Login as Admin</Button> */}
         <div className="flex w-full md:w-[85%] bg-white drop-shadow-[0_0_10px_rgba(0,0,0,0.5)] rounded-xl overflow-hidden h-screen">
           <div className="bg-contain relative hidden md:block">
-            <img src={background} alt="" className="h-full relative select-none" />
+            <img
+              src={background}
+              alt=""
+              className="h-full relative select-none"
+            />
             <img src={logofpt} width={100} className="absolute top-5 left-5" />
-            <span className="text-white absolute top-[220px] left-24 text-5xl font-semibold">Welcome</span>
-            <span className="text-white absolute top-[280px] left-56">Log-in to continue</span>
-            <span className="absolute bottom-5 left-8  text-[18px] text-white">fu-booking-room.vercel.app</span>
+            <span className="text-white absolute top-[220px] left-24 text-5xl font-semibold">
+              Welcome
+            </span>
+            <span className="text-white absolute top-[280px] left-56">
+              Log-in to continue
+            </span>
+            <span className="absolute bottom-5 left-8  text-[18px] text-white">
+              fu-booking-room.vercel.app
+            </span>
           </div>
           <div className="flex-1 h-full py-14 overflow-auto px-10">
             <div className="flex justify-center h-20 ">
@@ -176,10 +186,27 @@ const Login = () => {
               <span className="text-gray-500 text-center mx-2">or</span>
               <hr className="border-gray-500 w-1/4 border-t-1" />
             </div>
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <p className="font-semibold">Login as</p>
+              <Select
+                onValueChange={(value) => {
+                  setRole(value);
+                }}
+                defaultValue={"Student"}
+              >
+                <SelectTrigger className="w-[150px]">{role}</SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Manager">Manager</SelectItem>
+                  <SelectItem value="Student">Student</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             <div className="flex justify-center">
               <Button
                 className="flex w-[400px] bg-gray-50 hover:bg-gray-100 gap-9 drop-shadow-lg h-12 justify-between"
                 onClick={handleLoginGoogle}
+                disabled={isLoading}
               >
                 <img
                   src="https://techdocs.akamai.com/identity-cloud/img/social-login/identity-providers/iconfinder-new-google-favicon-682665.png"
