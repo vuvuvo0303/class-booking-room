@@ -18,6 +18,7 @@ function App() {
       const userResult = await checkToken();
       if (userResult.error) {
         toast.error(userResult.error);
+        localStorage.removeItem("accessToken");
       } else {
         setUser(userResult.data ? userResult.data : null);
       }
