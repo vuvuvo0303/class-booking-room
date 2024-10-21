@@ -9,7 +9,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import AddCohortButton from "./AddCohortButton";
-import { Trash2 } from "lucide-react";
+import { LoaderIcon, Trash2 } from "lucide-react";
+import useLoading from "@/hooks/use-loading";
 
 const RoomTypeDetail = () => {
   const loggedUser = useAuthStore((state) => state.user);
@@ -107,7 +108,9 @@ const CohortCard = ({
   roomTypeId: number;
   rerender: () => void;
 }) => {
+  const { isSubmitting, setIsSubmitting } = useLoading();
   const handleRemoveCohort = async () => {
+    setIsSubmitting(true);
     const removeResult = await removeCohort(roomTypeId, cohort.id);
     if (removeResult.error) {
       toast.error(removeResult.error);
@@ -116,12 +119,16 @@ const CohortCard = ({
         rerender();
       }, 500);
     }
-  }
+    setIsSubmitting(false);
+  };
   return (
     <div className="drop-shadow bg-white rounded p-3 flex justify-between items-center">
       <span>{cohort.cohortCode}</span>
       <button onClick={handleRemoveCohort}>
-        <Trash2 className="text-red-500 h-5 w-5" />
+        {
+          isSubmitting ? <LoaderIcon className="text-red-500 h-5 w-5"/> : <Trash2 className="text-red-500 h-5 w-5" />
+        }
+        
       </button>
     </div>
   );
