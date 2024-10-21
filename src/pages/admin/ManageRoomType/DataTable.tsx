@@ -5,6 +5,7 @@ import {  RoomTypes } from "@/types/room-type";
 import { Table } from "antd";
 import UpdateRoomTypes from "./UpdateRoomTypes";
 import DeleteRoomTypes from "./DeleteRoomTypes";
+import { Link } from "react-router-dom";
 // import DeleteCohort from "./DeleteCohort";
 // import UpdateCohort from "./UpdateCohort";
 
@@ -18,8 +19,10 @@ const DataTable = ({
   const columns = [
     {
       title: " Name",
-      dataIndex: "name",
       key: "name",
+      render: (record: RoomTypes) => (
+        <Link to={`/admin/room-types/${record.id}`} className="font-semibold text-blue-500 underline">{record.name}</Link>
+      ),
     },
     {
       title: "Created at",

@@ -8,6 +8,7 @@ import {
   AdminGroupPage,
   AdminRoomDetailPage,
   AdminRoomPage,
+  AdminRoomTypeDetail,
   AdminSlotPage,
   AdminStaffPage,
   AdminStudentDetailPage,
@@ -34,6 +35,7 @@ const Admin = () => {
         <Route path="/rooms" element={<AdminRoomPage />} />
         <Route path="/rooms/:roomId" element={<AdminRoomDetailPage />} />
         <Route path="/room-types" element={<ManageRoomTypes />} />
+        <Route path="/room-types/:roomTypeId" element={<AdminRoomTypeDetail />} />
         <Route path="/slot" element={<AdminSlotPage />} />
         <Route path="/cohort" element={<AdminCohortPage />} />
         <Route path="/report" element={<ManageReport />} />
