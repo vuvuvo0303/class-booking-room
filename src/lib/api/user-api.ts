@@ -55,7 +55,7 @@ export const updateUser = async (
     return handleApiError(error);
   }
 };
-export const deleteUser = async (id: number) => {
+export const deleteUser = async (id: string) => {
   try {
     const { data } = await axiosClient.delete(`/api/users/${id}`);
     return { error: null, data: data, success: true };
@@ -63,3 +63,15 @@ export const deleteUser = async (id: number) => {
     return handleApiError(error);
   }
 };
+
+export const fillUserInfo = async (id: string, departmentId: number, cohortId: number) => {
+  try {
+    const { data } = await axiosClient.put(`/api/users/${id}/department-cohort`, {
+      departmentId: departmentId,
+      cohortId: cohortId
+    });
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+}

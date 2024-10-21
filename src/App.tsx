@@ -7,6 +7,7 @@ import { checkToken } from "./lib/api/auth-api";
 import Loader from "./components/Loader";
 import { toast } from "react-toastify";
 import LoginAdmin from "./pages/admin/LoginAdmin";
+import FillUserInfo from "./pages/student/FillUserInfo";
 
 function App() {
   const setUser = useAuthStore((state) => state.setUser);
@@ -43,6 +44,7 @@ function App() {
       <Route path="/admin/*" element={<Admin />} />
       <Route path="/manager/*" element={<Manager />} />
       <Route path="/*" element={<Home />} />
+      <Route path="/fill-info" element={<FillUserInfo />} />
     </Routes>
   );
 }
