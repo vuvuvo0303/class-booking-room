@@ -43,3 +43,36 @@ export const updateReport = async (
     return handleApiError(error);
   }
 };
+export const approveReport = async (id: number) => {
+  try {
+    const { data } = await axiosClient.put(`/api/reports/${id}/accept`);
+    toast.success("Report approved successfully");
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+export const denyReport = async (id: number, reason: string) => {
+  try {
+    // Gửi chuỗi lý do từ chối trực tiếp, không phải là một đối tượng JSON
+    const { data } = await axiosClient.put(`/api/reports/${id}/deny`, reason, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    toast.success("Report rejected successfully");
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+export const getReportById = async (id: number) => {
+  try {
+    const { data } = await axiosClient.get(`/api/reports/${id}`); 
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
