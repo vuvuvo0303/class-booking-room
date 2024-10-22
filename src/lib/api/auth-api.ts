@@ -39,3 +39,20 @@ export const checkToken = async () => {
     return handleApiError(error);
   }
 };
+export const sendVerifycationEmail = async (userId: string) => {
+  try {
+    const { data } = await axiosClient.post(`/api/auth/${userId}/send-verification-email`);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+export const verifyUser = async (userId: string, otpCode: string) => {
+  try {
+    const { data } = await axiosClient.post(`/api/auth/${userId}/verify`, otpCode);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};

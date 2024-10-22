@@ -9,11 +9,14 @@ import Rules from "@/pages/student/Rules";
 import BookingRoom from "@/pages/student/BookingRoom";
 import StepProcess from "@/pages/student/step-process";
 import useAuthStore from "@/store/AuthStore";
-import VerifyPage from "@/pages/student/VerifyPage";
+import VerifyPage from "@/pages/VerifyPage";
 
 const Home = () => {
   const loggedUser = useAuthStore((state) => state.user);
   const navigate = useNavigate();
+  if (loggedUser && loggedUser.isVerify == false) {
+    navigate("/verify-email");
+  }
   if (
     loggedUser &&
     loggedUser.role == "Student" &&

@@ -3,6 +3,7 @@ export { default as RoomListPage } from "./RoomList";
 export { default as RoomDetailPage } from "./RoomDetail/RoomDetail";
 export { default as HomePage } from "./Home";
 export { default as NewsPage } from "./News";
+export { default as VerifyPage } from "./VerifyPage";
 export { default as StudentProfilePage } from "./student/UserProfile";
 export { default as StudentBookingHistoryPage } from "./student/BookingHistory";
 export { default as StudentReportHistoryPage } from "./student/ReportHistory";
