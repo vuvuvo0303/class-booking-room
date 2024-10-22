@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { getRandomColor } from "@/utils/color";
 import { RoomTypes } from "@/types/room-type";
 import { getRoomTypeById } from "@/lib/api/room-type-api";
+import SomethingWentWrong from "@/components/SomethingWentWrong";
 
 const RoomDetail = () => {
   const [roomDetail, setRoomDetail] = useState<Room>();
@@ -35,7 +36,7 @@ const RoomDetail = () => {
         toast.error(roomDetailResult.error);
       } else {
         setRoomDetail(roomDetailResult.data);
-        setImgSrc(roomDetailResult.data.picture)
+        setImgSrc(roomDetailResult.data.picture);
         const roomTypeResult = await getRoomTypeById(
           roomDetailResult.data.roomType.id
         );
@@ -52,6 +53,9 @@ const RoomDetail = () => {
   if (isLoading) return <Loader />;
   if (!isLoading && roomDetail == null) {
     return <NotFound />;
+  }
+  if (!isLoading && roomType == null) {
+    return <SomethingWentWrong />;
   }
   return (
     <MaxWidthWrapper>
@@ -105,11 +109,14 @@ const RoomDetail = () => {
           </div>
           <p className="">
             <span className="font-semibold">Number of slots:</span>{" "}
-            {roomDetail?.roomSlots?.length} (slot)
+            {roomDetail?.roomSlots?.length} slot(s)
           </p>
 
           <div className="mt-2">
-            <Calendar slots={roomDetail!.roomSlots} />
+            <Calendar
+              slots={roomDetail!.roomSlots}
+              allowedCohorts={roomType!.allowedCohorts}
+            />
           </div>
         </div>
       </div>

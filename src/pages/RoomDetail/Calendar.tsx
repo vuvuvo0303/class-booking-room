@@ -6,7 +6,13 @@ import { formatDateToTimeString } from "@/utils/time";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 
-const Calendar = ({ slots }: { slots: Slot[] }) => {
+const Calendar = ({
+  slots,
+  allowedCohorts,
+}: {
+  slots: Slot[];
+  allowedCohorts: { id: number; cohortCode: string }[];
+}) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedSlots, setSelectedSlots] = useState<Slot[]>([]);
@@ -49,7 +55,7 @@ const Calendar = ({ slots }: { slots: Slot[] }) => {
   };
 
   const handleSelectSlot = (slot: Slot) => {
-    if (!selectedSlots.find((s) => s.id == slot.id)) {  
+    if (!selectedSlots.find((s) => s.id == slot.id)) {
       setSelectedSlots([...selectedSlots, slot]);
     } else {
       setSelectedSlots(selectedSlots.filter((s) => s.id != slot.id));
@@ -59,6 +65,13 @@ const Calendar = ({ slots }: { slots: Slot[] }) => {
     if (areDatesEqual(date, new Date()) < 0) return;
     setSelectedDate(date);
   };
+  var isAllowed = false;
+  if (
+    loggedUser &&
+    allowedCohorts.find((cohort) => cohort.id == loggedUser.cohortId)
+  ) {
+    isAllowed = true;
+  }
   return (
     <div className="flex flex-col items-center">
       <h2 className="text-2xl font-semibold">Week Calendar</h2>
@@ -118,7 +131,12 @@ const Calendar = ({ slots }: { slots: Slot[] }) => {
           You need to login to book this room
         </div>
       )}
-      {loggedUser && selectedDate && (
+      {loggedUser && !isAllowed && (
+        <div className="text-2xl mt-2 text-red-500">
+          You don't have permission to book this room
+        </div>
+      )}
+      {loggedUser && isAllowed && selectedDate && (
         <div className="bg-white p-5 rounded-md drop-shadow-lg mt-5 w-[400px]">
           <div className="text-2xl font-semibold">Booking Information</div>
           <div>
@@ -131,7 +149,7 @@ const Calendar = ({ slots }: { slots: Slot[] }) => {
               return (
                 <button
                   key={`booking-slot-${slot.id}`}
-                  className="bg-green-500 hover:bg-green-400 px-2 py-1 rounded-md"
+                  className="bg-green-500 hover:bg-green-400 px-2 py-1 rounded-md font-semibold"
                   onClick={() => handleSelectSlot(slot)}
                 >
                   {formatDateToTimeString(new Date(slot.startTime), true)} -{" "}
