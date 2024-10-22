@@ -10,20 +10,24 @@ import BookingRoom from "@/pages/student/BookingRoom";
 import StepProcess from "@/pages/student/step-process";
 import useAuthStore from "@/store/AuthStore";
 import VerifyPage from "@/pages/VerifyPage";
+import { useEffect } from "react";
 
 const Home = () => {
   const loggedUser = useAuthStore((state) => state.user);
   const navigate = useNavigate();
-  if (loggedUser && loggedUser.isVerify == false) {
-    navigate("/verify-email");
-  }
-  if (
-    loggedUser &&
-    loggedUser.role == "Student" &&
-    (loggedUser.cohortId == null || loggedUser.departmentId == null)
-  ) {
-    navigate("/fill-info");
-  }
+  useEffect(() => {
+    if (loggedUser && loggedUser.isVerify == false) {
+      navigate("/verify-email");
+    }
+    if (
+      loggedUser &&
+      loggedUser.role == "Student" &&
+      (loggedUser.cohortId == null || loggedUser.departmentId == null)
+    ) {
+      navigate("/fill-info");
+    }
+  }, [loggedUser]);
+
   return (
     <MainLayout>
       <Routes>
@@ -31,7 +35,7 @@ const Home = () => {
         <Route path="/room" element={<RoomListPage />} />
         <Route path="/rules" element={<Rules />} />
         <Route path="/about-us" element={<AboutUs />} />
-        
+
         <Route path="/verify-account" element={<VerifyPage />} />
         {/* <Route path="/about-us" element={<AboutUs />} /> */}
         <Route path="/policy" element={<Policy />} />
