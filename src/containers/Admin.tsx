@@ -5,6 +5,8 @@ import {
   AdminBookingPage,
   AdminCohortPage,
   AdminDashboardPage,
+  AdminDepartment,
+  AdminDepartmentDetail,
   AdminGroupPage,
   AdminRoomDetailPage,
   AdminRoomPage,
@@ -41,8 +43,8 @@ const Admin = () => {
         <Route path="/slot" element={<AdminSlotPage />} />
         <Route path="/cohort" element={<AdminCohortPage />} />
         <Route path="/report" element={<ManageReport />} />
-        <Route path="/activity" element={<ManageActivity />} />
-        <Route path="/department" element={<ManageDepartment />} />
+        <Route path="/department" element={<AdminDepartment />} />
+        <Route path="/department/:departmentId" element={<AdminDepartmentDetail />} />
         <Route
           path="/student/:studentId"
           element={<AdminStudentDetailPage />}

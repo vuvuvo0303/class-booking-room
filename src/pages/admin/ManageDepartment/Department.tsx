@@ -1,25 +1,25 @@
-import Header from "@/components/admin/Header";
-import useAuthStore from "@/store/AuthStore";
-import { useEffect, useState } from "react";
-import useRerender from "@/hooks/use-rerender";
 import Loader from "@/components/Loader";
-import { getAllActivity } from "@/lib/api/activity-api";
-import DataTable from "./DataTable";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import Header from "@/components/admin/Header";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import useRerender from "@/hooks/use-rerender";
+import { getAllDepartments } from "@/lib/api/department-api";
+import useAuthStore from "@/store/AuthStore";
+import { Department } from "@/types/department";
 import { Plus } from "lucide-react";
-import { Activity } from "@/types/department";
-import AddActivity from "./AddActivity";
+import { useEffect, useState } from "react";
+import AddNewDepartment from "./AddNewDepartment";
+import DataTable from "./DataTable";
 
-const ManageActivity = () => {
+const DepartmentPage = () => {
   const loggedUser = useAuthStore((state) => state.user);
+  const [data, setData] = useState<Department[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { renderKey, rerender } = useRerender();
-  const [data, setData] = useState<Activity[]>([]);
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      const result = await getAllActivity();
+      const result = await getAllDepartments();
       setIsLoading(false);
       if (result.error) {
         console.log(result.error);
@@ -29,27 +29,29 @@ const ManageActivity = () => {
     };
     fetchData();
   }, [renderKey]);
-  if (isLoading) return <Loader text="Loading Activity data..." />;
-
   const basePath = "/" + loggedUser.role;
+  if (isLoading) return <Loader text="Loading department data..." />;
   return (
-    <div>
-      <Header currentPage="Activity" breadcrumbItems={[{ title: "Dashboard", to: basePath }]} />
+    <div className="bg-white">
+      <Header
+        currentPage="Department"
+        breadcrumbItems={[{ title: "Dashboard", to: basePath }]}
+      />
       <div className="p-3">
         <div className="flex">
-          <span className="text-4xl font-semibold">Manage Activity</span>
+          <span className="text-4xl font-semibold">Manage Department</span>
         </div>
         <div className="flex justify-end mb-3">
           <Dialog>
             <DialogTrigger asChild>
               <Button>
-                <Plus className="me-1" /> Add Activity
+                <Plus className="me-1" /> Add Department
               </Button>
             </DialogTrigger>
-            <AddActivity rerender={rerender} />
+            <AddNewDepartment rerender={rerender} />
           </Dialog>
         </div>
-        <div className="drop-shadow-md pt-10">
+        <div className="drop-shadow-md">
           <DataTable data={data} rerender={rerender} />
         </div>
       </div>
@@ -57,4 +59,4 @@ const ManageActivity = () => {
   );
 };
 
-export default ManageActivity;
+export default DepartmentPage;

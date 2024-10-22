@@ -19,3 +19,6 @@ export { default as AdminBookingDetailPage } from "./admin/BookingDetail";
 export { default as AdminStaffPage } from "./admin/Staff";
 export { default as AdminCohortPage } from "./admin/Cohort/Cohort";
 export { default as AdminRoomTypeDetail } from "./admin/ManageRoomType/RoomTypeDetail";
+export { default as AdminDepartment } from "./admin/ManageDepartment/Department";
+export { default as AdminDepartmentDetail } from "./admin/ManageDepartment/DepartmentDetail";
+

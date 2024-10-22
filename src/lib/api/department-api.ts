@@ -21,7 +21,7 @@ export const getAllDepartments = async () => {
 
 export const getDepartmentById = async (id: number) => {
     try {
-        const { data } = await axiosClient.get(`/api/department/${id}`);
+        const { data } = await axiosClient.get(`/api/departments/${id}`);
         return { error: null, data: data, success: true };
     } catch (error) {
         return handleApiError(error);
@@ -31,7 +31,7 @@ export const createDepartment = async (formData: {
     name: string,
 }) => {
     try {
-        const { data } = await axiosClient.post(`/api/department`, formData);
+        const { data } = await axiosClient.post(`/api/departments`, formData);
         return { error: null, data: data, success: true };
     } catch (error) {
         return handleApiError(error);
@@ -42,7 +42,7 @@ export const updateDepartment = async (id: number, formData: {
     name: string,
 }) => {
     try {
-        const { data } = await axiosClient.put(`/api/department/${id}`, formData);
+        const { data } = await axiosClient.put(`/api/departments/${id}`, formData);
         return { error: null, data: data, success: true };
     } catch (error) {
         return handleApiError(error);
@@ -50,7 +50,7 @@ export const updateDepartment = async (id: number, formData: {
 }
 export const deleteDepartment = async (id: number) => {
     try {
-        const { data } = await axiosClient.delete(`/api/department/${id}`);
+        const { data } = await axiosClient.delete(`/api/departments/${id}`);
         return { error: null, data: data, success: true };
     } catch (error) {
         return handleApiError(error);

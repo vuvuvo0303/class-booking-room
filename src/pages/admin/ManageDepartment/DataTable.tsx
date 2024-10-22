@@ -1,42 +1,39 @@
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Activity } from "@/types/department";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Table } from "antd";
+import { Link } from "react-router-dom";
+import UpdateDepartment from "./UpdateDepartment";
+import DeleteDepartment from "./DeleteDepartment";
+import { Department } from "@/types/department";
 
 const DataTable = ({
   data,
   rerender,
 }: {
-  data: Activity[];
+  data: Department[];
   rerender: () => void;
 }) => {
   const columns = [
     {
-      title: "Code",
-      dataIndex: "code",
-      key: "code",
-    },
-    {
-      title: "Activity Name",
-      dataIndex: "name",
+      title: "Department",
       key: "name",
+      render: (record: Department) => (
+        <Link to={`/admin/department/${record.id}`} className="font-semibold text-blue-500 underline">{record.name}</Link>
+      ),
     },
     {
-      title: "Department Name",
-      key: "department",
-      render: (record: Activity) => <span>{record.department?.name}</span>,
-    },
-
-    {
-      title: "Created At",
+      title: "Created at",
       dataIndex: "createdAt",
+      key: "createdAt",
       render: (createAt: string) => (
         <span>{new Date(createAt).toLocaleDateString()}</span>
       ),
     },
     {
-      title: "Updated At",
+      title: "Updated at",
       dataIndex: "updatedAt",
+      key: "updatedAt",
       render: (updatedAt: string) => (
         <span>{new Date(updatedAt).toLocaleDateString()}</span>
       ),
@@ -45,19 +42,24 @@ const DataTable = ({
       title: "Action",
       width: "50px",
       key: "action",
-      render: (record: Activity) => (
+      render: (record: Department) => (
         <div className="flex gap-2">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>Edit</Button>
+            </DialogTrigger>
+            <UpdateDepartment department={record} rerender={rerender} />
+          </Dialog>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant={"destructive"}>Delete</Button>
             </AlertDialogTrigger>
-            {/* <DeleteReport report={record} rerender={rerender} /> */}
+            <DeleteDepartment department={record} rerender={rerender} />
           </AlertDialog>
         </div>
       ),
     },
   ];
-
   return <Table columns={columns} dataSource={data} rowKey={"id"} />;
 };
 
