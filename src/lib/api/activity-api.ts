@@ -26,3 +26,11 @@ export const createActivity = async (formData: { code: string; name: string; dep
     return handleApiError(error);
   }
 };
+export const deleteActivity = async (id: number) => {
+  try {
+    const { data } = await axiosClient.delete(`/api/departments/activities/${id}`);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};

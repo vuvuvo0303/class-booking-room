@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Activity } from "@/types/department";
 import { Report } from "@/types/report";
 import { Table } from "antd";
+import DeleteActivity from "./DeleteActivity";
 
 const DataTable = ({ data, rerender }: { data: Report[]; rerender: () => void }) => {
   const columns = [
@@ -42,7 +43,7 @@ const DataTable = ({ data, rerender }: { data: Report[]; rerender: () => void })
             <AlertDialogTrigger asChild>
               <Button variant={"destructive"}>Delete</Button>
             </AlertDialogTrigger>
-            {/* <DeleteReport report={record} rerender={rerender} /> */}
+            <DeleteActivity activity={record} rerender={rerender} />
           </AlertDialog>
         </div>
       ),
