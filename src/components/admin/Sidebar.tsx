@@ -6,9 +6,11 @@ import {
   Group,
   Layers3,
   LayoutGrid,
+  Menu,
   MenuIcon,
   MessageSquareWarning,
   ReceiptText,
+  SquareChartGantt,
   UserSearch,
   Users,
 } from "lucide-react";
@@ -88,6 +90,16 @@ const navItems: NavItemType[] = [
     title: "Cohort",
     to: "cohort",
     icon: <Users />,
+  },
+  {
+    title: "Activity",
+    to: "activity",
+    icon: <SquareChartGantt />,
+  },
+  {
+    title: "Department",
+    to: "department",
+    icon: <Menu />,
   },
 ];
 const Sidebar = () => {

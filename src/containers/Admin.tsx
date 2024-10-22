@@ -14,6 +14,8 @@ import {
   AdminStudentPage,
   AdminUserPage,
 } from "@/pages";
+import ManageActivity from "@/pages/admin/ManageActivity/ManageActivity";
+import ManageDepartment from "@/pages/admin/ManageDepartment/ManageDepartment";
 import ManageReport from "@/pages/admin/Managereport/Report";
 import ManageRoomTypes from "@/pages/admin/ManageRoomType/ManageRoomTypes";
 import useAuthStore from "@/store/AuthStore";
@@ -37,6 +39,8 @@ const Admin = () => {
         <Route path="/slot" element={<AdminSlotPage />} />
         <Route path="/cohort" element={<AdminCohortPage />} />
         <Route path="/report" element={<ManageReport />} />
+        <Route path="/activity" element={<ManageActivity />} />
+        <Route path="/department" element={<ManageDepartment />} />
         <Route
           path="/student/:studentId"
           element={<AdminStudentDetailPage />}

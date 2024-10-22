@@ -8,10 +8,12 @@ export type Department = {
 }
 
 export type Activity = {
-    createdAt: string,
-    deletedAt?: string,
-    updatedAt: string,
     id: number,
-    name: string,
     code: string,
+    name: string,
+    createdAt: string,
+    updatedAt: string,
+    deletedAt?: string | null,
+    isDeleted: boolean,
+    department: Department,
 }
