@@ -8,10 +8,21 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Calendar from "./Calendar";
+import { cn } from "@/lib/utils";
+import { getRandomColor } from "@/utils/color";
+import { RoomTypes } from "@/types/room-type";
+import { getRoomTypeById } from "@/lib/api/room-type-api";
 
 const RoomDetail = () => {
   const [roomDetail, setRoomDetail] = useState<Room>();
+  const [roomType, setRoomType] = useState<RoomTypes>();
   const [isLoading, setIsLoading] = useState<Boolean>(false);
+  const [imgSrc, setImgSrc] = useState<string>("");
+  const handleError = () => {
+    setImgSrc(
+      "https://daihoc.fpt.edu.vn/wp-content/uploads/2023/08/nhung-tien-ich-tai-dh-fpt-hcm-3-650x433.jpeg"
+    );
+  };
   const { roomId } = useParams();
   if (roomId == null) {
     return <NotFound />;
@@ -24,19 +35,34 @@ const RoomDetail = () => {
         toast.error(roomDetailResult.error);
       } else {
         setRoomDetail(roomDetailResult.data);
+        setImgSrc(roomDetailResult.data.picture)
+        const roomTypeResult = await getRoomTypeById(
+          roomDetailResult.data.roomType.id
+        );
+        if (roomTypeResult.error) {
+          toast.error(roomTypeResult.error);
+        } else {
+          setRoomType(roomTypeResult.data);
+        }
       }
       setIsLoading(false);
     };
     fetchData();
   }, []);
   if (isLoading) return <Loader />;
-  if (roomDetail == null) {
+  if (!isLoading && roomDetail == null) {
     return <NotFound />;
   }
   return (
     <MaxWidthWrapper>
       <div className="bg-white">
         <div className="p-3">
+          <img
+            src={imgSrc}
+            className="h-[200px] w-full rounded-lg object-cover"
+            alt=""
+            onError={handleError}
+          />
           <div className="flex">
             <span className="text-4xl font-semibold">
               Room {roomDetail?.roomName}
@@ -56,6 +82,23 @@ const RoomDetail = () => {
             <span className="font-semibold">Type:</span>{" "}
             {roomDetail?.roomType.name}
           </p>
+          <div className="flex gap-2">
+            <span className="font-semibold">Allowed cohort:</span>{" "}
+            <div className="flex gap-2">
+              {roomType?.allowedCohorts.map((cohort) => {
+                const color = getRandomColor(cohort.cohortCode);
+                return (
+                  <Badge
+                    className={cn(`bg-${color}-500 hover:bg-${color}-300`)}
+                    key={`allowed-cohort-${cohort.id}`}
+                  >
+                    {cohort.cohortCode}
+                  </Badge>
+                );
+              })}
+              {roomType?.allowedCohorts.length == 0 && "None"}
+            </div>
+          </div>
           <div className="">
             <span className="font-semibold">Status:</span>{" "}
             <Badge>{roomDetail?.status}</Badge>
@@ -64,8 +107,9 @@ const RoomDetail = () => {
             <span className="font-semibold">Number of slots:</span>{" "}
             {roomDetail?.roomSlots?.length} (slot)
           </p>
+
           <div className="mt-2">
-            <Calendar slots={roomDetail?.roomSlots}/>
+            <Calendar slots={roomDetail!.roomSlots} />
           </div>
         </div>
       </div>

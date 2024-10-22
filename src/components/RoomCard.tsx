@@ -13,7 +13,7 @@ const RoomCard = ({ room }: { room: Room }) => {
   return (
     <Card className="col-span-3 drop-shadow-lg">
       <img
-        className="rounded-lg"
+        className="rounded-lg h-[180px] w-full object-cover"
         onError={handleError}
         src={imgSrc}
       />
