@@ -26,6 +26,7 @@ export const createActivity = async (formData: { code: string; name: string; dep
     return handleApiError(error);
   }
 };
+
 export const deleteActivity = async (id: number) => {
   try {
     const { data } = await axiosClient.delete(`/api/departments/activities/${id}`);
@@ -33,14 +34,13 @@ export const deleteActivity = async (id: number) => {
   } catch (error) {
     return handleApiError(error);
   }
-};
+}
 
 export const updateActivity = async (
   id: number,
   formData: {
     code: string;
     name: string;
-    departmentId: number;
   }
 ) => {
   try {

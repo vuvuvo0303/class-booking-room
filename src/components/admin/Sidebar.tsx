@@ -6,7 +6,6 @@ import {
   Group,
   Layers3,
   LayoutGrid,
-  Menu,
   MenuIcon,
   MessageSquareWarning,
   ReceiptText,
@@ -92,14 +91,9 @@ const navItems: NavItemType[] = [
     icon: <Users />,
   },
   {
-    title: "Activity",
-    to: "activity",
-    icon: <SquareChartGantt />,
-  },
-  {
     title: "Department",
     to: "department",
-    icon: <Menu />,
+    icon: <SquareChartGantt />,
   },
 ];
 const Sidebar = () => {

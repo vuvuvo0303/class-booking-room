@@ -7,18 +7,18 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { deleteReport } from "@/lib/api/report-api";
-import { Report } from "@/types/report";
+import { deleteDepartment } from "@/lib/api/department-api";
+import { Department } from "@/types/department";
 
-const DeleteReport = ({
-  report,
+const DeleteDepartment = ({
+  department,
   rerender,
 }: {
-  report: Report;
+  department: Department;
   rerender: () => void;
 }) => {
   async function handleDelete() {
-    await deleteReport(report.id);
+    await deleteDepartment(department.id);
     setTimeout(() => {
       rerender();
     }, 500);
@@ -26,9 +26,9 @@ const DeleteReport = ({
   return (
     <AlertDialogContent>
       <AlertDialogHeader>
-        <AlertDialogTitle>Delete {report.id}</AlertDialogTitle>
+        <AlertDialogTitle>Delete {department.name}</AlertDialogTitle>
         <AlertDialogDescription>
-          Are you sure to delete this report?
+          Are you sure to delete this department?
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogDescription />
@@ -42,4 +42,4 @@ const DeleteReport = ({
   );
 };
 
-export default DeleteReport;
+export default DeleteDepartment;

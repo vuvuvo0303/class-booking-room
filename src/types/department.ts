@@ -3,7 +3,7 @@ export type Department = {
     name: string,
     createdAt: string,
     deletedAt?: string,
-    updateAt: string,
+    updatedAt: string,
     activites: Activity[],
 }
 

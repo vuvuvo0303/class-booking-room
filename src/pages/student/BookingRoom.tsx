@@ -44,7 +44,7 @@ const BookingRoom = () => {
   });
   if (isLoading) return <Loader />;
   return (
-    <div className="py-20">
+    <div className="pb-10">
       <div className="w-screen bg-blue-900 rounded-md py-9">
         <div className="flex justify-center gap-8">
           <span className="text-6xl">Hello!!</span>

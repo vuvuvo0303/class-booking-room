@@ -67,7 +67,7 @@ const DataTable = ({ data, rerender }: { data: Report[]; rerender: () => void })
     },
     {
       title: "Created At",
-      dataIndex: "createAt",
+      dataIndex: "createdAt",
       render: (createAt: string) => <span>{new Date(createAt).toLocaleDateString()}</span>,
     },
     {
