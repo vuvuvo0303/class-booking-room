@@ -26,3 +26,27 @@ export const createActivity = async (formData: { code: string; name: string; dep
     return handleApiError(error);
   }
 };
+
+export const deleteActivity = async (id: number) => {
+  try {
+    const { data } = await axiosClient.delete(`/api/departments/activities/${id}`);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+}
+
+export const updateActivity = async (
+  id: number,
+  formData: {
+    code: string;
+    name: string;
+  }
+) => {
+  try {
+    const { data } = await axiosClient.put(`/api/departments/activities/${id}`, formData);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
