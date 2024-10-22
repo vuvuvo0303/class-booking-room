@@ -1,10 +1,15 @@
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Activity } from "@/types/department";
-import { Report } from "@/types/report";
 import { Table } from "antd";
 
-const DataTable = ({ data, rerender }: { data: Report[]; rerender: () => void }) => {
+const DataTable = ({
+  data,
+  rerender,
+}: {
+  data: Activity[];
+  rerender: () => void;
+}) => {
   const columns = [
     {
       title: "Code",
@@ -24,13 +29,17 @@ const DataTable = ({ data, rerender }: { data: Report[]; rerender: () => void })
 
     {
       title: "Created At",
-      dataIndex: "createAt",
-      render: (createAt: string) => <span>{new Date(createAt).toLocaleDateString()}</span>,
+      dataIndex: "createdAt",
+      render: (createAt: string) => (
+        <span>{new Date(createAt).toLocaleDateString()}</span>
+      ),
     },
     {
       title: "Updated At",
       dataIndex: "updatedAt",
-      render: (updatedAt: string) => <span>{new Date(updatedAt).toLocaleDateString()}</span>,
+      render: (updatedAt: string) => (
+        <span>{new Date(updatedAt).toLocaleDateString()}</span>
+      ),
     },
     {
       title: "Action",
