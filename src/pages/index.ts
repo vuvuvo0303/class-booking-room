@@ -3,6 +3,7 @@ export { default as RoomListPage } from "./RoomList";
 export { default as RoomDetailPage } from "./RoomDetail/RoomDetail";
 export { default as HomePage } from "./Home";
 export { default as NewsPage } from "./News";
+export { default as VerifyPage } from "./VerifyPage";
 export { default as StudentProfilePage } from "./student/UserProfile";
 export { default as StudentBookingHistoryPage } from "./student/BookingHistory";
 export { default as StudentReportHistoryPage } from "./student/ReportHistory";
@@ -18,3 +19,7 @@ export { default as AdminBookingPage } from "./admin/Booking";
 export { default as AdminBookingDetailPage } from "./admin/BookingDetail";
 export { default as AdminStaffPage } from "./admin/Staff";
 export { default as AdminCohortPage } from "./admin/Cohort/Cohort";
+export { default as AdminRoomTypeDetail } from "./admin/ManageRoomType/RoomTypeDetail";
+export { default as AdminDepartment } from "./admin/ManageDepartment/Department";
+export { default as AdminDepartmentDetail } from "./admin/ManageDepartment/DepartmentDetail";
+

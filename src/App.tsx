@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { LoginPage } from "./pages";
+import { LoginPage, VerifyPage } from "./pages";
 import { Admin, Home, Manager } from "./containers";
 import useAuthStore from "./store/AuthStore";
 import { useEffect, useState } from "react";
@@ -18,7 +18,9 @@ function App() {
       setIsLoading(true);
       const userResult = await checkToken();
       if (userResult.error) {
-        toast.error(userResult.error);
+        toast.error(userResult.error, {
+          toastId: 'tokenError',
+      });
         localStorage.removeItem("accessToken");
       } else {
         setUser(userResult.data ? userResult.data : null);
@@ -45,6 +47,7 @@ function App() {
       <Route path="/manager/*" element={<Manager />} />
       <Route path="/*" element={<Home />} />
       <Route path="/fill-info" element={<FillUserInfo />} />
+      <Route path="/verify-email" element={<VerifyPage />} />
     </Routes>
   );
 }

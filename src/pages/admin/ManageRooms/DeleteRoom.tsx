@@ -9,7 +9,6 @@ import {
   } from "@/components/ui/alert-dialog";
 import { deleteRoom } from "@/lib/api/room-api";
 import { Room } from "@/types/room";
-  
   const DeleteRoom = ({
     room,
     rerender,
@@ -28,8 +27,7 @@ import { Room } from "@/types/room";
         <AlertDialogHeader>
           <AlertDialogTitle>Delete {room.roomName}</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete and remove
-            data from servers
+            Are you sure to delete this room?
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogDescription />

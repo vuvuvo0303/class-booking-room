@@ -22,7 +22,7 @@ export const getAllRoomType = async () => {
 
 export const getRoomTypeById = async (id: number) => {
     try {
-        const { data } = await axiosClient.get(`/api/room-type/${id}`);
+        const { data } = await axiosClient.get(`/api/room-types/${id}`);
         return { error: null, data: data, success: true };
     } catch (error) {
         return handleApiError(error);
@@ -59,6 +59,25 @@ export const deleteRoomType = async (id: number) => {
         const { data } = await axiosClient.delete(`/api/room-types/${id}`);
         toast.success("Delete Room Type Successfully");
 
+        return { error: null, data: data, success: true };
+    } catch (error) {
+        return handleApiError(error);
+    }
+}
+
+export const addCohort = async (roomTypeId: number, cohortId: number) => {
+    console.log(`/api/room-types/${roomTypeId}/cohort`);
+    console.log(cohortId)
+    try {
+        const { data } = await axiosClient.put(`/api/room-types/${roomTypeId}/cohort`, cohortId);
+        return { error: null, data: data, success: true };
+    } catch (error) {
+        return handleApiError(error);
+    }
+}
+export const removeCohort = async (roomTypeId: number, cohortId: number) => {
+    try {
+        const { data } = await axiosClient.delete(`/api/room-types/${roomTypeId}/cohort?cohortId=${cohortId}`);
         return { error: null, data: data, success: true };
     } catch (error) {
         return handleApiError(error);

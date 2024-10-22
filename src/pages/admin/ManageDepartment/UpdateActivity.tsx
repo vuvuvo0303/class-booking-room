@@ -12,12 +12,8 @@ import {
   import { z } from "zod";
   import { Input } from "@/components/ui/input";
   import { Button } from "@/components/ui/button";
-  import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-  import { Department } from "@/types/department";
-  import { useEffect, useState } from "react";
-  import { getAllDepartments } from "@/lib/api/department-api";
-  import { createActivity } from "@/lib/api/activity-api";
-  
+  import { Activity } from "@/types/department";
+  import { updateActivity } from "@/lib/api/activity-api";
   const formSchema = z.object({
     code: z
       .string()
@@ -35,59 +31,27 @@ import {
       .max(50, {
         message: "Name must not contain more than 50 characters.",
       }),
-    departmentId:z.string().nonempty({ message: "Room Type is required." }),
   });
-  
-  const AddActivity = ({ rerender }: { rerender: () => void }) => {
-    const [dataDepartment, setDataDepartment] = useState<Department[]>([]);
-  
-    useEffect(() => {
-      const fetchDataDepartment = async () => {
-        const result = await getAllDepartments();
-        if (result.error) {
-          console.log(result.error);
-        } else {
-          setDataDepartment(result.data);
-        }
-      };
-      fetchDataDepartment();
-    }, []);
-  
+  const UpdateActivity = ({ activity, rerender }: { activity: Activity; rerender: () => void }) => {
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
       defaultValues: {
-        code: "",
-        name: "",
-        departmentId: "",
+        code:activity.code,
+        name: activity.name,
       },
     });
-  
     async function onSubmit(values: z.infer<typeof formSchema>) {
-      try {
-        const ActivityValues = {
-          code: values.code,
-          name: values.name,
-          departmentId: parseInt(values.departmentId),
-        };
-        await createActivity(ActivityValues);
-        
-    
-  
-        setTimeout(() => {
-          rerender();
-        }, 500);
-        
-      } catch (error) {
-        console.error("Error creating activity: ", error);
-      }
+      await updateActivity(activity.id, values);
+      setTimeout(() => {
+        rerender();
+      }, 500);
     }
-  
     return (
       <DialogContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>
-              <DialogTitle>Create new Activity</DialogTitle>
+              <DialogTitle>Update Activity</DialogTitle>
               <DialogDescription asChild>
                 <FormField
                   control={form.control}
@@ -104,7 +68,6 @@ import {
                   )}
                 />
               </DialogDescription>
-  
               <DialogDescription asChild>
                 <FormField
                   control={form.control}
@@ -121,42 +84,11 @@ import {
                   )}
                 />
               </DialogDescription>
-  
-              <DialogDescription asChild>
-                <FormField
-                  control={form.control}
-                  name="departmentId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <label>Department</label>
-                      <FormControl>
-                        <Select 
-                          onValueChange={field.onChange} 
-                          value={field.value }
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select Department" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {dataDepartment.map((department) => (
-                              <SelectItem key={department.id} value={department.id +""}>
-                                {department.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormDescription />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </DialogDescription>
             </DialogHeader>
             <DialogDescription />
             <DialogFooter>
               <DialogClose>
-                <Button type="submit">Create</Button>
+                <Button type="submit">Update</Button>
               </DialogClose>
             </DialogFooter>
           </form>
@@ -164,6 +96,4 @@ import {
       </DialogContent>
     );
   };
-  
-  export default AddActivity;
-  
+  export default UpdateActivity;
