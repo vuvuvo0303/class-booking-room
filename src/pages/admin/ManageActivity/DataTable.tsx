@@ -4,6 +4,8 @@ import { Activity } from "@/types/department";
 import { Report } from "@/types/report";
 import { Table } from "antd";
 import DeleteActivity from "./DeleteActivity";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import UpdateActivity from "./UpdateActivity";
 
 const DataTable = ({ data, rerender }: { data: Report[]; rerender: () => void }) => {
   const columns = [
@@ -39,6 +41,12 @@ const DataTable = ({ data, rerender }: { data: Report[]; rerender: () => void })
       key: "action",
       render: (record: Activity) => (
         <div className="flex gap-2">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>Edit</Button>
+            </DialogTrigger>
+            <UpdateActivity activity={record} rerender={rerender} />
+          </Dialog>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant={"destructive"}>Delete</Button>

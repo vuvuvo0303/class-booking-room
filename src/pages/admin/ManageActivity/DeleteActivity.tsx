@@ -8,7 +8,6 @@ import {
     AlertDialogTitle,
   } from "@/components/ui/alert-dialog";
 import { deleteActivity } from "@/lib/api/activity-api";
-  import { deleteCohort } from "@/lib/api/cohort-api";
 import { Activity } from "@/types/department";
   
   const DeleteActivity = ({

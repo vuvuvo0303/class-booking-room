@@ -3,7 +3,6 @@ import useAuthStore from "@/store/AuthStore";
 import { useEffect, useState } from "react";
 import useRerender from "@/hooks/use-rerender";
 import Loader from "@/components/Loader";
-import { Report } from "@/types/report";
 import { getAllActivity } from "@/lib/api/activity-api";
 import DataTable from "./DataTable";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";

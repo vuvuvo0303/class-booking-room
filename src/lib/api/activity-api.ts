@@ -34,3 +34,19 @@ export const deleteActivity = async (id: number) => {
     return handleApiError(error);
   }
 };
+
+export const updateActivity = async (
+  id: number,
+  formData: {
+    code: string;
+    name: string;
+    departmentId: number;
+  }
+) => {
+  try {
+    const { data } = await axiosClient.put(`/api/departments/activities/${id}`, formData);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};

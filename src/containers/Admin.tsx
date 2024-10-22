@@ -40,7 +40,6 @@ const Admin = () => {
         <Route path="/cohort" element={<AdminCohortPage />} />
         <Route path="/report" element={<ManageReport />} />
         <Route path="/activity" element={<ManageActivity />} />
-        <Route path="/department" element={<ManageDepartment />} />
         <Route
           path="/student/:studentId"
           element={<AdminStudentDetailPage />}
