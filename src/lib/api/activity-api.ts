@@ -18,6 +18,14 @@ export const getAllActivity = async () => {
     return handleApiError(error);
   }
 };
+export const getActivitiesByDepartmentId = async (departmentId: number) => {
+  try {
+    const { data } = await axiosClient.get(`/api/departments/${departmentId}/activities`);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
 export const createActivity = async (formData: { code: string; name: string; departmentId: number }) => {
   try {
     const { data } = await axiosClient.post(`/api/departments/activities`, formData);

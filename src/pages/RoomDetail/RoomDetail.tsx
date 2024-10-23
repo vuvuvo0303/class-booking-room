@@ -113,10 +113,13 @@ const RoomDetail = () => {
           </p>
 
           <div className="mt-2">
-            <Calendar
-              slots={roomDetail!.roomSlots}
-              allowedCohorts={roomType!.allowedCohorts}
-            />
+            {roomDetail && (
+              <Calendar
+                slots={roomDetail.roomSlots}
+                allowedCohorts={roomType!.allowedCohorts}
+                room={roomDetail}
+              />
+            )}
           </div>
         </div>
       </div>

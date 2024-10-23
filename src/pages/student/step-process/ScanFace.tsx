@@ -1,8 +1,11 @@
+import FaceRecognition from "@/components/FaceRecognition";
 
 const ScanFace = () => {
   return (
-    <div>ScanFace</div>
-  )
-}
+    <div>
+      <FaceRecognition />
+    </div>
+  );
+};
 
-export default ScanFace
+export default ScanFace;

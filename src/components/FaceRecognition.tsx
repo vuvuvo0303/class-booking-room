@@ -8,6 +8,7 @@ const FaceRecognition = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const captureRef = useRef<HTMLCanvasElement>(null);
+  const streamRef = useRef<MediaStream>();
   const [faceDescriptors, setFaceDescriptors] = useState<any[]>([]);
   const [emotion, setEmotion] = useState<string>("");
   useEffect(() => {
@@ -30,6 +31,7 @@ const FaceRecognition = () => {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {},
       });
+      streamRef.current = stream;
       videoRef.current!.srcObject = stream;
     };
 
@@ -64,7 +66,7 @@ const FaceRecognition = () => {
         canvasRef.current!.height = videoRef.current!.height;
 
         faceapi.draw.drawDetections(canvasRef.current!, resizedDetections);
-        faceapi.draw.drawFaceLandmarks(canvasRef.current!, resizedDetections);
+        // faceapi.draw.drawFaceLandmarks(canvasRef.current!, resizedDetections);
         faceapi.draw.drawFaceExpressions(canvasRef.current!, resizedDetections);
 
         // Store face descriptors
@@ -86,8 +88,8 @@ const FaceRecognition = () => {
     }
 
     return () => {
-      if (videoRef.current) {
-        videoRef.current.removeEventListener("play", handleVideoPlay);
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
       }
     };
   }, [videoRef, isLoading]);

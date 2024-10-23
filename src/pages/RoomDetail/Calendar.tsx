@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import useAuthStore from "@/store/AuthStore";
 import useBookingStore from "@/store/BookingStore";
+import { Room } from "@/types/room";
 import { Slot } from "@/types/slot";
 import { areDatesEqual, formatDate } from "@/utils/date";
 import { formatDateToTimeString } from "@/utils/time";
@@ -11,13 +12,16 @@ import { useNavigate } from "react-router-dom";
 const Calendar = ({
   slots,
   allowedCohorts,
+  room,
 }: {
   slots: Slot[];
   allowedCohorts: { id: number; cohortCode: string }[];
+  room: Room,
 }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedSlots, setSelectedSlots] = useState<Slot[]>([]);
+  const [error, setError] = useState<string | undefined>();
   const navigate = useNavigate();
   const setBookingInfo = useBookingStore((state) => state.setBookingInfo);
   const loggedUser = useAuthStore((state) => state.user);
@@ -64,18 +68,13 @@ const Calendar = ({
     } else {
       setSelectedSlots(selectedSlots.filter((s) => s.id != slot.id));
     }
+    setError(undefined);
   };
   const handleSelectDate = (date: Date) => {
     if (areDatesEqual(date, new Date()) < 0) return;
     setSelectedDate(date);
   };
 
-  const handleContinue = () => {
-    if (selectedDate) {
-      setBookingInfo(selectedDate, selectedSlots);
-      navigate("/fill-info");
-    }
-  };
   var isAllowed = false;
   if (
     loggedUser &&
@@ -83,6 +82,20 @@ const Calendar = ({
   ) {
     isAllowed = true;
   }
+  const handleContinue = () => {
+    if (selectedSlots.length == 0) {
+      setError("Please select at least 1 slot.");
+      return;
+    }
+    if (selectedSlots.length > 3) {
+      setError("You cannot book more than 3 slots per booking.");
+      return;
+    }
+    if (selectedDate) {
+      setBookingInfo(selectedDate, selectedSlots, room);
+      navigate("/step-process");
+    }
+  };
   return (
     <div className="flex flex-col items-center">
       <h2 className="text-2xl font-semibold">Week Calendar</h2>
@@ -169,6 +182,11 @@ const Calendar = ({
               );
             })}
           </div>
+          {
+            error && (
+              <p className="text-red-500">{error}</p>
+            )
+          }
           <div className="mt-5">
             <Button className="w-full" onClick={handleContinue}>Continue</Button>
           </div>
