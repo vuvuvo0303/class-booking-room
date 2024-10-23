@@ -86,3 +86,14 @@ export const fillUserInfo = async (id: string, departmentId: number, cohortId: n
     return handleApiError(error);
   }
 };
+export const changeUserStatus = async (id: string, status: string, note: string) => {
+  try {
+    const { data } = await axiosClient.put(`/api/users/${id}/status`, {
+      status: status,
+      note: note,
+    });
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
