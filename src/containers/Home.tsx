@@ -18,6 +18,7 @@ const Home = () => {
   useEffect(() => {
     if (loggedUser && loggedUser.isVerify == false) {
       navigate("/verify-email");
+      return;
     }
     if (
       loggedUser &&
@@ -25,6 +26,7 @@ const Home = () => {
       (loggedUser.cohortId == null || loggedUser.departmentId == null)
     ) {
       navigate("/fill-info");
+      return;
     }
   }, [loggedUser]);
 
