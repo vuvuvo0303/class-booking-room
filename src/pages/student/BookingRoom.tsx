@@ -6,9 +6,10 @@ import { getAllRoomType } from "@/lib/api/room-type-api";
 import useAuthStore from "@/store/AuthStore";
 import { Room } from "@/types/room";
 import { RoomTypes } from "@/types/room-type";
-import { Input, Select, InputNumber } from "antd"; 
+import { Input, Select, InputNumber } from "antd";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import useDebounce from "@/hooks/useDebounce"; 
 
 const BookingRoom = () => {
   const loggedUser = useAuthStore((state) => state.user);
@@ -16,23 +17,32 @@ const BookingRoom = () => {
   const [roomTypes, setRoomTypes] = useState<RoomTypes[]>([]);
   const [isLoading, setIsLoading] = useState<Boolean>(false);
 
-  // Thêm state cho Min/Max Capacity
+  const [searchValue, setSearchValue] = useState<string>(""); 
+  const debouncedSearchValue = useDebounce(searchValue, 1000); 
+
   const [minCapacity, setMinCapacity] = useState<number | undefined>(undefined);
   const [maxCapacity, setMaxCapacity] = useState<number | undefined>(undefined);
+  const [selectedRoomType, setSelectedRoomType] = useState<number | null>(null);
+  
+  
+  const [selectedStatus, setSelectedStatus] = useState<string>("Active");
 
-  const [selectedRoomType, setSelectedRoomType] = useState<number | null>(null); 
-  const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
+  const debouncedMinCapacity = useDebounce(minCapacity?.toString() || "", 1000); 
+  const debouncedMaxCapacity = useDebounce(maxCapacity?.toString() || "", 1000); 
+  const debouncedRoomType = useDebounce(selectedRoomType?.toString() || "", 1000); 
+  const debouncedStatus = useDebounce(selectedStatus || "Active", 1000); 
 
-  const { Search } = Input;
-
-  const onSearch = async (searchValue: string) => {
+  const onSearch = async () => {
     const searchParams: any = {};
 
-    if (searchValue) searchParams.searchValue = searchValue;
+    if (debouncedSearchValue) searchParams.searchValue = debouncedSearchValue;
     if (selectedRoomType !== null) searchParams.roomTypeId = selectedRoomType;
-    if (selectedStatus !== undefined) searchParams.status = selectedStatus; 
-    if (minCapacity !== undefined) searchParams.minCapacity = minCapacity; 
-    if (maxCapacity !== undefined) searchParams.maxCapacity = maxCapacity; 
+    
+    
+    searchParams.status = debouncedStatus || "Active"; 
+    
+    if (debouncedMinCapacity !== undefined) searchParams.minCapacity = debouncedMinCapacity;
+    if (debouncedMaxCapacity !== undefined) searchParams.maxCapacity = debouncedMaxCapacity;
 
     console.log("Search Params:", searchParams); 
 
@@ -66,7 +76,6 @@ const BookingRoom = () => {
         if (roomTypeResult.error) {
           toast.error(roomTypeResult.error);
         } else {
-          
           setRoomTypes([{ id: null, name: "All" }, ...roomTypeResult.data]);
         }
       } catch (error) {
@@ -80,10 +89,9 @@ const BookingRoom = () => {
 
   
   useEffect(() => {
-    onSearch("");
-  }, [selectedStatus, selectedRoomType, minCapacity, maxCapacity]);
+    onSearch();
+  }, [debouncedSearchValue, debouncedStatus, debouncedRoomType, debouncedMinCapacity, debouncedMaxCapacity]);
 
-  
   const roomTypeOptions = roomTypes.map((x) => {
     return { value: x.id, label: x.name };
   });
@@ -104,13 +112,13 @@ const BookingRoom = () => {
                 Room Name
               </label>
             </div>
-            <Search
+            <Input
               id="roomSearch"
               placeholder="Search Room Name"
               allowClear
-              enterButton="Search"
               size="large"
-              onSearch={onSearch}
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)} 
             />
           </div>
 
@@ -122,12 +130,8 @@ const BookingRoom = () => {
               id="statusSelect"
               className="w-[150px]"
               placeholder="Select a status"
-              value={selectedStatus}
-              onChange={(value) => {
-                console.log("Selected status:", value);
-                setSelectedStatus(value);
-              }}
-              filterOption={(input, option) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())}
+              value={selectedStatus} 
+              onChange={(value) => setSelectedStatus(value || "Active")} 
               options={[
                 { value: "Active", label: "Active" },
                 { value: "Repairing", label: "Repairing" },
@@ -144,11 +148,7 @@ const BookingRoom = () => {
               className="w-[170px]"
               placeholder="Select a Room Type"
               value={selectedRoomType === null ? null : selectedRoomType}
-              onChange={(value) => {
-                console.log("Selected Room Type:", value);
-                setSelectedRoomType(value === null ? null : value); 
-              }}
-              filterOption={(input, option) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())}
+              onChange={(value) => setSelectedRoomType(value === null ? null : value)} 
               options={roomTypeOptions}
             />
           </div>
@@ -162,7 +162,7 @@ const BookingRoom = () => {
               className="w-[150px]"
               placeholder="Min Capacity"
               value={minCapacity}
-              onChange={(value) => setMinCapacity(value)}
+              onChange={(value) => setMinCapacity(value)} 
             />
           </div>
 
