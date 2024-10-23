@@ -13,14 +13,23 @@ export const handleApiError = (error: any) => {
   }
 };
 
-export const getAllRoom = async () => {
+export const getAllRoom = async (searchParams?: {
+  searchValue?: string;
+  roomTypeId?: number;
+  status?: string;
+  minCapacity?: number;
+  maxCapacity?: number;
+}) => {
   try {
-    const { data } = await axiosClient.get(`/api/rooms?PageSize=999`);
+    const query = new URLSearchParams(searchParams as any).toString(); // Chuyển searchParams thành query string
+    const { data } = await axiosClient.get(`/api/rooms?${query}`); // Gửi request với query string
     return { error: null, data: data, success: true };
   } catch (error) {
     return handleApiError(error);
   }
 };
+
+
 
 export const getRoomById = async (roomId: number) => {
   try {

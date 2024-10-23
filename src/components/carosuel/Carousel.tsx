@@ -1,9 +1,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/autoplay";
-
 import { Navigation, Autoplay } from "swiper/modules";
 import MaxWidthWrapper from "../MaxWidthWrapper";
 import { Badge, Tag } from "antd";
@@ -11,9 +9,11 @@ import { Card, CardContent } from "../ui/card";
 import { useEffect, useState } from "react";
 import { Room } from "@/types/room";
 import { getAllRoom } from "@/lib/api/room-api";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 export default function Carousel() {
   const [data, setData] = useState<Room[]>([]);
+  const navigate = useNavigate(); // Khởi tạo useNavigate
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,6 +27,10 @@ export default function Carousel() {
     };
     fetchData();
   }, []);
+
+  const handleCardClick = (id: number) => {
+    navigate(`/room/${id}`); 
+  };
 
   return (
     <MaxWidthWrapper className="w-full flex justify-center my-8">
@@ -42,11 +46,14 @@ export default function Carousel() {
         {data.map((room: Room) => (
           <SwiperSlide className="h-full" key={room.id}>
             <Badge.Ribbon text="FPTU HCM " color="orange">
-              <Card className="w-full shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out">
+              <Card
+                className="w-full shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out hover:cursor-pointer"
+                onClick={() => handleCardClick(room.id)} 
+              >
                 <CardContent className="p-0 ">
                   <div className="h-[250px] w-full overflow-hidden">
                     <img
-                      className="object-cover w-full h-[200px]" 
+                      className="object-cover w-full h-[200px]"
                       src={room.picture}
                       alt={room.roomName}
                     />
