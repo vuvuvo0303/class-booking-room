@@ -1,11 +1,9 @@
 import Loader from "@/components/Loader";
-import useRerender from "@/hooks/use-rerender";
 import { getReportById } from "@/lib/api/report-api";
 import useAuthStore from "@/store/AuthStore";
 import { Report } from "@/types/report";
 import { Table, Tag } from "antd";
 import type { TableProps } from "antd";
-import { log } from "console";
 import { useEffect, useState } from "react";
 
 interface DataType {
@@ -110,7 +108,7 @@ const ReportHistory = () => {
         <span className="text-4xl flex justify-center">Report History</span>
       </div>
       <div className="px-10 drop-shadow-lg pb-16">
-        <Table<DataType> columns={columns} dataSource={data.map(item => ({ ...item, key: item.id }))} />
+        <Table<any> columns={columns} dataSource={data.map(item => ({ ...item, key: item.id }))} />
       </div>
     </div>
   );

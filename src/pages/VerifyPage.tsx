@@ -67,7 +67,7 @@ const VerifyPage = () => {
           <div className="text-red-500 text-center">{error}</div>
           <div className="flex flex-col md:flex-row gap-2 justify-center items-center">
             <span className="text-sm">
-              Contact our support if you haven't Received verification Code.
+              Contact our support if you haven't Received verification code.
             </span>
           </div>
         </div>
