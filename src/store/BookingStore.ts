@@ -5,16 +5,32 @@ type BookingState = {
     bookingDate?: Date;
     slots?: Slot[];
     setBookingInfo: (bookingDate: Date, slots: Slot[]) => void;
+    clearBookingInfo: () => void;
 }
-const useAuthStore = create<BookingState>((set) => ({
-    bookingDate: undefined,
-    slots: [],
-    setBookingInfo: (bookingDate: Date, slots: Slot[]) => {
-        set({
-            bookingDate: bookingDate,
-            slots: slots,
-        })
+const useBookingStore = create<BookingState>((set) => {
+    const localStorageState = localStorage.getItem("bookingState");
+    const initialState = localStorageState ? JSON.parse(localStorageState) : {
+        bookingDate: undefined,
+        slots: [],
+    };
+    return {
+        ...initialState,
+        setBookingInfo: (bookingDate: Date, slots: Slot[]) => {
+            const newState = {
+                bookingDate: bookingDate,
+                slots: slots,
+            };
+            localStorage.setItem("bookingState", JSON.stringify(newState));
+            set(newState);
+        },
+        clearBookingInfo: () => {
+            localStorage.removeItem("bookingState");
+            set({
+                bookingDate: undefined,
+                slots: [],
+            });
+        }
     }
-}))
+})
 
-export default useAuthStore;
+export default useBookingStore;

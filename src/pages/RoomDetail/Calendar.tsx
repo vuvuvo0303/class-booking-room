@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
 import useAuthStore from "@/store/AuthStore";
+import useBookingStore from "@/store/BookingStore";
 import { Slot } from "@/types/slot";
 import { areDatesEqual, formatDate } from "@/utils/date";
 import { formatDateToTimeString } from "@/utils/time";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Calendar = ({
   slots,
@@ -16,6 +18,8 @@ const Calendar = ({
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedSlots, setSelectedSlots] = useState<Slot[]>([]);
+  const navigate = useNavigate();
+  const setBookingInfo = useBookingStore((state) => state.setBookingInfo);
   const loggedUser = useAuthStore((state) => state.user);
   function getWeekDates(date: Date) {
     const startDate = new Date(date);
@@ -64,6 +68,13 @@ const Calendar = ({
   const handleSelectDate = (date: Date) => {
     if (areDatesEqual(date, new Date()) < 0) return;
     setSelectedDate(date);
+  };
+
+  const handleContinue = () => {
+    if (selectedDate) {
+      setBookingInfo(selectedDate, selectedSlots);
+      navigate("/fill-info");
+    }
   };
   var isAllowed = false;
   if (
@@ -143,13 +154,13 @@ const Calendar = ({
             <span className="font-semibold">Date: </span>
             {formatDate(selectedDate)}
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 mt-2">
             <span className="font-semibold">Slot: </span>
             {selectedSlots.map((slot: Slot) => {
               return (
                 <button
                   key={`booking-slot-${slot.id}`}
-                  className="bg-green-500 hover:bg-green-400 px-2 py-1 rounded-md font-semibold"
+                  className="outline-green-500 outline bg-white-green-500 bg-green-200 hover:bg-green-100 px-2 py-1 rounded-md font-semibold"
                   onClick={() => handleSelectSlot(slot)}
                 >
                   {formatDateToTimeString(new Date(slot.startTime), true)} -{" "}
@@ -159,7 +170,7 @@ const Calendar = ({
             })}
           </div>
           <div className="mt-5">
-            <Button className="w-full">Submit</Button>
+            <Button className="w-full" onClick={handleContinue}>Continue</Button>
           </div>
         </div>
       )}
