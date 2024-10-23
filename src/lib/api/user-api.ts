@@ -2,7 +2,7 @@ import { axiosClient } from "./config/axios-client";
 
 export const handleApiError = (error: any) => {
   try {
-    const errorMessage = error.Errors?.ErrorMessage || "An unexpected error occurred.";
+    const errorMessage = error?.Errors?.ErrorMessage || error.message || "An unexpected error occurred.";
     const data = null;
     return { error: errorMessage, data };
   } catch (err) {
@@ -69,6 +69,39 @@ export const fillUserInfo = async (id: string, departmentId: number, cohortId: n
     const { data } = await axiosClient.put(`/api/users/${id}/department-cohort`, {
       departmentId: departmentId,
       cohortId: cohortId
+    });
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+}
+
+export const getUserFace = async (id: string) => {
+  try {
+    const { data } = await axiosClient.get(`/api/users/${id}/face`);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+}
+
+export const createUserFace = async (userId: string, descriptor: number[]) => {
+  try {
+    const { data } = await axiosClient.post(`/api/users/face`, {
+      userId: userId,
+      descriptor: descriptor,
+      imageURL: "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
+    });
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+}
+export const updateUserFace = async (faceId: number, descriptor: number[]) => {
+  try {
+    const { data } = await axiosClient.put(`/api/users/face/${faceId}`, {
+      descriptor: descriptor,
+      imageURL: "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
     });
     return { error: null, data: data, success: true };
   } catch (error) {

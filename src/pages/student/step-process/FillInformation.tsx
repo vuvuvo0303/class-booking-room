@@ -45,6 +45,7 @@ const FillInformation = ({ form }: { form: FormInstance }) => {
 
     fetchData();
   }, []);
+  if (!logggedUser) return;
 
   return (
     <div

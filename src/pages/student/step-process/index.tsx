@@ -1,4 +1,4 @@
-import { Button, message, Steps, theme } from "antd";
+import { Button, message, Steps } from "antd";
 import { useEffect, useState } from "react";
 import FillInformation from "./FillInformation";
 import ScanFace from "./ScanFace";
@@ -9,11 +9,16 @@ import useBookingStore from "@/store/BookingStore";
 import { useNavigate } from "react-router-dom";
 import BookingError from "./BookingError";
 import { useForm } from "antd/es/form/Form";
+import { getUserFace } from "@/lib/api/user-api";
+import { toast } from "react-toastify";
+import useRerender from "@/hooks/use-rerender";
+import { FaceDescriptor } from "@/types/user";
 const StepProcess = () => {
   const loggedUser = useAuthStore((state) => state.user);
   const bookingSlots = useBookingStore((state) => state.slots);
   const bookingDate = useBookingStore((state) => state.bookingDate);
-
+  const { rerender, renderKey } = useRerender();
+  const [userFaceDescriptor, setUserFaceDescriptor] = useState<FaceDescriptor>();
   const [form] = useForm();
   const navigate = useNavigate();
   const steps = [
@@ -23,7 +28,7 @@ const StepProcess = () => {
     },
     {
       title: "Scan Your Face",
-      content: <ScanFace />,
+      content: <ScanFace userFaceDescriptor={userFaceDescriptor} rerender={rerender}/>,
     },
     {
       title: "Confirm Your Information",
@@ -35,7 +40,6 @@ const StepProcess = () => {
     },
   ];
 
-  const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
 
   const next = () => {
@@ -55,36 +59,42 @@ const StepProcess = () => {
 
   const items = steps.map((item) => ({ key: item.title, title: item.title }));
 
-  const contentStyle: React.CSSProperties = {
-    lineHeight: "260px",
-    color: token.colorTextTertiary,
-    backgroundColor: token.colorFillAlter,
-    borderRadius: token.borderRadiusLG,
-    border: `1px dashed ${token.colorBorder}`,
-    marginTop: 16,
-  };
   useEffect(() => {
+    const fetchData = async () => {
+      const faceResult = await getUserFace(loggedUser.id);
+      if (faceResult.error) {
+        if (faceResult.error == "Request failed with status code 404") {
+          setUserFaceDescriptor(undefined);
+        } else {
+          toast.error(faceResult.error);
+        }
+      } else {
+        setUserFaceDescriptor(faceResult.data);
+      }
+    };
     if (!loggedUser) {
       navigate("/");
+    } else {
+      fetchData();
     }
-  }, [loggedUser]);
+  }, [loggedUser, renderKey]);
 
   useEffect(() => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
-  }, []);
+  }, [current]);
 
   if (!(bookingSlots && bookingSlots.length > 0 && bookingDate)) {
     return <BookingError />;
   }
   return (
     <div className="pb-20 px-5">
-      <div className="px-10">
+      <div className="p-10">
         <Steps current={current} items={items} />
       </div>
-      <div style={contentStyle}>{steps[current].content}</div>
+      <div>{steps[current].content}</div>
       <div className="p-5 justify-center flex">
         {current > 0 && (
           <Button
@@ -96,7 +106,14 @@ const StepProcess = () => {
           </Button>
         )}
         {current < steps.length - 1 && (
-          <Button type="primary" onClick={() => next()} size="large">
+          <Button
+            type="primary"
+            onClick={() => next()}
+            size="large"
+            disabled={
+              (userFaceDescriptor == null || userFaceDescriptor.descriptor.length == 0) && current == 1
+            }
+          >
             Next
           </Button>
         )}
