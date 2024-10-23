@@ -54,7 +54,7 @@ const VerifyPage = () => {
           </div>
 
           <span className="text-xs md:text-sm text-center">
-            Our staff will send verification code to {loggedUser.email} soon, please
+            Our staff will send verification code to {loggedUser?.email} soon, please
             check your email to get the verification code
           </span>
           <Input.OTP
