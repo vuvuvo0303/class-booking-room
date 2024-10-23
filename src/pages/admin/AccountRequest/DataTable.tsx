@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { sendVerificationEmail } from "@/lib/api/user-api";
 import { User } from "@/types/user";
 import { Avatar, Table, Tag } from "antd";
 import { useState } from "react";
@@ -6,17 +7,21 @@ import { useState } from "react";
 const DataTable = ({ data, rerender }: { data: User[]; rerender: () => void }) => {
   const [loading, setLoading] = useState(false);
 
-  const handleApprove = (record: User) => {
+  const handleApprove = async (record: User) => {
     setLoading(true);
-    // Gọi API hoặc xử lý logic để approve người dùng
-    console.log(`Approved user with ID: ${record.id}`);
-    setLoading(false);
-    rerender();
+    try {
+      await sendVerificationEmail(record.id);
+      console.log(`Verification email sent to user with ID: ${record.id}`);
+      setLoading(false);
+      rerender();
+    } catch (error) {
+      console.error("Failed to send verification email:", error);
+      setLoading(false);
+    }
   };
 
   const handleReject = (record: User) => {
     setLoading(true);
-    // Gọi API hoặc xử lý logic để reject người dùng
     console.log(`Rejected user with ID: ${record.id}`);
     setLoading(false);
     rerender();
@@ -100,16 +105,17 @@ const DataTable = ({ data, rerender }: { data: User[]; rerender: () => void }) =
       key: "action",
       render: (record: User) => (
         <div className="flex gap-2">
-          <Button className="bg-green-500" onClick={() => handleApprove(record)} disabled={loading} >
+          <Button className="bg-green-500" onClick={() => handleApprove(record)} disabled={loading}>
             Approve
           </Button>
-          <Button className="bg-red-500" onClick={() => handleReject(record)} disabled={loading} >
+          <Button className="bg-red-500" onClick={() => handleReject(record)} disabled={loading}>
             Reject
           </Button>
         </div>
       ),
     },
   ];
+
   return <Table columns={columns} dataSource={data} rowKey={"id"} />;
 };
 

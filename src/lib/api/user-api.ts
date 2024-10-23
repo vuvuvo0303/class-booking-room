@@ -97,3 +97,11 @@ export const changeUserStatus = async (id: string, status: string, note: string)
     return handleApiError(error);
   }
 };
+export const sendVerificationEmail = async (userId: string) => {
+  try {
+    const { data } = await axiosClient.post(`/api/auth/${userId}/send-verification-email`);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
