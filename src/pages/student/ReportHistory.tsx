@@ -1,22 +1,31 @@
+import Loader from "@/components/Loader";
+import { getReportById } from "@/lib/api/report-api";
+import useAuthStore from "@/store/AuthStore";
+import { Report } from "@/types/report";
 import { Table, Tag } from "antd";
 import type { TableProps } from "antd";
+import { useEffect, useState } from "react";
 
 interface DataType {
   key: string;
   id: number;
   title: string;
-  description: string; // sửa lại kiểu từ number thành string
+  description: string; 
   roomName: string;
   studentFullName: string;
   studentEmail: string;
   status: string;
   response: string;
-  createAt: string;
+  createdAt: string;
   department: string;
   updatedAt: string;
 }
 
 const ReportHistory = () => {
+  const [data, setData] = useState<Report[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const loggedUser = useAuthStore((state) => state.user);
+
   const columns: TableProps<DataType>["columns"] = [
     {
       title: "Title",
@@ -62,11 +71,11 @@ const ReportHistory = () => {
       dataIndex: "response",
       key: "response",
     },
-    // {
-    //   title: "Created At",
-    //   dataIndex: "createAt",
-    //   key: "createAt",
-    // },
+    {
+      title: "Created At",
+      dataIndex: "createdAt",
+      key: "createdAt",
+    },
     {
       title: "Updated At",
       dataIndex: "updatedAt",
@@ -74,44 +83,24 @@ const ReportHistory = () => {
     },
   ];
 
-  const data: any[] = [
-    {
-      key: "1",
-      id: 1,
-      title: "Room Booking Issue",
-      description: "Cannot book room A",
-      roomName: "Room A",
-      studentFullName: "John Doe",
-      studentEmail: "john@example.com",
-      status: "active",
-      createAt: "2023-10-10",
-      updatedAt: "2023-10-11",
-    },
-    {
-      key: "2",
-      id: 2,
-      title: "Technical Issue",
-      description: "Projector not working",
-      roomName: "Room B",
-      studentFullName: "Jane Smith",
-      studentEmail: "jane@example.com",
-      status: "inactive",
-      createAt: "2023-10-09",
-      updatedAt: "2023-10-10",
-    },
-    {
-      key: "3",
-      id: 3,
-      title: "Room Maintenance",
-      description: "Room C is under maintenance",
-      roomName: "Room C",
-      studentFullName: "Alice Brown",
-      studentEmail: "alice@example.com",
-      status: "active",
-      createAt: "2023-10-08",
-      updatedAt: "2023-10-09",
-    },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      const result = await getReportById(loggedUser.id);
+      console.log(loggedUser);
+       // Ensure `id` is defined or passed as prop.
+      setIsLoading(false);
+      if (result.error) {
+        console.log(result.error);
+      } else {
+        // Ensure data is an array
+        setData(result.data);
+      }
+    };
+    fetchData();
+  }, []);
+
+  if (isLoading) return <Loader text="Loading reports data..." />;
 
   return (
     <div className="pt-40">
@@ -119,7 +108,7 @@ const ReportHistory = () => {
         <span className="text-4xl flex justify-center">Report History</span>
       </div>
       <div className="px-10 drop-shadow-lg pb-16">
-        <Table<DataType> columns={columns} dataSource={data} />
+        <Table<any> columns={columns} dataSource={data.map(item => ({ ...item, key: item.id }))} />
       </div>
     </div>
   );
