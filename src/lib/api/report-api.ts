@@ -70,7 +70,7 @@ export const denyReport = async (id: number, reason: string) => {
 
 export const getReportById = async (id: number) => {
   try {
-    const { data } = await axiosClient.get(`/api/reports/${id}`); 
+    const { data } = await axiosClient.get(`/api/users/${id}/reports`);
     return { error: null, data: data, success: true };
   } catch (error) {
     return handleApiError(error);

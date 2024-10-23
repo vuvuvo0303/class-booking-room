@@ -10,4 +10,5 @@ export type User = {
   status: string;
   departmentId: number;
   cohortId?: number;
+  isVerify:boolean;
 };

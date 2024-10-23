@@ -6,26 +6,14 @@ import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { login, loginGoogle } from "@/lib/api/auth-api";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { auth, googleProvider } from "@/config/firebase";
 import { signInWithPopup } from "firebase/auth";
-import {
-  Select,
-  SelectTrigger,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select"; // import Select từ Shadcn
+import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select"; // import Select từ Shadcn
 import { Loader } from "lucide-react";
 
 const Login = () => {
@@ -101,12 +89,7 @@ const Login = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Password"
-                    {...field}
-                    className="w-[400px]"
-                  />
+                  <Input type="password" placeholder="Password" {...field} className="w-[400px]" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -114,9 +97,7 @@ const Login = () => {
           />
 
           <Button type="submit" className="w-full h-10" disabled={isLoading}>
-            {
-              isLoading ? <Loader className="animate-spin"/> : "Login"
-            }
+            {isLoading ? <Loader className="animate-spin" /> : "Login"}
           </Button>
         </form>
       </Form>
@@ -138,7 +119,7 @@ const Login = () => {
     setIsLoading(true);
     const result = await loginGoogle(role, accessToken);
     if (result.error) {
-      toast.error("Login failed");
+      toast.error(result.error);
     } else {
       localStorage.setItem("accessToken", result.data);
       toast.success("Login Successfully");
@@ -155,21 +136,11 @@ const Login = () => {
         {/* <Button onClick={mockLoginAsAdmin}>Mock Login as Admin</Button> */}
         <div className="flex w-full md:w-[85%] bg-white drop-shadow-[0_0_10px_rgba(0,0,0,0.5)] rounded-xl overflow-hidden h-screen">
           <div className="bg-contain relative hidden md:block">
-            <img
-              src={background}
-              alt=""
-              className="h-full relative select-none"
-            />
+            <img src={background} alt="" className="h-full relative select-none" />
             <img src={logofpt} width={100} className="absolute top-5 left-5" />
-            <span className="text-white absolute top-[220px] left-24 text-5xl font-semibold">
-              Welcome
-            </span>
-            <span className="text-white absolute top-[280px] left-56">
-              Log-in to continue
-            </span>
-            <span className="absolute bottom-5 left-8  text-[18px] text-white">
-              fu-booking-room.vercel.app
-            </span>
+            <span className="text-white absolute top-[220px] left-24 text-5xl font-semibold">Welcome</span>
+            <span className="text-white absolute top-[280px] left-56">Log-in to continue</span>
+            <span className="absolute bottom-5 left-8  text-[18px] text-white">fu-booking-room.vercel.app</span>
           </div>
           <div className="flex-1 h-full py-14 overflow-auto px-10">
             <div className="flex justify-center h-20 ">

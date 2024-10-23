@@ -3,9 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { User } from "@/types/user";
 import { Avatar, Table, Tag } from "antd";
-import DeleteAccount from "./DeleteAccount";
-// import DeleteRoom from "./DeleteRoom";
-// import UpdateRoom from "./UpdateRooms";
+
 
 const DataTable = ({ data, rerender }: { data: User[]; rerender: () => void }) => {
   const columns = [
@@ -96,7 +94,6 @@ const DataTable = ({ data, rerender }: { data: User[]; rerender: () => void }) =
             <AlertDialogTrigger asChild>
               <Button variant={"destructive"}>Delete</Button>
             </AlertDialogTrigger>
-            <DeleteAccount user={record} rerender={rerender} />
           </AlertDialog>
         </div>
       ),
