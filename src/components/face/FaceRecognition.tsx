@@ -114,6 +114,7 @@ const FaceRecognition = ({
     }
     if (!isFound) {
       setError("Face is not recognized");
+      setRecognizedUser(undefined);
     }
   };
   return (

@@ -1,3 +1,4 @@
+import { User } from "@/types/user";
 import { axiosClient } from "./config/axios-client";
 
 export const handleApiError = (error: any) => {
@@ -12,8 +13,18 @@ export const handleApiError = (error: any) => {
 
 export const getAllUsers = async () => {
   try {
-    const { data } = await axiosClient.get(`/api/users`);
+    const { data } = await axiosClient.get(`/api/users?PageSize=999`);
     return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+export const getUnverifiedUsers = async () => {
+  try {
+    const { data } = await axiosClient.get(`/api/users?PageSize=999`);
+
+    const unverifiedUsers = data.filter((user: User) => user.isVerify === false);
+    return { error: null, data: unverifiedUsers, success: true };
   } catch (error) {
     return handleApiError(error);
   }
@@ -55,6 +66,7 @@ export const updateUser = async (
     return handleApiError(error);
   }
 };
+
 export const deleteUser = async (id: string) => {
   try {
     const { data } = await axiosClient.delete(`/api/users/${id}`);
@@ -68,7 +80,7 @@ export const fillUserInfo = async (id: string, departmentId: number, cohortId: n
   try {
     const { data } = await axiosClient.put(`/api/users/${id}/department-cohort`, {
       departmentId: departmentId,
-      cohortId: cohortId
+      cohortId: cohortId,
     });
     return { error: null, data: data, success: true };
   } catch (error) {
@@ -105,7 +117,20 @@ export const createUserFace = async (userId: string, descriptor: number[]) => {
   } catch (error) {
     return handleApiError(error);
   }
+};
+
+export const changeUserStatus = async (id: string, status: string, note: string) => {
+  try {
+    const { data } = await axiosClient.put(`/api/users/${id}/status`, {
+      status: status,
+      note: note,
+    });
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
 }
+
 export const updateUserFace = async (faceId: number, descriptor: number[]) => {
   try {
     const { data } = await axiosClient.put(`/api/users/face/${faceId}`, {
@@ -116,4 +141,13 @@ export const updateUserFace = async (faceId: number, descriptor: number[]) => {
   } catch (error) {
     return handleApiError(error);
   }
-}
+};
+
+export const sendVerificationEmail = async (userId: string) => {
+  try {
+    const { data } = await axiosClient.post(`/api/auth/${userId}/send-verification-email`);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};

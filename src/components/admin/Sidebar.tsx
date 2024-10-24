@@ -42,6 +42,13 @@ const navItems: NavItemType[] = [
     icon: <UserSearch />,
   },
   {
+    title: "Account Request",
+    to: "account-request",
+    icon: <UserSearch />,
+    isAdminOnly: true,
+
+  },
+  {
     title: "Student's Request",
     to: "student",
     icon: <BookUser />,

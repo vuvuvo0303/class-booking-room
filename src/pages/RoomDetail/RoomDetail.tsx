@@ -20,9 +20,7 @@ const RoomDetail = () => {
   const [isLoading, setIsLoading] = useState<Boolean>(false);
   const [imgSrc, setImgSrc] = useState<string>("");
   const handleError = () => {
-    setImgSrc(
-      "https://daihoc.fpt.edu.vn/wp-content/uploads/2023/08/nhung-tien-ich-tai-dh-fpt-hcm-3-650x433.jpeg"
-    );
+    setImgSrc("https://daihoc.fpt.edu.vn/wp-content/uploads/2023/08/nhung-tien-ich-tai-dh-fpt-hcm-3-650x433.jpeg");
   };
   const { roomId } = useParams();
   if (roomId == null) {
@@ -36,7 +34,7 @@ const RoomDetail = () => {
         toast.error(roomDetailResult.error);
       } else {
         setRoomDetail(roomDetailResult.data);
-        setImgSrc(roomDetailResult.data.picture);
+        setImgSrc(roomDetailResult.data.picture)
         const roomTypeResult = await getRoomTypeById(
           roomDetailResult.data.roomType.id
         );
@@ -61,30 +59,20 @@ const RoomDetail = () => {
     <MaxWidthWrapper>
       <div className="bg-white">
         <div className="p-3">
-          <img
-            src={imgSrc}
-            className="h-[200px] w-full rounded-lg object-cover"
-            alt=""
-            onError={handleError}
-          />
+          <img src={imgSrc} className="h-[200px] w-full rounded-lg object-cover" alt="" onError={handleError} />
           <div className="flex">
-            <span className="text-4xl font-semibold">
-              Room {roomDetail?.roomName}
-            </span>
+            <span className="text-4xl font-semibold">Room {roomDetail?.roomName}</span>
           </div>
+
           <div className="text-sm text-gray-500">
-            <p>
-              Created at:{" "}
-              {new Date(roomDetail?.createdAt ?? "").toLocaleString()}
-            </p>
-            <p>
-              Updated at:{" "}
-              {new Date(roomDetail?.updatedAt ?? "").toLocaleString()}
-            </p>
+            <p>Created at: {new Date(roomDetail?.createdAt ?? "").toLocaleString()}</p>
+            <p>Updated at: {new Date(roomDetail?.updatedAt ?? "").toLocaleString()}</p>
           </div>
           <p className="">
-            <span className="font-semibold">Type:</span>{" "}
-            {roomDetail?.roomType.name}
+            <span className="font-semibold">Type:</span> {roomDetail?.roomType.name}
+          </p>
+          <p className="">
+            <span className="font-semibold">Capacity:</span> {roomDetail?.capacity}
           </p>
           <div className="flex gap-2">
             <span className="font-semibold">Allowed cohort:</span>{" "}
@@ -92,10 +80,7 @@ const RoomDetail = () => {
               {roomType?.allowedCohorts.map((cohort) => {
                 const color = getRandomColor(cohort.cohortCode);
                 return (
-                  <Badge
-                    className={cn(`bg-${color}-500 hover:bg-${color}-300`)}
-                    key={`allowed-cohort-${cohort.id}`}
-                  >
+                  <Badge className={cn(`bg-${color}-500 hover:bg-${color}-300`)} key={`allowed-cohort-${cohort.id}`}>
                     {cohort.cohortCode}
                   </Badge>
                 );
@@ -104,12 +89,11 @@ const RoomDetail = () => {
             </div>
           </div>
           <div className="">
-            <span className="font-semibold">Status:</span>{" "}
-            <Badge>{roomDetail?.status}</Badge>
+            <span className="font-semibold">Status:</span> <Badge>{roomDetail?.status}</Badge>
           </div>
           <p className="">
             <span className="font-semibold">Number of slots:</span>{" "}
-            {roomDetail?.roomSlots?.length} slot(s)
+            {roomDetail?.roomSlots?.length} (slot)
           </p>
 
           <div className="mt-2">

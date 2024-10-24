@@ -56,7 +56,7 @@ const DataTable = ({
       key: "status",
       render: (status: string) => {
         const color =
-          status === "inactive"
+          status === "Inactive"
             ? "red"
             : status === "repairing"
             ? "orange"

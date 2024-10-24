@@ -10,7 +10,7 @@ interface DataType {
   key: string;
   id: number;
   title: string;
-  description: string; 
+  description: string;
   roomName: string;
   studentFullName: string;
   studentEmail: string;
@@ -52,19 +52,22 @@ const ReportHistory = () => {
       dataIndex: "studentEmail",
       key: "studentEmail",
     },
-    {
-      title: "Department",
-      dataIndex: "department",
-      key: "department",
-    },
+
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      render: (status) => {
-        let color = status === "active" ? "green" : "volcano";
-        return <Tag color={color}>{status.toUpperCase()}</Tag>;
-      },
+      render: (status: string) => (
+        <>
+          {status === "Pending" ? (
+            <Tag color="gold">Pending</Tag>
+          ) : status === "Accepted" ? (
+            <Tag color="green">Accepted</Tag>
+          ) : status === "Denied" ? (
+            <Tag color="red">Denied</Tag>
+          ) : null}
+        </>
+      ),
     },
     {
       title: "Response",
@@ -74,12 +77,12 @@ const ReportHistory = () => {
     {
       title: "Created At",
       dataIndex: "createdAt",
-      key: "createdAt",
+      render: (createAt: string) => <span>{new Date(createAt).toLocaleDateString()}</span>,
     },
     {
       title: "Updated At",
       dataIndex: "updatedAt",
-      key: "updatedAt",
+      render: (updatedAt: string) => <span>{new Date(updatedAt).toLocaleDateString()}</span>,
     },
   ];
 
@@ -88,7 +91,7 @@ const ReportHistory = () => {
       setIsLoading(true);
       const result = await getReportById(loggedUser.id);
       console.log(loggedUser);
-       // Ensure `id` is defined or passed as prop.
+      // Ensure `id` is defined or passed as prop.
       setIsLoading(false);
       if (result.error) {
         console.log(result.error);
@@ -108,7 +111,7 @@ const ReportHistory = () => {
         <span className="text-4xl flex justify-center">Report History</span>
       </div>
       <div className="px-10 drop-shadow-lg pb-16">
-        <Table<any> columns={columns} dataSource={data.map(item => ({ ...item, key: item.id }))} />
+        <Table<any> columns={columns} dataSource={data.map((item) => ({ ...item, key: item.id }))} />
       </div>
     </div>
   );

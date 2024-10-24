@@ -1,24 +1,37 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/autoplay";
-
 import { Navigation, Autoplay } from "swiper/modules";
 import MaxWidthWrapper from "../MaxWidthWrapper";
-import { Badge } from "antd";
+import { Badge, Tag } from "antd";
 import { Card, CardContent } from "../ui/card";
-const roomData = {
-  id: 1,
-  roomName: "105",
-  capacity: 12,
-  status: "Open",
-  roomTypeId: 1,
-  roomTypeName: "Study room",
-  createdAt: "2024-10-11T13:04:00.783Z",
-  updatedAt: "2024-10-11T13:04:00.783Z",
-};
+import { useEffect, useState } from "react";
+import { Room } from "@/types/room";
+import { getAllRoom } from "@/lib/api/room-api";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+
 export default function Carousel() {
+  const [data, setData] = useState<Room[]>([]);
+  const navigate = useNavigate(); // Khởi tạo useNavigate
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getAllRoom();
+      if (result.error) {
+        console.log(result.error);
+      } else {
+        const activeRooms = result.data.filter((room: Room) => room.status === "Active");
+        setData(activeRooms);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const handleCardClick = (id: number) => {
+    navigate(`/room/${id}`); 
+  };
+
   return (
     <MaxWidthWrapper className="w-full flex justify-center my-8">
       <Swiper
@@ -30,39 +43,44 @@ export default function Carousel() {
         modules={[Navigation, Autoplay]}
         className="mySwiper w-full max-w-full rounded-lg overflow-hidden h-[400px]"
       >
-        {[1, 2, 3, 4, 5, 6, 7].map((value: number) => {
-          return (
-            <SwiperSlide className="h-full" key={value}>
-              <Badge.Ribbon text="FPTU HCM " color="orange">
-                <Card className="w-full shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out">
-                  <CardContent className="p-0 ">
-                    <div>
-                      <img
-                        className="object-cover w-full h-full"
-                        src="https://hcmuni.fpt.edu.vn/Data/Sites/1/media/2020-kim-vi/seo/campus/1-truong-dai-hoc-fpt-tphcm/truong-dai-hoc-fpt-tp-hcm-(11).jpg"
-                        alt={roomData.roomName}
-                      />
+        {data.map((room: Room) => (
+          <SwiperSlide className="h-full" key={room.id}>
+            <Badge.Ribbon text="FPTU HCM " color="orange">
+              <Card
+                className="w-full shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out hover:cursor-pointer"
+                onClick={() => handleCardClick(room.id)} 
+              >
+                <CardContent className="p-0 ">
+                  <div className="h-[250px] w-full overflow-hidden">
+                    <img
+                      className="object-cover w-full h-[200px]"
+                      src={room.picture}
+                      alt={room.roomName}
+                    />
+                  </div>
+                  <div className="p-5 flex flex-col gap-1.5">
+                    <div className="flex gap-3">
+                      <span className="font-bold">Room Name : </span>
+                      <span>{room.roomName}</span>
                     </div>
-                    <div className="p-5 flex flex-col gap-1.5">
-                      <div className="flex gap-3">
-                        <span className="font-bold">Room Name : </span>
-                        <span>{roomData.roomName}</span>
-                      </div>
-                      <div className="flex gap-3">
-                        <span className="font-bold">Room Type : </span>
-                        <span>{roomData.roomTypeName}</span>
-                      </div>
-                      <div className="flex gap-3">
-                        <span className="font-bold">capacity : </span>
-                        <span>{roomData.capacity} seats</span>
-                      </div>
+                    <div className="flex gap-3">
+                      <span className="font-bold">Room Type : </span>
+                      <span>{room.roomType.name}</span>
                     </div>
-                  </CardContent>
-                </Card>
-              </Badge.Ribbon>
-            </SwiperSlide>
-          );
-        })}
+                    <div className="flex gap-3">
+                      <span className="font-bold">Capacity : </span>
+                      <span>{room.capacity} seats</span>
+                    </div>
+                    <div className="flex gap-3">
+                      <span className="font-bold">Status : </span>
+                      <span><Tag color="success">{room.status}</Tag> </span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </Badge.Ribbon>
+          </SwiperSlide>
+        ))}
       </Swiper>
     </MaxWidthWrapper>
   );
