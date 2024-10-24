@@ -13,12 +13,17 @@ import { getUserFace } from "@/lib/api/user-api";
 import { toast } from "react-toastify";
 import useRerender from "@/hooks/use-rerender";
 import { FaceDescriptor } from "@/types/user";
+import { createBooking } from "@/lib/api/booking-api";
 const StepProcess = () => {
   const loggedUser = useAuthStore((state) => state.user);
   const bookingSlots = useBookingStore((state) => state.slots);
   const bookingDate = useBookingStore((state) => state.bookingDate);
+  const bookingActivity = useBookingStore((state) => state.activity);
+  const bookingNote = useBookingStore((state) => state.note);
+  const [isError, setIsError] = useState(false);
   const { rerender, renderKey } = useRerender();
-  const [userFaceDescriptor, setUserFaceDescriptor] = useState<FaceDescriptor>();
+  const [userFaceDescriptor, setUserFaceDescriptor] =
+    useState<FaceDescriptor>();
   const [form] = useForm();
   const navigate = useNavigate();
   const steps = [
@@ -28,7 +33,9 @@ const StepProcess = () => {
     },
     {
       title: "Scan Your Face",
-      content: <ScanFace userFaceDescriptor={userFaceDescriptor} rerender={rerender}/>,
+      content: (
+        <ScanFace userFaceDescriptor={userFaceDescriptor} rerender={rerender} />
+      ),
     },
     {
       title: "Confirm Your Information",
@@ -42,6 +49,22 @@ const StepProcess = () => {
 
   const [current, setCurrent] = useState(0);
 
+  const handleSubmitBooking = async () => {
+    if (bookingActivity == null || bookingSlots == null) return;
+    const request = {
+      userId: loggedUser.id,
+      activityId: bookingActivity.id,
+      description: bookingNote,
+      roomSlots: bookingSlots.map((slot) => slot.id),
+    };
+    const bookingResult = await createBooking(request);
+    if (bookingResult.error) {
+      toast.error(bookingResult.error);
+    } else {
+      setCurrent(current + 1);
+    }
+  };
+
   const next = () => {
     if (current == 0) {
       form.submit();
@@ -49,7 +72,11 @@ const StepProcess = () => {
         setCurrent(current + 1);
       }
     } else {
-      setCurrent(current + 1);
+      if (current == 2) {
+        handleSubmitBooking();
+      } else {
+        setCurrent(current + 1);
+      }
     }
   };
 
@@ -67,6 +94,7 @@ const StepProcess = () => {
           setUserFaceDescriptor(undefined);
         } else {
           toast.error(faceResult.error);
+          setIsError(true);
         }
       } else {
         setUserFaceDescriptor(faceResult.data);
@@ -89,6 +117,7 @@ const StepProcess = () => {
   if (!(bookingSlots && bookingSlots.length > 0 && bookingDate)) {
     return <BookingError />;
   }
+  if (isError) return <BookingError />;
   return (
     <div className="pb-20 px-5">
       <div className="p-10">
@@ -111,7 +140,9 @@ const StepProcess = () => {
             onClick={() => next()}
             size="large"
             disabled={
-              (userFaceDescriptor == null || userFaceDescriptor.descriptor.length == 0) && current == 1
+              (userFaceDescriptor == null ||
+                userFaceDescriptor.descriptor.length == 0) &&
+              current == 1
             }
           >
             Next

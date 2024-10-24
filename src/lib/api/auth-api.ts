@@ -3,8 +3,7 @@ import { axiosClient } from "./config/axios-client";
 
 export const handleApiError = (error: any) => {
   try {
-    console.log(error);
-    const errorMessage = error?.response?.data || "An unexpected error occurred.";
+    const errorMessage = error?.message || error?.response?.data.error || "An unexpected error occurred.";
     const data = null;
     return { error: errorMessage, data };
   } catch (err) {

@@ -118,8 +118,9 @@ const Login = () => {
   const handleGoogleLogin = async (role: string, accessToken: string) => {
     setIsLoading(true);
     const result = await loginGoogle(role, accessToken);
+    console.log(result.error);
     if (result.error) {
-      toast.error(result.error);
+      toast.error(result.error, {toastId: "loginErrorToast"});
     } else {
       localStorage.setItem("accessToken", result.data);
       toast.success("Login Successfully");
