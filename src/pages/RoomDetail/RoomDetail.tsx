@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { getRandomColor } from "@/utils/color";
 import { RoomTypes } from "@/types/room-type";
 import { getRoomTypeById } from "@/lib/api/room-type-api";
+import SomethingWentWrong from "@/components/SomethingWentWrong";
 
 const RoomDetail = () => {
   const [roomDetail, setRoomDetail] = useState<Room>();
@@ -33,8 +34,10 @@ const RoomDetail = () => {
         toast.error(roomDetailResult.error);
       } else {
         setRoomDetail(roomDetailResult.data);
-        setImgSrc(roomDetailResult.data.picture);
-        const roomTypeResult = await getRoomTypeById(roomDetailResult.data.roomType.id);
+        setImgSrc(roomDetailResult.data.picture)
+        const roomTypeResult = await getRoomTypeById(
+          roomDetailResult.data.roomType.id
+        );
         if (roomTypeResult.error) {
           toast.error(roomTypeResult.error);
         } else {
@@ -48,6 +51,9 @@ const RoomDetail = () => {
   if (isLoading) return <Loader />;
   if (!isLoading && roomDetail == null) {
     return <NotFound />;
+  }
+  if (!isLoading && roomType == null) {
+    return <SomethingWentWrong />;
   }
   return (
     <MaxWidthWrapper>
@@ -86,11 +92,18 @@ const RoomDetail = () => {
             <span className="font-semibold">Status:</span> <Badge>{roomDetail?.status}</Badge>
           </div>
           <p className="">
-            <span className="font-semibold">Number of slots:</span> {roomDetail?.roomSlots?.length} (slot)
+            <span className="font-semibold">Number of slots:</span>{" "}
+            {roomDetail?.roomSlots?.length} (slot)
           </p>
 
           <div className="mt-2">
-            <Calendar slots={roomDetail!.roomSlots} />
+            {roomDetail && (
+              <Calendar
+                slots={roomDetail.roomSlots}
+                allowedCohorts={roomType!.allowedCohorts}
+                room={roomDetail}
+              />
+            )}
           </div>
         </div>
       </div>

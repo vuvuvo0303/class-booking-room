@@ -11,4 +11,13 @@ export type User = {
   departmentId: number;
   cohortId?: number;
   isVerify:boolean;
+  note: string;
 };
+
+export type FaceDescriptor = {
+  id: number;
+  userId: string;
+  descriptor: number[];
+  imageURL: string;
+  user: User;
+}

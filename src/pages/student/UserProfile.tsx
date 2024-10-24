@@ -14,10 +14,10 @@ const UserProfile = () => {
         name: loggedUser.fullName,
         email: loggedUser.email,
         role: loggedUser.role,
-        department: loggedUser.department,
+        department: loggedUser.departmentName,
         avatar: loggedUser.profileImageURL,
-        created_at: loggedUser.createdAt,
-        cohort: loggedUser.updatedAt,
+        created_at: new Date(loggedUser.createdAt).toLocaleDateString(),
+        cohort: loggedUser.cohortCode,
       });
     }
   }, [loggedUser, form]);
@@ -62,7 +62,7 @@ const UserProfile = () => {
               <Input className="w-full h-10" disabled />
             </Form.Item>
             <Form.Item
-              label="Create Date"
+              label="Created Date"
               name="created_at"
               className="col-span-6"
             >

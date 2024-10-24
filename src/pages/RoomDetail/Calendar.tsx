@@ -1,15 +1,29 @@
 import { Button } from "@/components/ui/button";
 import useAuthStore from "@/store/AuthStore";
+import useBookingStore from "@/store/BookingStore";
+import { Room } from "@/types/room";
 import { Slot } from "@/types/slot";
 import { areDatesEqual, formatDate } from "@/utils/date";
 import { formatDateToTimeString } from "@/utils/time";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Calendar = ({ slots }: { slots: Slot[] }) => {
+const Calendar = ({
+  slots,
+  allowedCohorts,
+  room,
+}: {
+  slots: Slot[];
+  allowedCohorts: { id: number; cohortCode: string }[];
+  room: Room,
+}) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedSlots, setSelectedSlots] = useState<Slot[]>([]);
+  const [error, setError] = useState<string | undefined>();
+  const navigate = useNavigate();
+  const setBookingInfo = useBookingStore((state) => state.setBookingInfo);
   const loggedUser = useAuthStore((state) => state.user);
   function getWeekDates(date: Date) {
     const startDate = new Date(date);
@@ -49,15 +63,38 @@ const Calendar = ({ slots }: { slots: Slot[] }) => {
   };
 
   const handleSelectSlot = (slot: Slot) => {
-    if (!selectedSlots.find((s) => s.id == slot.id)) {  
+    if (!selectedSlots.find((s) => s.id == slot.id)) {
       setSelectedSlots([...selectedSlots, slot]);
     } else {
       setSelectedSlots(selectedSlots.filter((s) => s.id != slot.id));
     }
+    setError(undefined);
   };
   const handleSelectDate = (date: Date) => {
     if (areDatesEqual(date, new Date()) < 0) return;
     setSelectedDate(date);
+  };
+
+  var isAllowed = false;
+  if (
+    loggedUser &&
+    allowedCohorts.find((cohort) => cohort.id == loggedUser.cohortId)
+  ) {
+    isAllowed = true;
+  }
+  const handleContinue = () => {
+    if (selectedSlots.length == 0) {
+      setError("Please select at least 1 slot.");
+      return;
+    }
+    if (selectedSlots.length > 3) {
+      setError("You cannot book more than 3 slots per booking.");
+      return;
+    }
+    if (selectedDate) {
+      setBookingInfo(selectedDate, selectedSlots, room);
+      navigate("/step-process");
+    }
   };
   return (
     <div className="flex flex-col items-center">
@@ -118,20 +155,25 @@ const Calendar = ({ slots }: { slots: Slot[] }) => {
           You need to login to book this room
         </div>
       )}
-      {loggedUser && selectedDate && (
+      {loggedUser && !isAllowed && (
+        <div className="text-2xl mt-2 text-red-500">
+          You don't have permission to book this room
+        </div>
+      )}
+      {loggedUser && isAllowed && selectedDate && (
         <div className="bg-white p-5 rounded-md drop-shadow-lg mt-5 w-[400px]">
           <div className="text-2xl font-semibold">Booking Information</div>
           <div>
             <span className="font-semibold">Date: </span>
             {formatDate(selectedDate)}
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 mt-2">
             <span className="font-semibold">Slot: </span>
             {selectedSlots.map((slot: Slot) => {
               return (
                 <button
                   key={`booking-slot-${slot.id}`}
-                  className="bg-green-500 hover:bg-green-400 px-2 py-1 rounded-md"
+                  className="outline-green-500 outline bg-white-green-500 bg-green-200 hover:bg-green-100 px-2 py-1 rounded-md font-semibold"
                   onClick={() => handleSelectSlot(slot)}
                 >
                   {formatDateToTimeString(new Date(slot.startTime), true)} -{" "}
@@ -140,8 +182,13 @@ const Calendar = ({ slots }: { slots: Slot[] }) => {
               );
             })}
           </div>
+          {
+            error && (
+              <p className="text-red-500">{error}</p>
+            )
+          }
           <div className="mt-5">
-            <Button className="w-full">Submit</Button>
+            <Button className="w-full" onClick={handleContinue}>Continue</Button>
           </div>
         </div>
       )}

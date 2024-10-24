@@ -27,6 +27,10 @@ const RoomCard = ({ room }: { room: Room }) => {
           <span className="text-black">{room.roomType.name}</span>
         </div>
         <div className="flex items-center gap-2">
+          <span className="font-semibold text-black">Number of slots:</span>
+          <span className="text-black">{room.roomSlots.length} slot(s)</span>
+        </div>
+        <div className="flex items-center gap-2">
           <span className="font-semibold text-black">Status :</span>
           <span className="text-black">
             <Tag color="success">{room.status}</Tag>

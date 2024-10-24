@@ -162,7 +162,7 @@ const BookingRoom = () => {
               className="w-[150px]"
               placeholder="Min Capacity"
               value={minCapacity}
-              onChange={(value) => setMinCapacity(value)} 
+              onChange={(value) => setMinCapacity(value ?? 0)} 
             />
           </div>
 
@@ -175,7 +175,7 @@ const BookingRoom = () => {
               className="w-[150px]"
               placeholder="Max Capacity"
               value={maxCapacity}
-              onChange={(value) => setMaxCapacity(value)} 
+              onChange={(value) => setMaxCapacity(value ?? 0)} 
             />
           </div>
         </div>
