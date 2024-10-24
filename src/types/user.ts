@@ -17,4 +17,5 @@ export type FaceDescriptor = {
   userId: string;
   descriptor: number[];
   imageURL: string;
+  user: User;
 }

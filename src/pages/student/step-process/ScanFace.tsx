@@ -1,4 +1,4 @@
-import FaceRecognition from "@/components/FaceRecognition";
+import UploadFace from "@/components/face/UploadFace";
 import { Button } from "@/components/ui/button";
 import { FaceDescriptor } from "@/types/user";
 import { useState } from "react";
@@ -23,7 +23,7 @@ const ScanFace = ({
 
       <div className="flex w-full justify-center">
         {cameraTurnOn ? (
-          <FaceRecognition
+          <UploadFace
             userFaceDescriptor={userFaceDescriptor}
             rerender={rerender}
           />

@@ -8,6 +8,7 @@ import Loader from "./components/Loader";
 import { toast } from "react-toastify";
 import LoginAdmin from "./pages/admin/LoginAdmin";
 import FillUserInfo from "./pages/student/FillUserInfo";
+import Test from "./containers/Test";
 
 function App() {
   const setUser = useAuthStore((state) => state.setUser);
@@ -43,6 +44,7 @@ function App() {
     <Routes>
       <Route path="/login/admin" element={<LoginAdmin />} />
       <Route path="login" element={<LoginPage />} />
+      <Route path="/test/*" element={<Test />} />
       <Route path="/admin/*" element={<Admin />} />
       <Route path="/manager/*" element={<Manager />} />
       <Route path="/*" element={<Home />} />

@@ -85,6 +85,15 @@ export const getUserFace = async (id: string) => {
   }
 }
 
+export const getAllFaces = async () => {
+  try {
+    const { data } = await axiosClient.get(`/api/users/face`);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+}
+
 export const createUserFace = async (userId: string, descriptor: number[]) => {
   try {
     const { data } = await axiosClient.post(`/api/users/face`, {
