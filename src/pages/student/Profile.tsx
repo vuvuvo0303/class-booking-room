@@ -1,9 +1,9 @@
-import FaceRecognition from "@/components/face/UploadFace";
+// import FaceRecognition from "@/components/face/UploadFace";
 
 const Profile = () => {
   return (
     <div>
-        <FaceRecognition />
+        {/* <FaceRecognition /> */}
     </div>
   );
 };

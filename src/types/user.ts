@@ -11,6 +11,7 @@ export type User = {
   departmentId: number;
   cohortId?: number;
   isVerify:boolean;
+  note: string;
 };
 
 export type FaceDescriptor = {
