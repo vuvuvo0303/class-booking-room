@@ -1,4 +1,4 @@
-import { Button, message, Steps } from "antd";
+import { Button, Steps } from "antd";
 import { useEffect, useState } from "react";
 import FillInformation from "./FillInformation";
 import ScanFace from "./ScanFace";
@@ -20,6 +20,7 @@ const StepProcess = () => {
   const bookingDate = useBookingStore((state) => state.bookingDate);
   const bookingActivity = useBookingStore((state) => state.activity);
   const bookingNote = useBookingStore((state) => state.note);
+  const clearBooking = useBookingStore(state => state.clearBookingInfo);
   const [isError, setIsError] = useState(false);
   const { rerender, renderKey } = useRerender();
   const [userFaceDescriptor, setUserFaceDescriptor] =
@@ -130,6 +131,7 @@ const StepProcess = () => {
             style={{ margin: "0 8px" }}
             onClick={() => prev()}
             size="large"
+            disabled={current == 3}
           >
             Previous
           </Button>
@@ -151,7 +153,10 @@ const StepProcess = () => {
         {current === steps.length - 1 && (
           <Button
             type="primary"
-            onClick={() => message.success("Processing complete!")}
+            onClick={() => {
+              clearBooking();
+              navigate("/booking-room");
+            }}
             size="large"
           >
             Done
