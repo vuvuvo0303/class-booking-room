@@ -3,6 +3,7 @@ import {
   Box,
   Contact,
   DoorOpen,
+  GitPullRequestArrow,
   Group,
   Layers3,
   LayoutGrid,
@@ -75,13 +76,13 @@ const navItems: NavItemType[] = [
   },
   {
     title: "Bookings History",
-    to: "booking",
+    to: "booking-history",
     icon: <ReceiptText />,
   },
   {
-    title: "Bookings Request",
-    to: "group",
-    icon: <Group />,
+    title: "Booking Requests",
+    to: "bookings-request",
+    icon:  <GitPullRequestArrow />,
   },
   {
     type: "divider",
