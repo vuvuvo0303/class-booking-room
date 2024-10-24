@@ -1,12 +1,12 @@
 import Header from "@/components/admin/Header";
 import useAuthStore from "@/store/AuthStore";
-import DataTable from "./DataTable";
 import { useEffect, useState } from "react";
 
 import Loader from "@/components/Loader";
 import useRerender from "@/hooks/use-rerender";
 import { Booking } from "@/types/booking";
-import { getAllBookingRequest } from "@/lib/api/booking-api";
+import { getAllBookingHistory } from "@/lib/api/booking-api";
+import DataTable from "./DataTable";
 
 const BookingRequest = () => {
   const loggedUser = useAuthStore((state) => state.user);
@@ -16,7 +16,7 @@ const BookingRequest = () => {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      const result = await getAllBookingRequest();
+      const result = await getAllBookingHistory();
       console.log(result);
       
       setIsLoading(false);
@@ -33,12 +33,12 @@ const BookingRequest = () => {
   return (
     <div className="bg-white">
       <Header
-        currentPage=" Booking Request"
+        currentPage=" Booking History"
         breadcrumbItems={[{ title: "DashBoard", to: basePath }]}
       />
       <div className="p-3">
         <div className="flex">
-          <span className="text-4xl font-semibold">Manage Booking Request</span>
+          <span className="text-4xl font-semibold">Manage Booking History</span>
         </div>
         <div className="flex justify-end mb-3">
         

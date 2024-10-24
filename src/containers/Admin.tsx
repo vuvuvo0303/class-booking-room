@@ -18,6 +18,8 @@ import {
   AdminUserPage,
 } from "@/pages";
 import AccountRequest from "@/pages/admin/AccountRequest/AccountRequest";
+import Booking from "@/pages/admin/BookingHistory/Booking";
+import BookingHistory from "@/pages/admin/BookingHistory/BookingHistory";
 import BookingRequest from "@/pages/admin/ManageBookingRequest/BookingRequest";
 import ManageReport from "@/pages/admin/Managereport/Report";
 import ManageRoomTypes from "@/pages/admin/ManageRoomType/ManageRoomTypes";
@@ -52,7 +54,7 @@ const Admin = () => {
         />
         <Route path="/student/:studentId" element={<AdminStudentDetailPage />} />
         <Route path="/student" element={<AdminStudentPage />} />
-        <Route path="/booking-history" element={<AdminBookingPage />} />
+        <Route path="/booking-history" element={<Booking />} />
         <Route path="/booking/:bookingId" element={<AdminBookingDetailPage />} />
         <Route path="/staff" element={<AdminStaffPage />} />
       </Routes>

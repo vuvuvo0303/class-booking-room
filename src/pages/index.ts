@@ -15,7 +15,7 @@ export { default as AdminRoomDetailPage } from "./admin/ManageRooms/RoomDetail";
 export { default as AdminSlotPage } from "./admin/Slot";
 export { default as AdminStudentPage } from "./admin/Student";
 export { default as AdminStudentDetailPage } from "./admin/StudentDetail";
-export { default as AdminBookingPage } from "./admin/Booking";
+export { default as AdminBookingPage } from "./admin/BookingHistory/Booking";
 export { default as AdminBookingDetailPage } from "./admin/BookingDetail";
 export { default as AdminStaffPage } from "./admin/Staff";
 export { default as AdminCohortPage } from "./admin/Cohort/Cohort";

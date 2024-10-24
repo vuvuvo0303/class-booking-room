@@ -33,6 +33,20 @@ export const getAllBookingRequest = async () => {
     return handleApiError(error);
   }
 };
+export const getAllBookingHistory = async () => {
+    try {
+      const { data } = await axiosClient.get(`/api/bookings?PageSize=999`);
+      
+      const bookingRequest = data.filter((booking: Booking) => 
+        booking.status === "Accepted" || booking.status === "Denied"
+      );
+      
+      return { error: null, data: bookingRequest, success: true };
+    } catch (error) {
+      return handleApiError(error);
+    }
+  };
+  
 export const acceptBooking = async (id: number) => {
   try {
     const { data } = await axiosClient.put(`/api/bookings/${id}/accept`);
