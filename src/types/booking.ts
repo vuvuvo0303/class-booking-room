@@ -25,5 +25,6 @@ type RoomSlot = {
     description: string;
     response: string;
     roomSlots: RoomSlot[]; 
+    bookingDate: string;
   };
   

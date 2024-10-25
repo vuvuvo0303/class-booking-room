@@ -1,13 +1,16 @@
 import { Button } from "@/components/ui/button";
+import { getRoomBooking } from "@/lib/api/room-api";
 import useAuthStore from "@/store/AuthStore";
 import useBookingStore from "@/store/BookingStore";
+import { Booking } from "@/types/booking";
 import { Room } from "@/types/room";
 import { Slot } from "@/types/slot";
-import { areDatesEqual, formatDate } from "@/utils/date";
+import { areDatesEqual, formatDate, isDateNotInPast } from "@/utils/date";
 import { formatDateToTimeString } from "@/utils/time";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Calendar = ({
   slots,
@@ -16,12 +19,13 @@ const Calendar = ({
 }: {
   slots: Slot[];
   allowedCohorts: { id: number; cohortCode: string }[];
-  room: Room,
+  room: Room;
 }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedSlots, setSelectedSlots] = useState<Slot[]>([]);
   const [error, setError] = useState<string | undefined>();
+  const [bookings, setBookings] = useState<Booking[]>([]);
   const navigate = useNavigate();
   const setBookingInfo = useBookingStore((state) => state.setBookingInfo);
   const loggedUser = useAuthStore((state) => state.user);
@@ -71,7 +75,7 @@ const Calendar = ({
     setError(undefined);
   };
   const handleSelectDate = (date: Date) => {
-    if (areDatesEqual(date, new Date()) < 0) return;
+    if (!isDateNotInPast(date)) return;
     setSelectedDate(date);
   };
 
@@ -96,6 +100,21 @@ const Calendar = ({
       navigate("/step-process");
     }
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      const bookingResult = await getRoomBooking(room.id);
+      if (bookingResult.error) {
+        toast.error(bookingResult.error);
+      } else {
+        setBookings(
+          bookingResult.data?.filter(
+            (booking) => booking.status == "Accepted"
+          ) ?? []
+        );
+      }
+    };
+    fetchData();
+  }, []);
   return (
     <div className="flex flex-col items-center">
       <h2 className="text-2xl font-semibold">Week Calendar</h2>
@@ -127,6 +146,22 @@ const Calendar = ({
             <hr className="my-2" />
             <div className="flex flex-col gap-2">
               {slots.map((slot: Slot) => {
+                var isBooked = false;
+                for (const booking of bookings) {
+                  if (
+                    areDatesEqual(new Date(booking.bookingDate), day)
+                  ) {
+                    for (const bookingSlot of booking.roomSlots) {
+                      if (bookingSlot.id == slot.id) {
+                        isBooked = true;
+                        break;
+                      }
+                    }
+                  }
+                  if (isBooked) {
+                    break;
+                  }
+                }
                 return (
                   <Button
                     key={`slot-${slot.id}`}
@@ -134,12 +169,12 @@ const Calendar = ({
                       selectedSlots.find((s) => s.id == slot.id) &&
                       selectedDate?.getTime() == day.getTime() &&
                       "bg-green-500 hover:bg-green-300"
-                    }`}
+                    } ${isBooked && "outline outline-red-500"}`}
                     variant={"outline"}
                     onClick={() => {
                       handleSelectSlot(slot);
                     }}
-                    disabled={areDatesEqual(day, new Date()) < 0}
+                    disabled={!isDateNotInPast(day) || isBooked}
                   >
                     {formatDateToTimeString(new Date(slot.startTime), true)} -{" "}
                     {formatDateToTimeString(new Date(slot.endTime), true)}
@@ -182,13 +217,11 @@ const Calendar = ({
               );
             })}
           </div>
-          {
-            error && (
-              <p className="text-red-500">{error}</p>
-            )
-          }
+          {error && <p className="text-red-500">{error}</p>}
           <div className="mt-5">
-            <Button className="w-full" onClick={handleContinue}>Continue</Button>
+            <Button className="w-full" onClick={handleContinue}>
+              Continue
+            </Button>
           </div>
         </div>
       )}

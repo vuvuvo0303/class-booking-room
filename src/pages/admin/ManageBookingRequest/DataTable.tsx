@@ -1,29 +1,36 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { Table, Modal, Tag, Input } from "antd";
-import { Button } from "@/components/ui/button"; 
+import { Button } from "@/components/ui/button";
 import { Booking } from "@/types/booking";
 import { acceptBooking, denyBooking } from "@/lib/api/booking-api";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { formatDateToTimeString } from "@/utils/time";
+import { formatDate } from "@/utils/date";
 
-const DataTable = ({ data, rerender }: { data: Booking[], rerender: () => void }) => {
+const DataTable = ({
+  data,
+  rerender,
+}: {
+  data: Booking[];
+  rerender: () => void;
+}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isDenyModalVisible, setIsDenyModalVisible] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState<Booking | null>(null);
-  const [denyReason, setDenyReason] = useState(""); 
-  const [selectedBookingId, setSelectedBookingId] = useState<number | null>(null);
+  const [denyReason, setDenyReason] = useState("");
+  const [selectedBookingId, setSelectedBookingId] = useState<number | null>(
+    null
+  );
 
-  
-  const showModal = (student: Booking,) => {
-    setSelectedStudent(student); 
-    setIsModalVisible(true); 
+  const showModal = (student: Booking) => {
+    setSelectedStudent(student);
+    setIsModalVisible(true);
   };
 
- 
   const handleAccept = async (id: number) => {
     const response = await acceptBooking(id);
-    if (response.success) {
+    if (!response.error) {
       toast.success("Booking accepted!");
       rerender();
     } else {
@@ -31,20 +38,18 @@ const DataTable = ({ data, rerender }: { data: Booking[], rerender: () => void }
     }
   };
 
-
   const showDenyModal = (id: number) => {
     setSelectedBookingId(id);
     setIsDenyModalVisible(true);
   };
 
-  
   const handleDeny = async () => {
     if (selectedBookingId && denyReason) {
       const response = await denyBooking(selectedBookingId, denyReason);
-      if (response.success) {
+      if (!response.error) {
         toast.success("Booking denied!");
-        setIsDenyModalVisible(false); 
-        setDenyReason(""); 
+        setIsDenyModalVisible(false);
+        setDenyReason("");
         rerender();
       } else {
         toast.error(`Error: ${response.error}`);
@@ -56,7 +61,7 @@ const DataTable = ({ data, rerender }: { data: Booking[], rerender: () => void }
 
   const handleOk = () => {
     setIsModalVisible(false);
-    setSelectedStudent(null); 
+    setSelectedStudent(null);
   };
 
   const handleCancel = () => {
@@ -66,16 +71,15 @@ const DataTable = ({ data, rerender }: { data: Booking[], rerender: () => void }
 
   const handleDenyModalCancel = () => {
     setIsDenyModalVisible(false);
-    setDenyReason(""); 
+    setDenyReason("");
   };
-
 
   const columns = [
     {
       title: "Booking Code",
       dataIndex: "code",
       key: "code",
-      width: 250, 
+      width: 250,
     },
     {
       title: "Student Name",
@@ -90,8 +94,8 @@ const DataTable = ({ data, rerender }: { data: Booking[], rerender: () => void }
     {
       title: "Activity",
       key: "activity",
-      width: 300, 
-      render: ( record: Booking) => (
+      width: 300,
+      render: (record: Booking) => (
         <span>
           {record.activityCode} - {record.activityName}
         </span>
@@ -113,42 +117,54 @@ const DataTable = ({ data, rerender }: { data: Booking[], rerender: () => void }
       ),
     },
     {
-        title: "Room Slots",
-        key: "roomSlots",
-        render: (record: Booking) =>
-          record.roomSlots.map((slot) => (
-            <Tag
-              key={slot.id}
-              color="blue"
-              className="min-w-[120px] text-center"
-            >
-              {`${formatDateToTimeString(new Date(slot.startTime), true)} - ${formatDateToTimeString(new Date(slot.endTime), true)}`}
-            </Tag>
-          )),
-      },
-      
+      title: "Booking date",
+      dataIndex: "bookingDate",
+      key: "bookingDate",
+      render: (date: string) => formatDate(new Date(date)),
+    },
+    {
+      title: "Room Slots",
+      key: "roomSlots",
+      render: (record: Booking) =>
+        record.roomSlots.map((slot) => (
+          <Tag key={slot.id} color="blue" className="min-w-[120px] text-center">
+            {`${formatDateToTimeString(
+              new Date(slot.startTime),
+              true
+            )} - ${formatDateToTimeString(new Date(slot.endTime), true)}`}
+          </Tag>
+        )),
+    },
+
     {
       title: "Created At",
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (date: string) => new Date(date).toLocaleDateString(), 
+      render: (date: string) => formatDate(new Date(date)),
     },
     {
       title: "Updated At",
       dataIndex: "updatedAt",
       key: "updatedAt",
-      render: (date: string) => new Date(date).toLocaleDateString(), 
+      render: (date: string) => formatDate(new Date(date)),
     },
     {
       title: "Action",
       key: "action",
       width: "150px",
-      render: ( record: Booking) => (
+      render: (record: Booking) => (
         <div className="flex gap-2">
-          <Button variant="default" className="bg-green-600 text-white" onClick={() => handleAccept(record.id)}>
+          <Button
+            variant="default"
+            className="bg-green-600 text-white"
+            onClick={() => handleAccept(record.id)}
+          >
             Approve
           </Button>
-          <Button variant="destructive" onClick={() => showDenyModal(record.id)}>
+          <Button
+            variant="destructive"
+            onClick={() => showDenyModal(record.id)}
+          >
             Reject
           </Button>
         </div>
@@ -158,16 +174,19 @@ const DataTable = ({ data, rerender }: { data: Booking[], rerender: () => void }
 
   return (
     <>
-      <Table columns={columns} dataSource={data} rowKey="id" />
-
-    
+      <Table
+        columns={columns}
+        dataSource={data}
+        rowKey="id"
+        scroll={{ x: 400 }}
+      />
       <Modal
         title="Student Information"
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
         okText="Close"
-        cancelButtonProps={{ style: { display: "none" } }} 
+        cancelButtonProps={{ style: { display: "none" } }}
       >
         {selectedStudent && (
           <div>
@@ -190,7 +209,6 @@ const DataTable = ({ data, rerender }: { data: Booking[], rerender: () => void }
         )}
       </Modal>
 
-      
       <Modal
         title="Deny Booking"
         visible={isDenyModalVisible}
@@ -200,7 +218,7 @@ const DataTable = ({ data, rerender }: { data: Booking[], rerender: () => void }
         cancelText="Cancel"
       >
         <p>Please enter the reason for denial:</p>
-        <Input.TextArea 
+        <Input.TextArea
           value={denyReason}
           onChange={(e) => setDenyReason(e.target.value)}
           placeholder="Enter reason..."

@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { Table, Modal, Tag, Input } from "antd";
+import { Table, Modal, Tag } from "antd";
 import { Button } from "@/components/ui/button";
 import { Booking } from "@/types/booking";
 import "react-toastify/dist/ReactToastify.css";
 import { formatDateToTimeString } from "@/utils/time";
-import { title } from "process";
-import { Key } from "lucide-react";
+import { formatDate } from "@/utils/date";
 
-const DataTable = ({ data, rerender }: { data: Booking[]; rerender: () => void }) => {
+const DataTable = ({ data }: { data: Booking[]; rerender: () => void }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState<Booking | null>(null);
 
@@ -63,10 +62,24 @@ const DataTable = ({ data, rerender }: { data: Booking[]; rerender: () => void }
       dataIndex: "status",
       key: "status",
       render: (status: string) => (
-        <Tag color={status === "Accepted" ? "green" : status === "Denied" ? "red" : "default"}>
+        <Tag
+          color={
+            status === "Accepted"
+              ? "green"
+              : status === "Denied"
+              ? "red"
+              : "default"
+          }
+        >
           {status.toUpperCase()}
         </Tag>
       ),
+    },
+    {
+      title: "Booking date",
+      dataIndex: "bookingDate",
+      key: "bookingDate",
+      render: (date: string) => formatDate(new Date(date)),
     },
     {
       title: "Room Slots",
@@ -74,10 +87,10 @@ const DataTable = ({ data, rerender }: { data: Booking[]; rerender: () => void }
       render: (record: Booking) =>
         record.roomSlots.map((slot) => (
           <Tag key={slot.id} color="blue" className="min-w-[120px] text-center">
-            {`${formatDateToTimeString(new Date(slot.startTime), true)} - ${formatDateToTimeString(
-              new Date(slot.endTime),
+            {`${formatDateToTimeString(
+              new Date(slot.startTime),
               true
-            )}`}
+            )} - ${formatDateToTimeString(new Date(slot.endTime), true)}`}
           </Tag>
         )),
     },
@@ -86,19 +99,24 @@ const DataTable = ({ data, rerender }: { data: Booking[]; rerender: () => void }
       title: "Created At",
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (date: string) => new Date(date).toLocaleDateString(),
+      render: (date: string) => formatDate(new Date(date)),
     },
     {
       title: "Updated At",
       dataIndex: "updatedAt",
       key: "updatedAt",
-      render: (date: string) => new Date(date).toLocaleDateString(),
+      render: (date: string) => formatDate(new Date(date)),
     },
   ];
 
   return (
     <>
-      <Table columns={columns} dataSource={data} rowKey="id" />
+      <Table
+        columns={columns}
+        dataSource={data}
+        rowKey="id"
+        scroll={{ x: 400 }}
+      />
 
       <Modal
         title="Student Information"

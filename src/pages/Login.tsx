@@ -141,7 +141,7 @@ const Login = () => {
             <img src={logofpt} width={100} className="absolute top-5 left-5" />
             <span className="text-white absolute top-[220px] left-24 text-5xl font-semibold">Welcome</span>
             <span className="text-white absolute top-[280px] left-56">Log-in to continue</span>
-            <span className="absolute bottom-5 left-8  text-[18px] text-white">fu-booking-room.vercel.app</span>
+            <span className="cursor-pointer absolute bottom-5 left-8  text-[18px] text-white" onClick={() => navigate("/")}>fu-booking-room.vercel.app</span>
           </div>
           <div className="flex-1 h-full py-14 overflow-auto px-10">
             <div className="flex justify-center h-20 ">

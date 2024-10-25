@@ -51,12 +51,13 @@ const StepProcess = () => {
   const [current, setCurrent] = useState(0);
 
   const handleSubmitBooking = async () => {
-    if (bookingActivity == null || bookingSlots == null) return;
+    if (bookingActivity == null || bookingSlots == null || bookingDate == null) return;
     const request = {
       userId: loggedUser.id,
       activityId: bookingActivity.id,
       description: bookingNote,
       roomSlots: bookingSlots.map((slot) => slot.id),
+      bookingDate: bookingDate,
     };
     const bookingResult = await createBooking(request);
     if (bookingResult.error) {

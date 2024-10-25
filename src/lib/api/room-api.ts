@@ -2,6 +2,7 @@ import { toast } from "react-toastify";
 import { axiosClient } from "./config/axios-client";
 import { Slot } from "@/types/slot";
 import uploadFile from "@/utils/upload";
+import { Booking } from "@/types/booking";
 
 export const handleApiError = (error: any) => {
   try {
@@ -48,6 +49,15 @@ export const getRoomSlots = async (roomId: number) => {
     return handleApiError(error);
   }
 };
+export const getRoomBooking = async (roomId: number) => {
+  try {
+    const { data } = await axiosClient.get(`/api/rooms/${roomId}/bookings`);
+    return { error: null, data: data as Booking[], success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
 
 export const createRoom = async (formData: {
   roomName: string;
