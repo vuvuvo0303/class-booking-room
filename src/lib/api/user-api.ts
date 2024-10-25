@@ -19,6 +19,16 @@ export const getAllUsers = async () => {
     return handleApiError(error);
   }
 };
+
+export const getUserBooking = async (userId: string) => {
+  try {
+    const { data } = await axiosClient.get(`/api/users/${userId}/bookings`);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
 export const getUnverifiedUsers = async () => {
   try {
     const { data } = await axiosClient.get(`/api/users?PageSize=999`);

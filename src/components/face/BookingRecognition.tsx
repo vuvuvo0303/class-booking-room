@@ -1,13 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
 import { Button } from "../ui/button";
+import { FaceDescriptor, User } from "@/types/user";
+import { compareFaceDescriptors } from "@/utils/face";
 
-const FaceRecognitoion = () => {
+const BookingRecognition = ({
+  userDescriptors,
+  setUser,
+}: {
+  userDescriptors: FaceDescriptor[];
+  setUser: (user: User | undefined) => void;
+}) => {
   const [isLoadingModel, setIsLoadingModel] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream>();
   const [faceDescriptors, setFaceDescriptors] = useState<Float32Array[]>([]);
+  const [recognizedUser, setRecognizedUser] = useState<User>();
+  const [error, setError] = useState<string>();
   useEffect(() => {
     const originalLog = console.log;
     console.log = () => {};
@@ -89,20 +99,40 @@ const FaceRecognitoion = () => {
       }
     };
   }, [videoRef, isLoadingModel]);
-  const handleSubmit = () => {
-    console.log(faceDescriptors);
-  }
+  const handleSubmit = async () => {
+    setError(undefined);
+    const currentFace = faceDescriptors[0];
+    var isFound = false;
+    for (const userDescriptor of userDescriptors) {
+      const compareResult = await compareFaceDescriptors(
+        userDescriptor.descriptor,
+        Array.from(currentFace),
+        0.5
+      );
+      if (compareResult) {
+        setRecognizedUser(userDescriptor.user);
+        setUser(userDescriptor.user);
+        isFound = true;
+        break;
+      }
+    }
+    if (!isFound) {
+      setError("Face is not recognized");
+      setRecognizedUser(undefined);
+      setUser(undefined);
+    }
+  };
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center w-[135px]">
       {isLoadingModel && <p>Loading models...</p>}
       <div className="relative">
-        <video ref={videoRef} autoPlay muted width={270} height={210} />
+        <video ref={videoRef} autoPlay muted width={135} height={105} />
         <canvas
           ref={canvasRef}
           style={{ position: "absolute", top: 0, left: 0 }}
         />
       </div>
-      <div className="w-full text-center">
+      <div className="w-full text-center bg-purple-700 text-white">
         {!isLoadingModel &&
           faceDescriptors.length == 0 &&
           "Cannot detect your face"}
@@ -112,13 +142,16 @@ const FaceRecognitoion = () => {
       </div>
       <Button
         onClick={handleSubmit}
-        style={{ marginTop: "20px" }}
-        disabled={!isLoadingModel && (faceDescriptors.length != 1)}
+        disabled={!isLoadingModel && faceDescriptors.length != 1}
+        className="bg-purple-700 text-white hover:bg-purple-600 my-2"
       >
         Scan
       </Button>
+      <p className="bg-purple-700 text-white">{recognizedUser && recognizedUser.email}</p>
+
+      {<div className="text-red-500 bg-purple-700">{error}</div>}
     </div>
   );
 };
 
-export default FaceRecognitoion;
+export default BookingRecognition;
