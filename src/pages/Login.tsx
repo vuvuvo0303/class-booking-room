@@ -13,14 +13,14 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { auth, googleProvider } from "@/config/firebase";
 import { signInWithPopup } from "firebase/auth";
-import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select"; // import Select từ Shadcn
+// import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select";
 import { Loader } from "lucide-react";
 
 const Login = () => {
   const navigate = useNavigate();
   const loggedUser = useAuthStore((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
-  const [role, setRole] = useState("Student");
+  // const [role, setRole] = useState("Student");
 
   const FormSchema = z.object({
     email: z.string().min(2, {
@@ -109,7 +109,7 @@ const Login = () => {
         // const credential = GoogleAuthProvider.credentialFromResult(result);
         // console.log(credential);
         // console.log(result);
-        handleGoogleLogin(role, (result.user as any).accessToken);
+        handleGoogleLogin("Student", (result.user as any).accessToken);
       })
       .catch((error) => {
         console.log(error);
@@ -158,7 +158,7 @@ const Login = () => {
               <span className="text-gray-500 text-center mx-2">or</span>
               <hr className="border-gray-500 w-1/4 border-t-1" />
             </div>
-            <div className="flex items-center justify-center gap-2 mb-2">
+            {/* <div className="flex items-center justify-center gap-2 mb-2">
               <p className="font-semibold">Login as</p>
               <Select
                 onValueChange={(value) => {
@@ -172,7 +172,7 @@ const Login = () => {
                   <SelectItem value="Student">Student</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
 
             <div className="flex justify-center">
               <Button
