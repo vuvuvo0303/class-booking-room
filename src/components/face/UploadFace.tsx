@@ -192,7 +192,11 @@ const UploadFace = ({
       >
         {isSubmitting ? (
           <Loader className="animate-spin" />
-        ) : userFaceDescriptor ? "Update face descriptor" : "Upload face descriptor"}
+        ) : userFaceDescriptor ? (
+          "Update face descriptor"
+        ) : (
+          "Upload face descriptor"
+        )}
       </Button>
       {/* <canvas ref={captureRef}  /> */}
     </div>

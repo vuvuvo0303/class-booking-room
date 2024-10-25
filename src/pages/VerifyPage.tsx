@@ -22,7 +22,8 @@ const VerifyPage = () => {
       } else {
         toast.success("Verify account sussessfully.");
         setTimeout(() => {
-          navigate("/");
+          navigate("/")
+          window.location.reload();
         }, 1000);
       }
       setIsSubmitting(false);
@@ -54,8 +55,8 @@ const VerifyPage = () => {
           </div>
 
           <span className="text-xs md:text-sm text-center">
-            Our staff will send verification code to {loggedUser?.email} soon, please
-            check your email to get the verification code
+            Our staff will send verification code to {loggedUser?.email} soon,
+            please check your email to get the verification code
           </span>
           <Input.OTP
             formatter={(str) => str.toUpperCase()}
@@ -63,7 +64,9 @@ const VerifyPage = () => {
             {...sharedProps}
             disabled={isSubmitting}
           />
-          <div className="flex justify-center">{isSubmitting && <Loader className="animate-spin" />}</div>
+          <div className="flex justify-center">
+            {isSubmitting && <Loader className="animate-spin" />}
+          </div>
           <div className="text-red-500 text-center">{error}</div>
           <div className="flex flex-col md:flex-row gap-2 justify-center items-center">
             <span className="text-sm">

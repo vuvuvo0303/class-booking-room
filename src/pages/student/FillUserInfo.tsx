@@ -59,6 +59,7 @@ const FillUserInfo = () => {
       toast.success("Information submitted successfully.");
       setTimeout(() => {
         navigate("/");
+        window.location.reload();
       }, 1000);
     }
     setIsSubmitting(false);
