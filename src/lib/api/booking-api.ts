@@ -16,6 +16,7 @@ export const createBooking = async (request: {
   activityId: number;
   description: string;
   roomSlots: number[];
+  bookingDate: Date;
 }) => {
   try {
     const { data } = await axiosClient.post(`/api/bookings`, { ...request, status: "Pending" });

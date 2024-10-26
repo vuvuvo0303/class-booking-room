@@ -104,7 +104,7 @@ const FaceRecognition = ({
     for (const userDescriptor of userDescriptors) {
       const compareResult = await compareFaceDescriptors(
         userDescriptor.descriptor,
-        Array.from(currentFace)
+        Array.from(currentFace), 0.5
       );
       if (compareResult) {
         setRecognizedUser(userDescriptor.user);

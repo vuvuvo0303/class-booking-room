@@ -7,7 +7,11 @@ export function formatDate(date: Date) {
 }
 
 export function areDatesEqual(date1: Date, date2: Date) {
-    const normalizeDate = (date: Date) => new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const normalizeDate = (date: Date) => date.setHours(0, 0, 0, 0);
+    return normalizeDate(date1) == normalizeDate(date2);
+}
 
-    return normalizeDate(date1).getTime() - normalizeDate(date2).getTime();
+export function isDateNotInPast(date: Date) {
+    const currentDate = new Date();
+    return date.getTime() >= currentDate.getTime();
 }

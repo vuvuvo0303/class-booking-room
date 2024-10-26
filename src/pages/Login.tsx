@@ -13,14 +13,14 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { auth, googleProvider } from "@/config/firebase";
 import { signInWithPopup } from "firebase/auth";
-import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select"; // import Select từ Shadcn
+// import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select";
 import { Loader } from "lucide-react";
 
 const Login = () => {
   const navigate = useNavigate();
   const loggedUser = useAuthStore((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
-  const [role, setRole] = useState("Student");
+  // const [role, setRole] = useState("Student");
 
   const FormSchema = z.object({
     email: z.string().min(2, {
@@ -109,7 +109,7 @@ const Login = () => {
         // const credential = GoogleAuthProvider.credentialFromResult(result);
         // console.log(credential);
         // console.log(result);
-        handleGoogleLogin(role, (result.user as any).accessToken);
+        handleGoogleLogin("Student", (result.user as any).accessToken);
       })
       .catch((error) => {
         console.log(error);
@@ -140,7 +140,7 @@ const Login = () => {
             <img src={logofpt} width={100} className="absolute top-5 left-5" />
             <span className="text-white absolute top-[220px] left-24 text-5xl font-semibold">Welcome</span>
             <span className="text-white absolute top-[280px] left-56">Log-in to continue</span>
-            <span className="absolute bottom-5 left-8  text-[18px] text-white">fu-booking-room.vercel.app</span>
+            <span className="cursor-pointer absolute bottom-5 left-8  text-[18px] text-white" onClick={() => navigate("/")}>fu-booking-room.vercel.app</span>
           </div>
           <div className="flex-1 h-full py-14 overflow-auto px-10">
             <div className="flex justify-center h-20 ">
@@ -157,7 +157,7 @@ const Login = () => {
               <span className="text-gray-500 text-center mx-2">or</span>
               <hr className="border-gray-500 w-1/4 border-t-1" />
             </div>
-            <div className="flex items-center justify-center gap-2 mb-2">
+            {/* <div className="flex items-center justify-center gap-2 mb-2">
               <p className="font-semibold">Login as</p>
               <Select
                 onValueChange={(value) => {
@@ -171,7 +171,7 @@ const Login = () => {
                   <SelectItem value="Student">Student</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
 
             <div className="flex justify-center">
               <Button
