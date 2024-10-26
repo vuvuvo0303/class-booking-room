@@ -12,6 +12,7 @@ export function areDatesEqual(date1: Date, date2: Date) {
 }
 
 export function isDateNotInPast(date: Date) {
+    const normalizeDate = (date: Date) => date.setHours(0, 0, 0, 0);
     const currentDate = new Date();
-    return date.getTime() >= currentDate.getTime();
+    return normalizeDate(date) >= normalizeDate(currentDate);
 }

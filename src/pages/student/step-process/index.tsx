@@ -57,7 +57,7 @@ const StepProcess = () => {
       activityId: bookingActivity.id,
       description: bookingNote,
       roomSlots: bookingSlots.map((slot) => slot.id),
-      bookingDate: bookingDate,
+      bookingDate: new Date(bookingDate.getTime() + 7 * 1000 * 60 * 60),
     };
     const bookingResult = await createBooking(request);
     if (bookingResult.error) {

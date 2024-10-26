@@ -12,6 +12,19 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+function isOneHourInAdvance(targetTime: Date) {
+  const now = new Date();
+  const differenceInMilliseconds = now.getTime() - targetTime.getTime();
+  const millisecondsInADay = 1000 * 60 * 60 * 24;
+  const differenceInDays = Math.floor(
+    differenceInMilliseconds / millisecondsInADay
+  );
+  targetTime.setTime(targetTime.getTime() + differenceInDays * millisecondsInADay + 7 * 1000 * 60 * 60);
+  now.setTime(now.getTime());
+  console.log(targetTime + " and " +  now)
+  return targetTime.getTime() >= now.getTime();
+}
+
 const Calendar = ({
   slots,
   allowedCohorts,
@@ -148,9 +161,7 @@ const Calendar = ({
               {slots.map((slot: Slot) => {
                 var isBooked = false;
                 for (const booking of bookings) {
-                  if (
-                    areDatesEqual(new Date(booking.bookingDate), day)
-                  ) {
+                  if (areDatesEqual(new Date(booking.bookingDate), day)) {
                     for (const bookingSlot of booking.roomSlots) {
                       if (bookingSlot.id == slot.id) {
                         isBooked = true;
@@ -162,6 +173,11 @@ const Calendar = ({
                     break;
                   }
                 }
+                var isToday = areDatesEqual(new Date(), day);
+                var canBook =
+                  isDateNotInPast(day) &&
+                  ((isOneHourInAdvance(new Date(slot.startTime)) && isToday) ||
+                    !isToday);
                 return (
                   <Button
                     key={`slot-${slot.id}`}
@@ -174,10 +190,16 @@ const Calendar = ({
                     onClick={() => {
                       handleSelectSlot(slot);
                     }}
-                    disabled={!isDateNotInPast(day) || isBooked}
+                    disabled={!canBook || isBooked}
                   >
-                    {formatDateToTimeString(new Date(slot.startTime), true)} -{" "}
-                    {formatDateToTimeString(new Date(slot.endTime), true)}
+                    {canBook ? (
+                      <>
+                        {formatDateToTimeString(new Date(slot.startTime), true)}{" "}
+                        - {formatDateToTimeString(new Date(slot.endTime), true)}
+                      </>
+                    ) : (
+                      "--"
+                    )}
                   </Button>
                 );
               })}
