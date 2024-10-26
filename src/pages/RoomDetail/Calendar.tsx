@@ -16,12 +16,10 @@ function isOneHourInAdvance(targetTime: Date) {
   const now = new Date();
   const differenceInMilliseconds = now.getTime() - targetTime.getTime();
   const millisecondsInADay = 1000 * 60 * 60 * 24;
-  const differenceInDays = Math.floor(
-    differenceInMilliseconds / millisecondsInADay
-  );
+  const differenceInDays = Math.floor(differenceInMilliseconds / millisecondsInADay);
   targetTime.setTime(targetTime.getTime() + differenceInDays * millisecondsInADay + 7 * 1000 * 60 * 60);
   now.setTime(now.getTime());
-  console.log(targetTime + " and " +  now)
+  console.log(targetTime + " and " + now);
   return targetTime.getTime() >= now.getTime();
 }
 
@@ -89,14 +87,14 @@ const Calendar = ({
   };
   const handleSelectDate = (date: Date) => {
     if (!isDateNotInPast(date)) return;
+    if (selectedDate && !areDatesEqual(date, selectedDate)) {
+      setSelectedSlots([]);
+    }
     setSelectedDate(date);
   };
 
   var isAllowed = false;
-  if (
-    loggedUser &&
-    allowedCohorts.find((cohort) => cohort.id == loggedUser.cohortId)
-  ) {
+  if (loggedUser && allowedCohorts.find((cohort) => cohort.id == loggedUser.cohortId)) {
     isAllowed = true;
   }
   const handleContinue = () => {
@@ -119,11 +117,7 @@ const Calendar = ({
       if (bookingResult.error) {
         toast.error(bookingResult.error);
       } else {
-        setBookings(
-          bookingResult.data?.filter(
-            (booking) => booking.status == "Accepted"
-          ) ?? []
-        );
+        setBookings(bookingResult.data?.filter((booking) => booking.status == "Accepted") ?? []);
       }
     };
     fetchData();
@@ -147,14 +141,11 @@ const Calendar = ({
           <div
             key={index}
             className={`text-center w-40 rounded border border-gray-300 p-3 drop-shadow-sm flex-shrink-0 cursor-pointer ${
-              selectedDate?.getTime() == day.getTime() &&
-              "outline outline-2 outline-green-500"
+              selectedDate && areDatesEqual(selectedDate, day) && "outline outline-2 outline-green-500"
             }`}
             onClick={() => handleSelectDate(day)}
           >
-            <div className="font-bold">
-              {day.toLocaleDateString("en-US", { weekday: "long" })}
-            </div>
+            <div className="font-bold">{day.toLocaleDateString("en-US", { weekday: "long" })}</div>
             <p>{formatDate(day)}</p>
             <hr className="my-2" />
             <div className="flex flex-col gap-2">
@@ -175,9 +166,7 @@ const Calendar = ({
                 }
                 var isToday = areDatesEqual(new Date(), day);
                 var canBook =
-                  isDateNotInPast(day) &&
-                  ((isOneHourInAdvance(new Date(slot.startTime)) && isToday) ||
-                    !isToday);
+                  isDateNotInPast(day) && ((isOneHourInAdvance(new Date(slot.startTime)) && isToday) || !isToday);
                 return (
                   <Button
                     key={`slot-${slot.id}`}
@@ -194,8 +183,8 @@ const Calendar = ({
                   >
                     {canBook ? (
                       <>
-                        {formatDateToTimeString(new Date(slot.startTime), true)}{" "}
-                        - {formatDateToTimeString(new Date(slot.endTime), true)}
+                        {formatDateToTimeString(new Date(slot.startTime), true)} -{" "}
+                        {formatDateToTimeString(new Date(slot.endTime), true)}
                       </>
                     ) : (
                       "--"
@@ -207,15 +196,9 @@ const Calendar = ({
           </div>
         ))}
       </div>
-      {!loggedUser && (
-        <div className="text-2xl mt-2 text-red-500">
-          You need to login to book this room
-        </div>
-      )}
+      {!loggedUser && <div className="text-2xl mt-2 text-red-500">You need to login to book this room</div>}
       {loggedUser && !isAllowed && (
-        <div className="text-2xl mt-2 text-red-500">
-          You don't have permission to book this room
-        </div>
+        <div className="text-2xl mt-2 text-red-500">You don't have permission to book this room</div>
       )}
       {loggedUser && isAllowed && selectedDate && (
         <div className="bg-white p-5 rounded-md drop-shadow-lg mt-5 w-[400px]">

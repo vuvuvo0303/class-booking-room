@@ -80,7 +80,7 @@ const BookingHistory = () => {
       dataIndex: "status",
       key: "status",
       render: (status: string) => (
-        <Tag color={status === "Accepted" ? "green" : status === "Denied" ? "red" : "default"}>
+        <Tag color={status === "Accepted" ? "green" : status === "Denied" ? "red" : "orange"}>
           {status.toUpperCase()}
         </Tag>
       ),
