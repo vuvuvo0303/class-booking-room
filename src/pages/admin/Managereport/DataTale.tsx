@@ -14,14 +14,9 @@ import DeleteReport from "./DeleteReport";
 import { approveReport, denyReport } from "@/lib/api/report-api";
 import TextArea from "antd/es/input/TextArea";
 import { toast } from "react-toastify";
+import { title } from "process";
 
-const DataTable = ({
-  data,
-  rerender,
-}: {
-  data: Report[];
-  rerender: () => void;
-}) => {
+const DataTable = ({ data, rerender }: { data: Report[]; rerender: () => void }) => {
   const [rejectionReason, setRejectionReason] = useState("");
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
   const [currentReportId, setCurrentReportId] = useState<number | null>(null);
@@ -108,16 +103,17 @@ const DataTable = ({
     {
       title: "Created At",
       dataIndex: "createdAt",
-      render: (createAt: string) => (
-        <span>{new Date(createAt).toLocaleDateString()}</span>
-      ),
+      render: (createAt: string) => <span>{new Date(createAt).toLocaleDateString()}</span>,
     },
     {
       title: "Updated At",
       dataIndex: "updatedAt",
-      render: (updatedAt: string) => (
-        <span>{new Date(updatedAt).toLocaleDateString()}</span>
-      ),
+      render: (updatedAt: string) => <span>{new Date(updatedAt).toLocaleDateString()}</span>,
+    },
+    {
+      title: "Response",
+      dataIndex: "response",
+      key: "response",
     },
     {
       title: "Action",
@@ -127,10 +123,7 @@ const DataTable = ({
         <div className="flex gap-2">
           {record.status === "Pending" ? (
             <>
-              <Button
-                className="bg-green-500 text-white hover:bg-green-600"
-                onClick={() => handleApprove(record.id)}
-              >
+              <Button className="bg-green-500 text-white hover:bg-green-600" onClick={() => handleApprove(record.id)}>
                 Accept
               </Button>
               <Button
@@ -159,10 +152,7 @@ const DataTable = ({
 
       {/* Reject Modal */}
       {isRejectModalOpen && (
-        <AlertDialog
-          open={isRejectModalOpen}
-          onOpenChange={setIsRejectModalOpen}
-        >
+        <AlertDialog open={isRejectModalOpen} onOpenChange={setIsRejectModalOpen}>
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Reject Report</AlertDialogTitle>
@@ -178,16 +168,10 @@ const DataTable = ({
               />
             </div>
             <AlertDialogFooter>
-              <Button
-                variant={"ghost"}
-                onClick={() => setIsRejectModalOpen(false)}
-              >
+              <Button variant={"ghost"} onClick={() => setIsRejectModalOpen(false)}>
                 Cancel
               </Button>
-              <Button
-                onClick={handleSubmitRejection}
-                disabled={!rejectionReason}
-              >
+              <Button onClick={handleSubmitRejection} disabled={!rejectionReason}>
                 Submit
               </Button>
             </AlertDialogFooter>

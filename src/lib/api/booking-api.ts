@@ -34,19 +34,19 @@ export const getAllBookingRequest = async () => {
   }
 };
 export const getAllBookingHistory = async () => {
-    try {
-      const { data } = await axiosClient.get(`/api/bookings?PageSize=999`);
-      
-      const bookingRequest = data.filter((booking: Booking) => 
-        booking.status === "Accepted" || booking.status === "Denied"
-      );
-      
-      return { error: null, data: bookingRequest, success: true };
-    } catch (error) {
-      return handleApiError(error);
-    }
-  };
-  
+  try {
+    const { data } = await axiosClient.get(`/api/bookings?PageSize=999`);
+
+    const bookingRequest = data.filter(
+      (booking: Booking) => booking.status === "Accepted" || booking.status === "Denied"
+    );
+
+    return { error: null, data: bookingRequest, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
 export const acceptBooking = async (id: number) => {
   try {
     const { data } = await axiosClient.put(`/api/bookings/${id}/accept`);
@@ -60,6 +60,16 @@ export const denyBooking = async (id: number, reason: string) => {
     const { data } = await axiosClient.put(`/api/bookings/${id}/deny`, reason, {
       headers: { "Content-Type": "application/json" },
     });
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+export const getBookingById = async (id: number) => {
+  try {
+    const { data } = await axiosClient.get(`/api/users/${id}/bookings`);
+    console.log("dulieune", data);
+
     return { error: null, data: data, success: true };
   } catch (error) {
     return handleApiError(error);

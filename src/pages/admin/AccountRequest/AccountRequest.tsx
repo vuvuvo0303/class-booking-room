@@ -26,12 +26,12 @@ const AccountRequest = () => {
     };
     fetchData();
   }, [renderKey]);
-  if (isLoading) return <Loader text="Loading reports data..." />;
+  if (isLoading) return <Loader text="Loading Account Request data..." />;
 
   const basePath = "/" + loggedUser.role;
   return (
     <div>
-      <Header currentPage="Report" breadcrumbItems={[{ title: "Dashboard", to: basePath }]} />
+      <Header currentPage="Account Request" breadcrumbItems={[{ title: "Dashboard", to: basePath }]} />
       <div className="p-3">
         <div className="flex">
           <span className="text-4xl font-semibold">Manage Account Request</span>

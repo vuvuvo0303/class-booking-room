@@ -4,8 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Booking } from "@/types/booking";
 import "react-toastify/dist/ReactToastify.css";
 import { formatDateToTimeString } from "@/utils/time";
-import { title } from "process";
-import { Key } from "lucide-react";
+
 
 const DataTable = ({ data, rerender }: { data: Booking[]; rerender: () => void }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -81,7 +80,7 @@ const DataTable = ({ data, rerender }: { data: Booking[]; rerender: () => void }
           </Tag>
         )),
     },
-    { title: "Respone", dataIndex: "response", Key: "response" },
+    { title: "Response", dataIndex: "response", Key: "response" },
     {
       title: "Created At",
       dataIndex: "createdAt",

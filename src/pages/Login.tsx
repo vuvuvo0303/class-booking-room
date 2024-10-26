@@ -133,8 +133,7 @@ const Login = () => {
   return (
     <>
       <div className="flex w-auto overflow-hidden md:p-10 justify-center">
-        {/* <Button onClick={mockLoginAsManager}>Mock Login as Manager</Button> */}
-        {/* <Button onClick={mockLoginAsAdmin}>Mock Login as Admin</Button> */}
+        
         <div className="flex w-full md:w-[85%] bg-white drop-shadow-[0_0_10px_rgba(0,0,0,0.5)] rounded-xl overflow-hidden h-screen">
           <div className="bg-contain relative hidden md:block">
             <img src={background} alt="" className="h-full relative select-none" />
