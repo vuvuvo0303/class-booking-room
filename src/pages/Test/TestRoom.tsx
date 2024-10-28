@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import picture from "@/assets/face-recognized.png";
 import { useParams } from "react-router-dom";
 import { Room } from "@/types/room";
-import { getRoomBooking, getRoomById } from "@/lib/api/room-api";
+import { getRoomById } from "@/lib/api/room-api";
 import { toast } from "react-toastify";
 import { FaceDescriptor, User } from "@/types/user";
 import BookingRecognition from "@/components/face/BookingRecognition";

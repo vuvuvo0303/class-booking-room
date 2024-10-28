@@ -2,12 +2,10 @@ import NotFound from "@/components/NotFound";
 import AdminLayout from "@/layouts/AdminLayout";
 import {
   AdminBookingDetailPage,
-  AdminBookingPage,
   AdminCohortPage,
   AdminDashboardPage,
   AdminDepartment,
   AdminDepartmentDetail,
-  AdminGroupPage,
   AdminRoomDetailPage,
   AdminRoomPage,
   AdminRoomTypeDetail,
@@ -19,7 +17,6 @@ import {
 } from "@/pages";
 import AccountRequest from "@/pages/admin/AccountRequest/AccountRequest";
 import Booking from "@/pages/admin/BookingHistory/Booking";
-import BookingHistory from "@/pages/admin/BookingHistory/BookingHistory";
 import BookingRequest from "@/pages/admin/ManageBookingRequest/BookingRequest";
 import ManageReport from "@/pages/admin/Managereport/Report";
 import ManageRoomTypes from "@/pages/admin/ManageRoomType/ManageRoomTypes";

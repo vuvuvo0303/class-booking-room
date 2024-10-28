@@ -4,7 +4,6 @@ import {
   Contact,
   DoorOpen,
   GitPullRequestArrow,
-  Group,
   Layers3,
   LayoutGrid,
   MenuIcon,

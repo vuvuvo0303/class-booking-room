@@ -14,7 +14,6 @@ import DeleteReport from "./DeleteReport";
 import { approveReport, denyReport } from "@/lib/api/report-api";
 import TextArea from "antd/es/input/TextArea";
 import { toast } from "react-toastify";
-import { title } from "process";
 
 const DataTable = ({ data, rerender }: { data: Report[]; rerender: () => void }) => {
   const [rejectionReason, setRejectionReason] = useState("");
