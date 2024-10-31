@@ -64,7 +64,6 @@ export const deleteRoomType = async (id: number) => {
         return handleApiError(error);
     }
 }
-
 export const addCohort = async (roomTypeId: number, cohortId: number) => {
     console.log(`/api/room-types/${roomTypeId}/cohort`);
     console.log(cohortId)
@@ -75,9 +74,27 @@ export const addCohort = async (roomTypeId: number, cohortId: number) => {
         return handleApiError(error);
     }
 }
+export const addActivity = async (roomTypeId: number, activityId: number) => {
+    console.log(`/api/room-types/${roomTypeId}/activity`);
+    console.log(activityId)
+    try {
+        const { data } = await axiosClient.put(`/api/room-types/${roomTypeId}/activity`, activityId);
+        return { error: null, data: data, success: true };
+    } catch (error) {
+        return handleApiError(error);
+    }
+}
 export const removeCohort = async (roomTypeId: number, cohortId: number) => {
     try {
         const { data } = await axiosClient.delete(`/api/room-types/${roomTypeId}/cohort?cohortId=${cohortId}`);
+        return { error: null, data: data, success: true };
+    } catch (error) {
+        return handleApiError(error);
+    }
+}
+export const removeActivity = async (roomTypeId: number, activityId: number) => {
+    try {
+        const { data } = await axiosClient.delete(`/api/room-types/${roomTypeId}/activity?activityId=${activityId}`);
         return { error: null, data: data, success: true };
     } catch (error) {
         return handleApiError(error);

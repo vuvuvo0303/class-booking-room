@@ -38,32 +38,6 @@ const navItems: NavItemType[] = [
     type: "divider",
   },
   {
-    title: "Manage Account",
-    to: "user",
-    icon: <UserSearch />,
-  },
-  {
-    title: "Account Request",
-    to: "account-request",
-    icon: <UserSearch />,
-
-  },
-  {
-    title: "Student's Request",
-    to: "student",
-    icon: <BookUser />,
-    isAdminOnly: true,
-  },
-  {
-    title: "Staff's Request",
-    to: "staff",
-    icon: <Contact />,
-    isAdminOnly: true,
-  },
-  {
-    type: "divider",
-  },
-  {
     title: "Rooms",
     to: "rooms",
     icon: <Box />,
@@ -81,12 +55,24 @@ const navItems: NavItemType[] = [
   {
     title: "Booking Requests",
     to: "bookings-request",
-    icon:  <GitPullRequestArrow />,
+    icon: <GitPullRequestArrow />,
+  },
+
+  {
+    title: "Student's Request",
+    to: "student",
+    icon: <BookUser />,
+    isAdminOnly: true,
+  },
+  {
+    title: "Staff's Request",
+    to: "staff",
+    icon: <Contact />,
+    isAdminOnly: true,
   },
   {
     type: "divider",
   },
-
   {
     title: "Report",
     to: "report",
@@ -101,6 +87,19 @@ const navItems: NavItemType[] = [
     title: "Department",
     to: "department",
     icon: <SquareChartGantt />,
+  },
+  {
+    type: "divider",
+  },
+  {
+    title: "Manage Account",
+    to: "user",
+    icon: <UserSearch />,
+  },
+  {
+    title: "Account Request",
+    to: "account-request",
+    icon: <UserSearch />,
   },
 ];
 const Sidebar = () => {
