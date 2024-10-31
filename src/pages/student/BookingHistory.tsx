@@ -101,7 +101,7 @@ const BookingHistory = () => {
     {
       title: "Action",
       key: "action",
-      render: (record: Booking) => (
+      render: (_) => (
         <Space size="middle">
           <Button onClick={() => {}}>Cancel</Button>
         </Space>
