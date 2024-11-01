@@ -38,11 +38,8 @@ export const getAllBookingHistory = async () => {
   try {
     const { data } = await axiosClient.get(`/api/bookings?PageSize=999`);
 
-    const bookingRequest = data.filter(
-      (booking: Booking) => booking.status === "Accepted" || booking.status === "Denied"
-    );
 
-    return { error: null, data: bookingRequest, success: true };
+    return { error: null, data: data, success: true };
   } catch (error) {
     return handleApiError(error);
   }

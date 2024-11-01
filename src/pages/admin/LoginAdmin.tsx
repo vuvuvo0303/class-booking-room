@@ -36,7 +36,6 @@ const LoginAdmin = () => {
 
     const onSubmit = async (data: z.infer<typeof FormSchema>) => {
       const result = await login(data.email, data.password);
-      console.log(result);
       if (result.error) {
         toast.error(result.error);
       } else {
@@ -47,17 +46,12 @@ const LoginAdmin = () => {
         }, 500);
       }
     };
+
     useEffect(() => {
-      if (loggedUser) {
-        if (loggedUser.role == "Admin") {
-          navigate("/admin");
-        } else if (loggedUser.role == "Manager") {
-          navigate("/manager");
-        } else if (loggedUser.role == "Student") {
-          navigate("/");
-        }
+      if (loggedUser && loggedUser.role === "Admin") {
+        navigate("/admin");
       }
-    }, []);
+    }, [loggedUser]);
 
     return (
       <Form {...form}>
@@ -97,35 +91,33 @@ const LoginAdmin = () => {
   }
 
   return (
-    <>
-      <div className="flex w-auto overflow-hidden md:p-10 justify-center">
-        <div className="flex w-full md:w-[85%] bg-white drop-shadow-[0_0_10px_rgba(0,0,0,0.5)] rounded-xl overflow-hidden h-screen">
-          <div className="bg-contain relative hidden md:block">
-            <img src={anhtruong} alt="" width={650} className="h-full relative select-none" />
-            <img src={logofpt} width={100} className="absolute top-5 left-5" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-200 to-orange-400 absolute top-[220px] left-20 text-5xl font-semibold">
-              Welcome
-            </span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-300 to-orange-500  absolute top-[280px] left-28">
-              Log-in to Admin Page
-            </span>
-            <span className="absolute bottom-5 left-8  text-[18px] text-white">fu-booking-room.vercel.app</span>
+    <div className="flex w-auto overflow-hidden md:p-10 justify-center">
+      <div className="flex w-full md:w-[85%] bg-white drop-shadow-[0_0_10px_rgba(0,0,0,0.5)] rounded-xl overflow-hidden h-screen">
+        <div className="bg-contain relative hidden md:block">
+          <img src={anhtruong} alt="" width={650} className="h-full relative select-none" />
+          <img src={logofpt} width={100} className="absolute top-5 left-5" />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-200 to-orange-400 absolute top-[220px] left-20 text-5xl font-semibold">
+            Welcome
+          </span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-300 to-orange-500 absolute top-[280px] left-28">
+            Log-in to Admin Page
+          </span>
+          <span className="absolute bottom-5 left-8 text-[18px] text-white">fu-booking-room.vercel.app</span>
+        </div>
+        <div className="flex-1 h-full py-14 overflow-auto px-10">
+          <div className="flex justify-center h-20 items-end gap-1">
+            <span className="text-6xl font-bold text-o">Login</span>
+            <span className="text-o">for admin</span>
           </div>
-          <div className="flex-1 h-full py-14 overflow-auto px-10">
-            <div className="flex justify-center h-20 items-end gap-1  ">
-              <span className="text-6xl font-bold text-o">Login</span>
-              <span className="text-o">for admin</span>
-            </div>
-            <div className="flex justify-center py-6 ">
-              <span className="">"Ready for a global career"</span>
-            </div>
-            <div className="flex justify-center pt-20 ">
-              <InputForm />
-            </div>
+          <div className="flex justify-center py-6">
+            <span className="">"Ready for a global career"</span>
+          </div>
+          <div className="flex justify-center pt-20">
+            <InputForm />
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

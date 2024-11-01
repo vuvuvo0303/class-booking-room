@@ -64,11 +64,7 @@ const DataTable = ({ data }: { data: Booking[]; rerender: () => void }) => {
       render: (status: string) => (
         <Tag
           color={
-            status === "Accepted"
-              ? "green"
-              : status === "Denied"
-              ? "red"
-              : "default"
+            status === "Accepted" ? "green" : status === "Denied" ? "red" : status === "Cancelled" ? "pink" : "orange"
           }
         >
           {status.toUpperCase()}
@@ -87,10 +83,10 @@ const DataTable = ({ data }: { data: Booking[]; rerender: () => void }) => {
       render: (record: Booking) =>
         record.roomSlots.map((slot) => (
           <Tag key={slot.id} color="blue" className="min-w-[120px] text-center">
-            {`${formatDateToTimeString(
-              new Date(slot.startTime),
+            {`${formatDateToTimeString(new Date(slot.startTime), true)} - ${formatDateToTimeString(
+              new Date(slot.endTime),
               true
-            )} - ${formatDateToTimeString(new Date(slot.endTime), true)}`}
+            )}`}
           </Tag>
         )),
     },
@@ -111,12 +107,7 @@ const DataTable = ({ data }: { data: Booking[]; rerender: () => void }) => {
 
   return (
     <>
-      <Table
-        columns={columns}
-        dataSource={data}
-        rowKey="id"
-        scroll={{ x: 400 }}
-      />
+      <Table columns={columns} dataSource={data} rowKey="id" scroll={{ x: 400 }} />
 
       <Modal
         title="Student Information"

@@ -8,7 +8,7 @@ import { Booking } from "@/types/booking";
 import { getAllBookingHistory } from "@/lib/api/booking-api";
 import DataTable from "./DataTable";
 
-const BookingRequest = () => {
+const BookingHistoryOfAdmin = () => {
   const loggedUser = useAuthStore((state) => state.user);
   const [data, setData] = useState<Booking[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,4 +51,4 @@ const BookingRequest = () => {
   );
 };
 
-export default BookingRequest;
+export default BookingHistoryOfAdmin;
