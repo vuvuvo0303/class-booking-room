@@ -11,6 +11,7 @@ import StepProcess from "@/pages/student/step-process";
 import useAuthStore from "@/store/AuthStore";
 import VerifyPage from "@/pages/VerifyPage";
 import { useEffect } from "react";
+import BookingListRoom from "@/pages/student/bookinglistroom";
 
 const Home = () => {
   const loggedUser = useAuthStore((state) => state.user);
@@ -43,6 +44,7 @@ const Home = () => {
         <Route path="/policy" element={<Policy />} />
         <Route path="/step-process" element={<StepProcess />} />
         <Route path="/booking-room" element={<BookingRoom />} />
+        <Route path="/booking-list-room" element={<BookingListRoom />} />
         <Route path="/room/:roomId" element={<RoomDetailPage />} />
         <Route path="/profile/*" element={<StudentProfile />} />
         <Route path="*" element={<NotFound />} />
