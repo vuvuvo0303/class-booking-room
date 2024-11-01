@@ -1,19 +1,33 @@
 import Loader from "@/components/Loader";
-import { Button } from "@/components/ui/button";
-import { getBookingById } from "@/lib/api/booking-api";
+import { cancelBooking, getBookingById } from "@/lib/api/booking-api";
 import useAuthStore from "@/store/AuthStore";
 import { Booking } from "@/types/booking";
 import { formatDateToTimeString } from "@/utils/time";
-import { Modal, Space, Table, Tag } from "antd";
+import { Button, Modal, Space, Table, Tag } from "antd";
 import type { TableProps } from "antd";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const BookingHistory = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingCancel, setLoadingCancel] = useState<number | null>(null);
   const loggedUser = useAuthStore((state) => state.user);
   const [selectedStudent, setSelectedStudent] = useState<Booking | null>(null);
   const [openModal, setOpenModal] = useState(false);
   const [data, setData] = useState<Booking[]>([]);
+
+  const handleCancelBooking = async (id: number) => {
+    setLoadingCancel(id);
+    const response = await cancelBooking(id);
+    setLoadingCancel(null);
+
+    if (!response.error) {
+      toast.success("Cancel Booking Successfully!");
+      fetchData();
+    } else {
+      toast.error(`Error: ${response.error}`);
+    }
+  };
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -30,7 +44,7 @@ const BookingHistory = () => {
     fetchData();
   }, [loggedUser.id]);
 
-  if (isLoading) return <Loader text="Loading Booking data..." />;
+  if (isLoading) return <Loader />;
 
   const columns: TableProps<Booking>["columns"] = [
     {
@@ -39,7 +53,7 @@ const BookingHistory = () => {
       key: "studentFullName",
       render: (text: string, record: Booking) => (
         <Button
-          variant="link"
+          type="link"
           onClick={() => {
             setSelectedStudent(record);
             setOpenModal(true);
@@ -80,7 +94,11 @@ const BookingHistory = () => {
       dataIndex: "status",
       key: "status",
       render: (status: string) => (
-        <Tag color={status === "Accepted" ? "green" : status === "Denied" ? "red" : "orange"}>
+        <Tag
+          color={
+            status === "Accepted" ? "green" : status === "Denied" ? "red" : status === "Cancelled" ? "pink" : "orange"
+          }
+        >
           {status.toUpperCase()}
         </Tag>
       ),
@@ -101,11 +119,19 @@ const BookingHistory = () => {
     {
       title: "Action",
       key: "action",
-      render: (_) => (
-        <Space size="middle">
-          <Button onClick={() => {}}>Cancel</Button>
-        </Space>
-      ),
+      render: (record: Booking) =>
+        record.status !== "Cancelled" && (
+          <Space size="middle">
+            <Button
+              style={{ backgroundColor: "orange", color: "white" }}
+              onClick={() => handleCancelBooking(record.id)}
+              loading={loadingCancel === record.id}
+              disabled={loadingCancel !== null}
+            >
+              Cancel
+            </Button>
+          </Space>
+        ),
     },
   ];
 
@@ -146,7 +172,6 @@ const BookingHistory = () => {
             <p>
               <strong>Cohort Code:</strong> {selectedStudent.cohortCode}
             </p>
-
             <p>
               <strong>Department:</strong> {selectedStudent.departmentName}
             </p>

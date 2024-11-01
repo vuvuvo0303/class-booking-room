@@ -47,7 +47,14 @@ export const getAllBookingHistory = async () => {
     return handleApiError(error);
   }
 };
-
+export const cancelBooking = async (id: number) => {
+  try {
+    const { data } = await axiosClient.put(`/api/bookings/${id}/cancel`);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
 export const acceptBooking = async (id: number) => {
   try {
     const { data } = await axiosClient.put(`/api/bookings/${id}/accept`);
