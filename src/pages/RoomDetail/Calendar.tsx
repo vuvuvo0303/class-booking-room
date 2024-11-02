@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { getRoomBooking } from "@/lib/api/room-api";
-import useAuthStore from "@/store/AuthStore";
-import useBookingStore from "@/store/BookingStore";
+// import useAuthStore from "@/store/AuthStore";
+// import useBookingStore from "@/store/BookingStore";
 import { Booking } from "@/types/booking";
 import { Room } from "@/types/room";
 import { Slot } from "@/types/slot";
@@ -9,7 +9,7 @@ import { areDatesEqual, formatDate, isDateNotInPast } from "@/utils/date";
 import { formatDateToTimeString } from "@/utils/time";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function isOneHourInAdvance(targetTime: Date) {
@@ -25,7 +25,7 @@ function isOneHourInAdvance(targetTime: Date) {
 
 const Calendar = ({
   slots,
-  allowedCohorts,
+  // allowedCohorts,
   room,
 }: {
   slots: Slot[];
@@ -35,11 +35,11 @@ const Calendar = ({
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedSlots, setSelectedSlots] = useState<Slot[]>([]);
-  const [error, setError] = useState<string | undefined>();
+  // const [error, setError] = useState<string | undefined>();
   const [bookings, setBookings] = useState<Booking[]>([]);
-  const navigate = useNavigate();
-  const setBookingInfo = useBookingStore((state) => state.setBookingInfo);
-  const loggedUser = useAuthStore((state) => state.user);
+  // const navigate = useNavigate();
+  // const setBookingInfo = useBookingStore((state) => state.setBookingInfo);
+  // const loggedUser = useAuthStore((state) => state.user);
   function getWeekDates(date: Date) {
     const startDate = new Date(date);
     const weekDates = [];
@@ -83,7 +83,7 @@ const Calendar = ({
     } else {
       setSelectedSlots(selectedSlots.filter((s) => s.id != slot.id));
     }
-    setError(undefined);
+    // setError(undefined);
   };
   const handleSelectDate = (date: Date) => {
     if (!isDateNotInPast(date)) return;
@@ -93,24 +93,24 @@ const Calendar = ({
     setSelectedDate(date);
   };
 
-  var isAllowed = false;
-  if (loggedUser && allowedCohorts.find((cohort) => cohort.id == loggedUser.cohortId)) {
-    isAllowed = true;
-  }
-  const handleContinue = () => {
-    if (selectedSlots.length == 0) {
-      setError("Please select at least 1 slot.");
-      return;
-    }
-    if (selectedSlots.length > 3) {
-      setError("You cannot book more than 3 slots per booking.");
-      return;
-    }
-    if (selectedDate) {
-      setBookingInfo(selectedDate, selectedSlots, room);
-      navigate("/step-process");
-    }
-  };
+  // var isAllowed = false;
+  // if (loggedUser && allowedCohorts.find((cohort) => cohort.id == loggedUser.cohortId)) {
+  //   isAllowed = true;
+  // }
+  // const handleContinue = () => {
+  //   if (selectedSlots.length == 0) {
+  //     setError("Please select at least 1 slot.");
+  //     return;
+  //   }
+  //   if (selectedSlots.length > 3) {
+  //     setError("You cannot book more than 3 slots per booking.");
+  //     return;
+  //   }
+  //   if (selectedDate) {
+  //     setBookingInfo(selectedDate, selectedSlots, room);
+  //     navigate("/step-process");
+  //   }
+  // };
   useEffect(() => {
     const fetchData = async () => {
       const bookingResult = await getRoomBooking(room.id);
@@ -196,7 +196,7 @@ const Calendar = ({
           </div>
         ))}
       </div>
-      {!loggedUser && <div className="text-2xl mt-2 text-red-500">You need to login to book this room</div>}
+      {/* {!loggedUser && <div className="text-2xl mt-2 text-red-500">You need to login to book this room</div>}
       {loggedUser && !isAllowed && (
         <div className="text-2xl mt-2 text-red-500">You don't have permission to book this room</div>
       )}
@@ -229,7 +229,7 @@ const Calendar = ({
             </Button>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

@@ -60,6 +60,7 @@ export const acceptBooking = async (id: number) => {
     return handleApiError(error);
   }
 };
+
 export const denyBooking = async (id: number, reason: string) => {
   try {
     const { data } = await axiosClient.put(`/api/bookings/${id}/deny`, reason, {
@@ -70,11 +71,28 @@ export const denyBooking = async (id: number, reason: string) => {
     return handleApiError(error);
   }
 };
+
+export const checkInBooking = async (id: number) => {
+  try {
+    const { data } = await axiosClient.put(`/api/bookings/${id}/check-in`);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
 export const getBookingById = async (id: number) => {
   try {
     const { data } = await axiosClient.get(`/api/users/${id}/bookings`);
-    console.log("dulieune", data);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
 
+export const getTodayBookingByRoomId = async (roomId: number) => {
+  try {
+    const { data } = await axiosClient.get(`/api/rooms/${roomId}/today-bookings`);
     return { error: null, data: data, success: true };
   } catch (error) {
     return handleApiError(error);
