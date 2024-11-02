@@ -63,7 +63,15 @@ const AddCohortButton = ({
       if (cohortResult.error) {
         toast.error(cohortResult.error);
       } else {
-        setCohorts(cohortResult.data);
+        setCohorts(cohortResult.data.sort((a: Cohort, b: Cohort) => {
+          if (a.cohortCode < b.cohortCode) {
+            return -1;
+          }
+          if (a.cohortCode > b.cohortCode) {
+            return 1;
+          }
+          return 0;
+        }));
       }
       setIsLoading(false);
     };
@@ -81,7 +89,7 @@ const AddCohortButton = ({
         <Plus />
       </Button>
       <Modal
-        title="Create new slot"
+        title="Add cohort"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}

@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import useAuthStore from "@/store/AuthStore";
 import { Avatar, Dropdown, MenuProps } from "antd";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const loggedUser = useAuthStore((state) => state.user);
@@ -90,13 +91,23 @@ const Navbar = () => {
           <span>Policy</span>
         </Link>
         <Link to="/booking-room">
-          <span>Booking Room</span>
+          <span>Rooms</span>
         </Link>
         <Link to="/rules">
           <span>Rules</span>
         </Link>
       </div>
       <div className="flex gap-6 items-center">
+        <Button onClick={() => {
+          if (loggedUser == null) {
+            toast.error("Login to continue");
+            setTimeout(() => {
+              navigate("/login");
+            }, 1000);
+          } else {
+            navigate("/booking-list-room");
+          }
+        }}>Book a room</Button>
         {!loggedUser ? (
           <Link to="/login">
             <Button>Login</Button>

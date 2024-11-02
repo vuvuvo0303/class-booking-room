@@ -63,7 +63,15 @@ const AddActivityButton = ({
       if (cohortResult.error) {
         toast.error(cohortResult.error);
       } else {
-        setActivities(cohortResult.data);
+        setActivities(cohortResult.data.sort((a: Activity, b: Activity) => {
+          if (a.code + a.name < b.code + b.name) {
+            return -1;
+          }
+          if (a.code + a.name > b.code + b.name) {
+            return 1;
+          }
+          return 0;
+        }));
       }
       setIsLoading(false);
     };
@@ -81,7 +89,7 @@ const AddActivityButton = ({
         <Plus />
       </Button>
       <Modal
-        title="Create new slot"
+        title="Add activity"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -105,9 +113,10 @@ const AddActivityButton = ({
               showSearch
               placeholder="Select Activity to add"
               optionFilterProp="label"
-              options={availableActivity.map((activities: Activity) => ({
-                value: activities.id,
-                label: activities.name,
+              options={availableActivity.map((activity: Activity) => ({
+                value: activity.id,
+                label: activity.code + " - " + activity.name,
+
               }))}
             />
           </Form.Item>

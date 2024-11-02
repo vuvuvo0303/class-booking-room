@@ -2,7 +2,11 @@ import Loader from "@/components/Loader";
 import NotFound from "@/components/NotFound";
 import Header from "@/components/admin/Header";
 import useRerender from "@/hooks/use-rerender";
-import { getRoomTypeById, removeActivity, removeCohort } from "@/lib/api/room-type-api";
+import {
+  getRoomTypeById,
+  removeActivity,
+  removeCohort,
+} from "@/lib/api/room-type-api";
 import useAuthStore from "@/store/AuthStore";
 import { RoomTypes } from "@/types/room-type";
 import { useEffect, useState } from "react";
@@ -76,42 +80,64 @@ const RoomTypeDetail = () => {
                 </span>
               )}
               <div className="flex flex-col gap-2">
-                {roomTypeDetail?.allowedCohorts.map((cohort) => {
-                  return (
-                    <CohortCard
-                      cohort={cohort}
-                      roomTypeId={roomTypeDetail.id}
-                      key={`cohort-${cohort.id}`}
-                      rerender={rerender}
-                    />
-                  );
-                })}
+                {roomTypeDetail?.allowedCohorts
+                  .sort((a, b) => {
+                    if (a.cohortCode < b.cohortCode) {
+                      return -1;
+                    }
+                    if (a.cohortCode > b.cohortCode) {
+                      return 1;
+                    }
+                    return 0;
+                  })
+                  .map((cohort) => {
+                    return (
+                      <CohortCard
+                        cohort={cohort}
+                        roomTypeId={roomTypeDetail.id}
+                        key={`cohort-${cohort.id}`}
+                        rerender={rerender}
+                      />
+                    );
+                  })}
               </div>
             </div>
           </div>
           <div className="rounded border border-gray-400 col-span-6 overflow-hidden bg-white drop-shadow">
             <div className="p-3 bg-green-500 text-white flex justify-between items-center">
               <h3 className="text-lg font-semibold">Allowed Activity</h3>
-              <AddActivityButton rerender={rerender} roomType={roomTypeDetail!} />
-
+              <AddActivityButton
+                rerender={rerender}
+                roomType={roomTypeDetail!}
+              />
             </div>
             <div className="p-3">
               {roomTypeDetail?.allowedCohorts.length == 0 && (
                 <span className="text-gray-500">
-                  No Activity is allowed to book this room type
+                  No activity is allowed to book this room type
                 </span>
               )}
               <div className="flex flex-col gap-2">
-                {roomTypeDetail?.allowedActivities.map((activity) => {
-                  return (
-                    <ActivityCard
-                      activity={activity}
-                      roomTypeId={roomTypeDetail.id}
-                      key={`activity-${activity.id}`}
-                      rerender={rerender}
-                    />
-                  );
-                })}
+                {roomTypeDetail?.allowedActivities
+                  .sort((a, b) => {
+                    if (a.code + a.name < b.code + b.name) {
+                      return -1;
+                    }
+                    if (a.code + a.name > b.code + b.name) {
+                      return 1;
+                    }
+                    return 0;
+                  })
+                  .map((activity) => {
+                    return (
+                      <ActivityCard
+                        activity={activity}
+                        roomTypeId={roomTypeDetail.id}
+                        key={`activity-${activity.id}`}
+                        rerender={rerender}
+                      />
+                    );
+                  })}
               </div>
             </div>
           </div>
@@ -146,10 +172,11 @@ const CohortCard = ({
     <div className="drop-shadow bg-white rounded p-3 flex justify-between items-center">
       <span>{cohort.cohortCode}</span>
       <button onClick={handleRemoveCohort}>
-        {
-          isSubmitting ? <LoaderIcon className="text-red-500 h-5 w-5"/> : <Trash2 className="text-red-500 h-5 w-5" />
-        }
-        
+        {isSubmitting ? (
+          <LoaderIcon className="text-red-500 h-5 w-5" />
+        ) : (
+          <Trash2 className="text-red-500 h-5 w-5" />
+        )}
       </button>
     </div>
   );
@@ -159,7 +186,7 @@ const ActivityCard = ({
   roomTypeId,
   rerender,
 }: {
-  activity: { id: number; name: string };
+  activity: { id: number; name: string; code: string };
   roomTypeId: number;
   rerender: () => void;
 }) => {
@@ -178,12 +205,15 @@ const ActivityCard = ({
   };
   return (
     <div className="drop-shadow bg-white rounded p-3 flex justify-between items-center">
-      <span>{activity.name}</span>
+      <span>
+        {activity.code} - {activity.name}
+      </span>
       <button onClick={handleRemoveActivity}>
-        {
-          isSubmitting ? <LoaderIcon className="text-red-500 h-5 w-5"/> : <Trash2 className="text-red-500 h-5 w-5" />
-        }
-        
+        {isSubmitting ? (
+          <LoaderIcon className="text-red-500 h-5 w-5" />
+        ) : (
+          <Trash2 className="text-red-500 h-5 w-5" />
+        )}
       </button>
     </div>
   );
