@@ -1,3 +1,5 @@
+import { FaceDescriptor } from "./user";
+
 type RoomSlot = {
     id: number;
     startTime: string; 
@@ -28,5 +30,6 @@ type RoomSlot = {
     bookingDate: string;
     roomName: string;
     roomId: number;
+    faceDescriptor?: FaceDescriptor;
   };
   

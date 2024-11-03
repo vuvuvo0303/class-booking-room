@@ -1,22 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
 import { Button } from "../ui/button";
-import { FaceDescriptor, User } from "@/types/user";
 import { compareFaceDescriptors } from "@/utils/face";
+import { Booking } from "@/types/booking";
 
 const BookingRecognition = ({
-  userDescriptors,
-  setUser,
+  bookings,
+  setSelectedBooking
 }: {
-  userDescriptors: FaceDescriptor[];
-  setUser: (user: User | undefined) => void;
+  bookings: Booking[];
+  setSelectedBooking: (booking?: Booking) => void
 }) => {
   const [isLoadingModel, setIsLoadingModel] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream>();
   const [faceDescriptors, setFaceDescriptors] = useState<Float32Array[]>([]);
-  const [recognizedUser, setRecognizedUser] = useState<User>();
+  const [recognizedUser, setRecognizedUser] = useState<string>();
   const [error, setError] = useState<string>();
   useEffect(() => {
     const originalLog = console.log;
@@ -103,15 +103,19 @@ const BookingRecognition = ({
     setError(undefined);
     const currentFace = faceDescriptors[0];
     var isFound = false;
-    for (const userDescriptor of userDescriptors) {
+    for (const booking of bookings) {
+      if (!booking.faceDescriptor) {
+        console.log("Error, face descriptor is missing");
+        return;
+      }
       const compareResult = await compareFaceDescriptors(
-        userDescriptor.descriptor,
+        booking.faceDescriptor.descriptor,
         Array.from(currentFace),
         0.5
       );
       if (compareResult) {
-        setRecognizedUser(userDescriptor.user);
-        setUser(userDescriptor.user);
+        setRecognizedUser(booking.studentEmail);
+        setSelectedBooking(booking);
         isFound = true;
         break;
       }
@@ -119,7 +123,7 @@ const BookingRecognition = ({
     if (!isFound) {
       setError("Face is not recognized");
       setRecognizedUser(undefined);
-      setUser(undefined);
+      setSelectedBooking(undefined);
     }
   };
   return (
@@ -147,7 +151,7 @@ const BookingRecognition = ({
       >
         Scan
       </Button>
-      <p className="bg-purple-700 text-white">{recognizedUser && recognizedUser.email}</p>
+      <p className="bg-purple-700 text-white">{recognizedUser && recognizedUser}</p>
 
       {<div className="text-red-500 bg-purple-700">{error}</div>}
     </div>

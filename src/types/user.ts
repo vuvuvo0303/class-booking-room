@@ -12,6 +12,7 @@ export type User = {
   cohortId?: number;
   isVerify:boolean;
   note: string;
+  faceDescriptor?: FaceDescriptor;
 };
 
 export type FaceDescriptor = {
