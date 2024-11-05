@@ -2,49 +2,52 @@ import Loader from "@/components/Loader";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import RoomCard from "@/components/RoomCard";
 import { getActivitiesByDepartmentId } from "@/lib/api/activity-api";
-import { getAllRoom } from "@/lib/api/room-api";
+import { getAvailableRooms } from "@/lib/api/room-api"; 
 import useAuthStore from "@/store/AuthStore";
 import { Activity } from "@/types/department";
 import { Room } from "@/types/room";
-import {
-  Button,
-  DatePicker,
-  DatePickerProps,
-  Form,
-  Input,
-  Select,
-  TimePicker,
-} from "antd";
-import { Dayjs } from "dayjs";
+import { Button, DatePicker, Form, Input, Select, TimePicker } from "antd";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 const BookingListRoom = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [activities, setActivities] = useState<Activity[]>([]); // State cho danh sách hoạt động
+  const [activities, setActivities] = useState<Activity[]>([]);
   const [rooms, setRooms] = useState<Room[]>([]);
   const loggedUser = useAuthStore((state) => state.user);
 
-  const onChange: DatePickerProps<Dayjs[]>["onChange"] = (date, dateString) => {
-    console.log(date, dateString);
-  };
+  const [form] = Form.useForm();
 
   const onChangeActivity = (value: string) => {
     console.log(`selected ${value}`);
   };
 
-  // Fetch rooms on component mount
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchInitialData = async () => {
       setIsLoading(true);
       try {
-        const resultRoom = await getAllRoom();
+        if (loggedUser?.departmentId) {
+          const result = await getActivitiesByDepartmentId(loggedUser.departmentId);
+          if (result.error) {
+            toast.error(result.error);
+          } else {
+            setActivities(result.data);
+          }
+        }
+
+        const defaultParams = {
+          activityId: 1,              
+          cohortId: loggedUser?.departmentId || 0,
+          startTime: dayjs().format("YYYY-MM-DDT08:00:00"),
+          endTime: dayjs().format("YYYY-MM-DDT10:00:00"),
+          bookingDate: dayjs().format("YYYY-MM-DD"),
+        };
+        const resultRoom = await getAvailableRooms(defaultParams);
         if (resultRoom.error) {
           toast.error(resultRoom.error);
         } else {
-          setRooms(
-            resultRoom.data.filter((room: Room) => room.status !== "Inactive")
-          );
+          setRooms(resultRoom.data);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -53,25 +56,44 @@ const BookingListRoom = () => {
       setIsLoading(false);
     };
 
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchActivities = async () => {
-      if (loggedUser?.departmentId) {
-        const result = await getActivitiesByDepartmentId(
-          loggedUser.departmentId
-        );
-        if (result.error) {
-          toast.error(result.error);
-        } else {
-          setActivities(result.data);
-        }
-      }
-    };
-
-    fetchActivities();
+    fetchInitialData();
   }, [loggedUser?.departmentId]);
+
+  const onSearchRooms = async () => {
+    try {
+      setIsLoading(true);
+      const values = form.getFieldsValue();
+      const { activity, time, date } = values;
+
+      if (!activity || !time || !date) {
+        toast.error("Please fill in all fields.");
+        setIsLoading(false);
+        return;
+      }
+
+      const startTime = dayjs(date).set('hour', time[0].hour()).set('minute', time[0].minute()).format("YYYY-MM-DDTHH:mm:ss");
+      const endTime = dayjs(date).set('hour', time[1].hour()).set('minute', time[1].minute()).format("YYYY-MM-DDTHH:mm:ss");
+      const bookingDate = dayjs(date).format("YYYY-MM-DD");
+
+      const resultRoom = await getAvailableRooms({
+        activityId: activity,
+        cohortId: loggedUser?.departmentId || 0,
+        startTime,
+        endTime,
+        bookingDate,
+      });
+
+      if (resultRoom.error) {
+        toast.error(resultRoom.error);
+      } else {
+        setRooms(resultRoom.data);
+      }
+    } catch (error) {
+      console.error("Error searching rooms:", error);
+      toast.error("Error searching rooms");
+    }
+    setIsLoading(false);
+  };
 
   if (isLoading) return <Loader />;
 
@@ -79,22 +101,18 @@ const BookingListRoom = () => {
     <div>
       <div className="flex justify-center py-6">
         <div className="p-6 bg-white rounded-md shadow-2xl mx-4">
-          <span className="text-2xl font-bold">
-            Fill in booking information
-          </span>
+          <span className="text-2xl font-bold">Fill in booking information</span>
           <div className="pt-6">
             <Form
+              form={form}
               layout="vertical"
               className="grid grid-cols-12 gap-3 w-[450px]"
+              onFinish={onSearchRooms} 
             >
               <Form.Item label="Department" className="col-span-6">
                 <Input value={loggedUser?.departmentName || "N/A"} disabled />
               </Form.Item>
-              <Form.Item
-                name="activity"
-                label="Activity"
-                className="col-span-6"
-              >
+              <Form.Item name="activity" label="Activity" className="col-span-6">
                 <Select
                   showSearch
                   placeholder="Select an activity"
@@ -102,7 +120,7 @@ const BookingListRoom = () => {
                   onChange={onChangeActivity}
                   options={activities.map((activity) => ({
                     value: activity.id,
-                    label: activity.code + " - " + activity.name,
+                    label: `${activity.code} - ${activity.name}`,
                   }))}
                 />
               </Form.Item>
@@ -110,9 +128,9 @@ const BookingListRoom = () => {
                 <TimePicker.RangePicker format="HH:mm" />
               </Form.Item>
               <Form.Item name="date" label="Date" className="col-span-6">
-                <DatePicker onChange={onChange} className="w-full" />
+                <DatePicker className="w-full" />
               </Form.Item>
-              <Form.Item  className="col-span-12">
+              <Form.Item className="col-span-12">
                 <Button block type="primary" htmlType="submit">
                   Search
                 </Button>

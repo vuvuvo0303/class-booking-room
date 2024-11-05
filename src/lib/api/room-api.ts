@@ -30,8 +30,6 @@ export const getAllRoom = async (searchParams?: {
   }
 };
 
-
-
 export const getRoomById = async (roomId: number) => {
   try {
     const { data } = await axiosClient.get(`/api/rooms/${roomId}`);
@@ -49,6 +47,21 @@ export const getRoomSlots = async (roomId: number) => {
     return handleApiError(error);
   }
 };
+export const getAvailableRooms = async (formData: {
+  activityId: number;
+  cohortId: number;
+  startTime: string;
+  endTime: string;
+  bookingDate: string;
+}) => {
+  try {
+    const { data } = await axiosClient.post(`/api/rooms/available`, formData);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
 export const getRoomBooking = async (roomId: number) => {
   try {
     const { data } = await axiosClient.get(`/api/rooms/${roomId}/bookings`);
@@ -57,7 +70,6 @@ export const getRoomBooking = async (roomId: number) => {
     return handleApiError(error);
   }
 };
-
 
 export const createRoom = async (formData: {
   roomName: string;
@@ -69,24 +81,20 @@ export const createRoom = async (formData: {
   try {
     let avatarUrl = formData.picture;
 
-    
     if (formData.picture instanceof FileList && formData.picture.length > 0) {
-  
       avatarUrl = await uploadFile(formData.picture[0]);
     }
 
-    
     const roomData = {
       roomName: formData.roomName,
       capacity: formData.capacity,
       roomTypeId: formData.roomTypeId,
       status: formData.status,
-      picture: avatarUrl, 
+      picture: avatarUrl,
     };
 
-    
     const { data } = await axiosClient.post(`/api/rooms`, roomData);
-    toast.success("Create Room Successfully")
+    toast.success("Create Room Successfully");
     return { error: null, data: data, success: true };
   } catch (error) {
     return handleApiError(error);
@@ -111,27 +119,24 @@ export const updateRoom = async (
     capacity: number;
     roomTypeId: number;
     status: string;
-    picture?: File | string; 
+    picture?: File | string;
   }
 ) => {
   try {
     let pictureUrl = formData.picture;
 
-    
     if (formData.picture && formData.picture instanceof File) {
-      pictureUrl = await uploadFile(formData.picture); 
+      pictureUrl = await uploadFile(formData.picture);
     }
 
-  
     const updatedData = {
       roomName: formData.roomName,
       capacity: formData.capacity,
       roomTypeId: formData.roomTypeId,
       status: formData.status,
-      picture: pictureUrl, 
+      picture: pictureUrl,
     };
 
-    
     const { data } = await axiosClient.put(`/api/rooms/${id}`, updatedData);
     toast.success("Update Room Successfully");
 
@@ -149,6 +154,7 @@ export const createRoomSlot = async (formData: { startTime: string; endTime: str
     return handleApiError(error);
   }
 };
+
 export const updateRoomSlot = async (
   formData: {
     startTime: string;
