@@ -18,6 +18,7 @@ import {
 import AccountRequest from "@/pages/admin/AccountRequest/AccountRequest";
 import Booking from "@/pages/admin/BookingHistory/Booking";
 import BookingRequest from "@/pages/admin/ManageBookingRequest/BookingRequest";
+import ManageStaff from "@/pages/admin/Manager Staff/ManageStaff";
 import ManageReport from "@/pages/admin/Managereport/Report";
 import ManageRoomTypes from "@/pages/admin/ManageRoomType/ManageRoomTypes";
 import useAuthStore from "@/store/AuthStore";
@@ -34,6 +35,7 @@ const Admin = () => {
         <Route path="/" element={<AdminDashboardPage />} />
         <Route path="/dashboard" element={<AdminDashboardPage />} />
         <Route path="/user" element={<AdminUserPage />} />
+        <Route path="/manage-staff" element={<ManageStaff />} />
         <Route path="/rooms" element={<AdminRoomPage />} />
         <Route path="/rooms/:roomId" element={<AdminRoomDetailPage />} />
         <Route path="/room-types" element={<ManageRoomTypes />} />

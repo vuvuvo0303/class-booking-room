@@ -50,6 +50,8 @@ const LoginAdmin = () => {
     useEffect(() => {
       if (loggedUser && loggedUser.role === "Admin") {
         navigate("/admin");
+      } else if (loggedUser && loggedUser.role === "Manager") {
+        navigate("/Manager");
       }
     }, [loggedUser]);
 

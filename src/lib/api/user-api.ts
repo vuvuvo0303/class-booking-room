@@ -19,6 +19,15 @@ export const getAllUsers = async () => {
     return handleApiError(error);
   }
 };
+export const getAllManagers = async () => {
+  try {
+    const { data } = await axiosClient.get(`/api/users?PageSize=999&role=Manager`);
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
 
 export const getUserBooking = async (userId: string) => {
   try {

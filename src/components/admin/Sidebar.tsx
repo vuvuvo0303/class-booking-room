@@ -10,6 +10,7 @@ import {
   MessageSquareWarning,
   ReceiptText,
   SquareChartGantt,
+  UserCog,
   UserSearch,
   Users,
 } from "lucide-react";
@@ -91,9 +92,15 @@ const navItems: NavItemType[] = [
     type: "divider",
   },
   {
-    title: "Manage Account",
+    title: "Manage Student",
     to: "user",
     icon: <UserSearch />,
+  },
+  {
+    title: "Manage Staff",
+    to: "manage-staff",
+    icon:  <UserCog />,
+    
   },
   {
     title: "Account Request",
