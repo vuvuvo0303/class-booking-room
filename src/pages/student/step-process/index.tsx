@@ -70,7 +70,7 @@ const StepProcess = () => {
   const next = () => {
     if (current == 0) {
       form.submit();
-      if (form.getFieldValue("activity")) {
+      if (form.getFieldValue("slots")) {
         setCurrent(current + 1);
       }
     } else {
@@ -116,9 +116,6 @@ const StepProcess = () => {
     });
   }, [current]);
 
-  if (!(bookingSlots && bookingSlots.length > 0 && bookingDate)) {
-    return <BookingError />;
-  }
   if (isError) return <BookingError />;
   return (
     <div className="pb-20 px-5">

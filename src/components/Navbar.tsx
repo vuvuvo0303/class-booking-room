@@ -100,7 +100,7 @@ const Navbar = () => {
       <div className="flex gap-6 items-center">
         <Button onClick={() => {
           if (loggedUser == null) {
-            toast.error("Login to continue");
+            toast.warn("Login to continue");
             setTimeout(() => {
               navigate("/login");
             }, 1000);

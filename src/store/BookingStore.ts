@@ -9,7 +9,9 @@ type BookingState = {
     room?: Room;
     activity?: Activity;
     note: string;
-    setBookingInfo: (bookingDate: Date, slots: Slot[], room: Room) => void;
+    setBookingDate: (bookingDate: Date) => void;
+    setSlots: (slot: Slot[]) => void;
+    setRoom: (room: Room) => void;
     setActivity: (activity: Activity) => void;
     setNote: (note: string) => void;
     clearBookingInfo: () => void;
@@ -25,14 +27,32 @@ const useBookingStore = create<BookingState>((set) => {
     };
     return {
         ...initialState,
-        setBookingInfo: (bookingDate: Date, slots: Slot[], room: Room) => {
-            const newState = {
-                bookingDate: bookingDate,
-                slots: slots,
-                room: room
-            };
-            localStorage.setItem("bookingState", JSON.stringify(newState));
-            set(newState);
+        setBookingDate: (bookingDate: Date) => {
+            set((prev) => {
+                const newState = {
+                    ...prev, bookingDate: bookingDate
+                };
+                localStorage.setItem("bookingState", JSON.stringify(newState));
+                return newState
+            });
+        },
+        setRoom: (room: Room) => {
+            set((prev) => {
+                const newState = {
+                    ...prev, room: room
+                };
+                localStorage.setItem("bookingState", JSON.stringify(newState));
+                return newState
+            });
+        },
+        setSlots: (slots: Slot[]) => {
+            set((prev) => {
+                const newState = {
+                    ...prev, slots: slots
+                };
+                localStorage.setItem("bookingState", JSON.stringify(newState));
+                return newState
+            });
         },
         setActivity: (activity: Activity) => {
             set((prev) => {
