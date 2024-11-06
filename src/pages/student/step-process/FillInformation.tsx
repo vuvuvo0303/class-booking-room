@@ -1,50 +1,30 @@
-import { useEffect, useState } from "react";
-import { Input, Form, Select, FormInstance } from "antd";
+import { Input, Form, FormInstance, Checkbox } from "antd";
 import fillinfo from "../../../assets/fillinfo.png";
 import useBookingStore from "@/store/BookingStore";
 import useAuthStore from "@/store/AuthStore";
-import { getActivitiesByDepartmentId } from "@/lib/api/activity-api";
-import { toast } from "react-toastify";
-import { Activity } from "@/types/department";
-import { Slot } from "@/types/slot";
 import { formatDateToTimeString } from "@/utils/time";
 import { formatDate } from "@/utils/date";
+import { Slot } from "@/types/slot";
 
 const { TextArea } = Input;
-const { Option } = Select;
+const CheckboxGroup = Checkbox.Group;
 
 const FillInformation = ({ form }: { form: FormInstance }) => {
-  const bookingSlots = useBookingStore((state) => state.slots);
+  const activity = useBookingStore((state) => state.activity);
   const bookingDate = useBookingStore((state) => state.bookingDate);
-  const [activities, setActivities] = useState<Activity[]>([]);
+  const setSlots = useBookingStore((state) => state.setSlots);
   const room = useBookingStore((state) => state.room);
   const logggedUser = useAuthStore((state) => state.user);
-  const setActivity = useBookingStore((state) => state.setActivity);
   const setNote = useBookingStore((state) => state.setNote);
   const onFinish = (values: any) => {
     setNote(values.note ?? "");
-    const act = activities.find(a => a.id == values.activity);
-    if (act != null) {
-      setActivity(act)
-    }
+    setSlots(
+      room?.roomSlots.filter((s: Slot) =>
+        values.slots.find((x: number) => x == s.id)
+      ) ?? []
+    );
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      if (logggedUser == null) {
-        return;
-      }
-      const activitiesResult = await getActivitiesByDepartmentId(
-        logggedUser.departmentId
-      );
-      if (activitiesResult.error) {
-        toast.error(activitiesResult.error);
-      } else {
-        setActivities(activitiesResult.data);
-      }
-    };
 
-    fetchData();
-  }, []);
   if (!logggedUser) return;
 
   return (
@@ -92,42 +72,45 @@ const FillInformation = ({ form }: { form: FormInstance }) => {
               <div className="font-semibold">Room Type</div>
               <div>{room?.roomType.name}</div>
             </div>
+            <div className="w-full md:w-1/2 px-2 mb-3">
+              <div className="font-semibold">Activity</div>
+              <div>
+                {activity?.code} - {activity?.name}
+              </div>
+            </div>
             <div className="w-full md:w-1/2 px-2">
               <div className="font-semibold mb-1">Slots</div>
-              <div className="flex gap-2">
-                {bookingSlots?.map((slot: Slot) => {
-                  return (
-                    <button
-                      key={`booking-slot-${slot.id}`}
-                      className="outline-green-500 outline bg-white-green-500 bg-green-200 hover:bg-green-100 px-2 py-1 rounded-md font-semibold"
-                    >
-                      {formatDateToTimeString(new Date(slot.startTime), true)} -{" "}
-                      {formatDateToTimeString(new Date(slot.endTime), true)}
-                    </button>
-                  );
-                })}
-              </div>
+              <Form.Item
+                name="slots"
+                rules={[
+                  {
+                    required: true,
+                    message: "At least one slot must be selected!",
+                  },
+                  {
+                    validator: (_, value) =>
+                      value && value.length > 3
+                        ? Promise.reject(
+                            new Error("You cannot select more than 3 slots!")
+                          )
+                        : Promise.resolve(),
+                  },
+                ]}
+              >
+                <CheckboxGroup
+                  options={room?.roomSlots.map((s) => ({
+                    label:
+                      formatDateToTimeString(new Date(s.startTime), true) +
+                      " - " +
+                      formatDateToTimeString(new Date(s.endTime), true),
+                    value: s.id,
+                  }))}
+                />
+              </Form.Item>
             </div>
             <div className="w-full md:w-1/2 px-2 mb-3">
               <div className="font-semibold">Date</div>
               <div>{bookingDate && formatDate(new Date(bookingDate))}</div>
-            </div>
-            <div className="w-full md:w-1/2 px-2">
-              <Form.Item
-                label="Activity"
-                name="activity"
-                rules={[
-                  { required: true, message: "Please select an activity" },
-                ]}
-              >
-                <Select placeholder="Select activity" className="h-9">
-                  {activities.map((activity) => (
-                    <Option value={activity.id} key={activity.id}>
-                      {activity.code} - {activity.name}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
             </div>
             <div className="w-full px-2">
               <Form.Item label="Note" name="note" rules={[{ required: false }]}>
