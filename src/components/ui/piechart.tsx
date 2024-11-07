@@ -1,8 +1,18 @@
 import { ResponsivePie } from "@nivo/pie";
 
-const PieChart = ({ data }) => {
+// Định nghĩa kiểu dữ liệu cho từng phần tử của `data`
+type CohortData = {
+  cohortCode: string;
+  percentStudent: number;
+};
+
+type PieChartProps = {
+  data: CohortData[];
+};
+
+const PieChart = ({ data }: PieChartProps) => {
   // Chuyển đổi dữ liệu API thành định dạng của ResponsivePie
-  const chartData = data.map((item) => ({
+  const chartData = data.map((item: CohortData) => ({
     id: item.cohortCode,
     label: item.cohortCode,
     value: item.percentStudent,
