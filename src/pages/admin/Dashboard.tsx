@@ -1,202 +1,103 @@
 import Header from "@/components/admin/Header";
-import BookingContent from "@/components/admin/dashboard/BookingContent";
-import DashboardCard from "@/components/admin/dashboard/DashboardCard";
-import ReportContent from "@/components/admin/dashboard/ReportContent";
+
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import PieChart from "@/components/ui/piechart";
 import VerticalBarChart from "@/components/ui/verticalbarchart";
 import useAuthStore from "@/store/AuthStore";
+import { useEffect, useState } from "react";
+import { getDashBoardAdmin } from "@/lib/api/dashboard-api"; // Import API
+import { DashboardAdmin } from "@/types/dashboard-admin";
+import DashboardCard from "@/components/admin/dashboard/DashboardCard";
+
+// Import các icon bạn muốn sử dụng
+import { User, Users, Building, Calendar } from "lucide-react"; 
+import Loader from "@/components/Loader";
 
 const Dashboard = () => {
   const loggedUser = useAuthStore((state) => state.user);
   const basePath = "/" + loggedUser.role;
-  const data = [
-    { month: "January", bookings: 50 },
-    { month: "February", bookings: 30 },
-    { month: "March", bookings: 70 },
-    { month: "April", bookings: 90 },
-    { month: "May", bookings: 110 },
-    { month: "June", bookings: 85 },
-    { month: "July", bookings: 75 },
-    { month: "August", bookings: 95 },
-    { month: "September", bookings: 120 },
-    { month: "October", bookings: 130 },
-    { month: "November", bookings: 100 },
-    { month: "December", bookings: 140 },
-  ];
+
+  const [dashboardData, setDashboardData] = useState<DashboardAdmin | null>(null);
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      const result = await getDashBoardAdmin();
+      if (result && result.error) {
+        setDashboardData(result.data);
+      } else {
+        console.error("Failed to fetch dashboard data", result.error);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  if (!dashboardData) {
+    return <div><Loader/></div>;
+  }
+
+  const bookingDataForChart = dashboardData.totalBookinginMonth.map((value, index) => ({
+    month: new Date(0, index).toLocaleString("en", { month: "short" }),
+    bookings: value,
+  }));
 
   return (
     <div>
-      <div>
-        <Header
-          currentPage="Dashboard"
-          breadcrumbItems={[{ title: "Admin", to: basePath }]}
-        />
-      </div>
+      <Header
+        currentPage="Dashboard"
+        breadcrumbItems={[{ title: "Admin", to: basePath }]}
+      />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 p-3">
         <DashboardCard
-          title="Emtpy Rooms"
-          value={15}
-          icon={
-            <img
-              src="https://static.thenounproject.com/png/46945-200.png"
-              width={40}
-            />
-          }
+          title="Total Students"
+          value={dashboardData.totalStudent}
+          icon={<User />} // Icon cho tổng số sinh viên
           headerStyle="bg-blue-600 bg-gradient-to-l from-blue-400"
         />
         <DashboardCard
-          title="Booked Rooms"
-          value={15}
-          icon={
-            <img
-              src="https://static.thenounproject.com/png/46945-200.png"
-              width={40}
-            />
-          }
-          headerStyle="bg-orange-600 bg-gradient-to-l from-orange-400"
-        />
-        <DashboardCard
-          title="Maintained rooms"
-          value={15}
-          icon={
-            <img
-              src="https://cdn.iconscout.com/icon/premium/png-256-thumb/maintenance-room-4340748-3596230.png?f=webp&w=256"
-              width={30}
-            />
-          }
-          headerStyle="bg-yellow-500 bg-gradient-to-l from-yellow-400"
+          title="Total Managers"
+          value={dashboardData.totalManager}
+          icon={<Users />} // Icon cho tổng số quản lý
+          headerStyle="bg-purple-600 bg-gradient-to-l from-purple-400"
         />
         <DashboardCard
           title="Total Rooms"
-          value={45}
-          icon={
-            <img
-              src="https://static.thenounproject.com/png/46945-200.png"
-              width={40}
-            />
-          }
+          value={dashboardData.totalRoom}
+          icon={<Building />} // Icon cho tổng số phòng
           headerStyle="bg-green-600 bg-gradient-to-l from-green-400"
         />
+        <DashboardCard
+          title="Total Bookings"
+          value={dashboardData.totalBooking}
+          icon={<Calendar />} // Icon cho tổng số lượt đặt phòng
+          headerStyle="bg-orange-600 bg-gradient-to-l from-orange-400"
+        />
       </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-2">
         <div className="p-3 drop-shadow-lg">
-          <Card className="">
-            <CardContent className="">
+          <Card>
+            <CardContent>
               <CardTitle className="flex justify-center mt-3 text-lg">
-                Number of Rooms booked by Month
+                Number of Rooms Booked by Month
               </CardTitle>
-              <VerticalBarChart data={data} />
+              <VerticalBarChart data={bookingDataForChart} />
             </CardContent>
           </Card>
         </div>
         <div className="p-3 drop-shadow-lg">
-          <Card className="">
+          <Card>
             <CardContent className="py-2">
               <CardTitle className="flex justify-center text-lg">
-                Number of rooms booked by Cohort
+                Percentage of Students by Cohort
               </CardTitle>
-              <div className="">
-                <PieChart />
-              </div>
+              <PieChart data={dashboardData.percentStudentInCohort} />
             </CardContent>
           </Card>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 mt-5">
-        <div>
-          <div className="pl-3">
-            <span className="text-2xl font-bold">
-              Recent Report in the System
-            </span>
-          </div>
-          <div className="p-3">
-            <Card className="overflow-hidden">
-              <ReportContent
-                content="Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Molestias molestiae reprehenderit voluptates doloribus
-              laboriosam necessitatibus hic optio rerum voluptatibus
-              perferendis ratione, nam delectus iusto ducimus fugit.
-              Labore saepe sit amet!"
-                fullName="Mai Van Quoc Tinh"
-                profileImageURL="https://github.com/shadcn.png"
-                reportDate={new Date()}
-                status="rejected"
-              />
-              <hr className="w-full border-stone-300" />
-              <ReportContent
-                content="Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Molestias molestiae reprehenderit voluptates doloribus
-              laboriosam necessitatibus hic optio rerum voluptatibus
-              perferendis ratione, nam delectus iusto ducimus fugit.
-              Labore saepe sit amet!"
-                fullName="Mai Van Quoc Tinh"
-                profileImageURL="https://github.com/shadcn.png"
-                reportDate={new Date()}
-                status="not_processed_yet"
-              />
-              <ReportContent
-                content="Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Molestias molestiae reprehenderit voluptates doloribus
-              laboriosam necessitatibus hic optio rerum voluptatibus
-              perferendis ratione, nam delectus iusto ducimus fugit.
-              Labore saepe sit amet!"
-                fullName="Mai Van Quoc Tinh"
-                profileImageURL="https://github.com/shadcn.png"
-                reportDate={new Date()}
-                status="processed"
-              />
-            </Card>
-          </div>
-        </div>
-        <div>
-          <div>
-            <span className="text-2xl font-bold px-4">
-              Recent Bookings in the Sytem
-            </span>
-          </div>
-          <div className="p-3">
-            <Card>
-              <BookingContent
-                fullName="Mai Van Quoc Tinh"
-                profileImageURL="https://github.com/shadcn.png"
-                activity="Self Study"
-                bookingDate={new Date()}
-                department="IT"
-                room="611"
-                roomType="Self-Study room"
-                slot="1 (07:00AM - 09:15AM)"
-                status="accepted"
-              />
-              <hr className="w-full border-stone-300  " />
-              <BookingContent
-                fullName="Mai Van Quoc Tinh"
-                profileImageURL="https://github.com/shadcn.png"
-                activity="Self Study"
-                bookingDate={new Date()}
-                department="IT"
-                room="611"
-                roomType="Self-Study room"
-                slot="1 (07:00AM - 09:15AM)"
-                status="pending"
-              />
-              <hr className="w-full border-stone-300  " />
-              <BookingContent
-                fullName="Mai Van Quoc Tinh"
-                profileImageURL="https://github.com/shadcn.png"
-                activity="Self Study"
-                bookingDate={new Date()}
-                department="IT"
-                room="611"
-                roomType="Self-Study room"
-                slot="1 (07:00AM - 09:15AM)"
-                status="rejected"
-              />
-            </Card>
-          </div>
-        </div>
-      </div>
+    
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import { BarDatum, ResponsiveBar } from "@nivo/bar";
+
 interface VerticalBarChartProps {
-  data: BarDatum[]; 
+  data: BarDatum[];
 }
 
 const VerticalBarChart = ({ data }: VerticalBarChartProps) => (
@@ -25,7 +26,7 @@ const VerticalBarChart = ({ data }: VerticalBarChartProps) => (
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-
+        legend: "Number of Bookings",
         legendPosition: "middle",
         legendOffset: 32,
       }}
@@ -33,7 +34,7 @@ const VerticalBarChart = ({ data }: VerticalBarChartProps) => (
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-
+        legend: "Month",
         legendPosition: "middle",
         legendOffset: -40,
       }}

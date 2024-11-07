@@ -33,7 +33,7 @@ const Admin = () => {
     <AdminLayout>
       <Routes>
         <Route path="/" element={<AdminDashboardPage />} />
-        <Route path="/dashboard" element={<AdminDashboardPage />} />
+        <Route path="/dashboard-admin" element={<AdminDashboardPage />} />
         <Route path="/user" element={<AdminUserPage />} />
         <Route path="/manage-staff" element={<ManageStaff />} />
         <Route path="/rooms" element={<AdminRoomPage />} />

@@ -5,6 +5,7 @@ import {
   DoorOpen,
   GitPullRequestArrow,
   Layers3,
+  LayoutDashboard,
   LayoutGrid,
   MenuIcon,
   MessageSquareWarning,
@@ -31,8 +32,15 @@ import { ReactNode, useState } from "react";
 const navItems: NavItemType[] = [
   {
     title: "Dashboard",
-    to: "dashboard",
+    to: "dashboard-admin",
     icon: <LayoutGrid />,
+    isAdminOnly: true,
+  },
+  {
+    title: "Dashboard",
+    to: "dashboard-manager",
+    icon: <LayoutDashboard />,
+    isAdminOnly: false,
   },
   {
     type: "divider",
@@ -92,15 +100,15 @@ const navItems: NavItemType[] = [
     type: "divider",
   },
   {
-    title: "Manage Student",
+    title: "Manage Account",
     to: "user",
     icon: <UserSearch />,
   },
   {
     title: "Manage Staff",
     to: "manage-staff",
-    icon:  <UserCog />,
-    
+    icon: <UserCog />,
+    isAdminOnly: true,
   },
   {
     title: "Account Request",
@@ -149,10 +157,13 @@ const Sidebar = () => {
       </div>
       <div className="flex flex-col mt-5 flex-1 gap-1">
         {navItems.map((item, index) => {
-          if (!item.isAdminOnly || (loggedUser && loggedUser.role == "admin")) {
-            if (item.type == "divider") {
+          const isAdmin = loggedUser && loggedUser.role === "Admin";
+
+          if ((!item.isAdminOnly && (!isAdmin || item.to !== "dashboard-manager")) || (item.isAdminOnly && isAdmin)) {
+            if (item.type === "divider") {
               return <div key={index} className="border h-px my-2" />;
             }
+
             return (
               <Link to={item.to!} key={item.to}>
                 <HoverCard>
