@@ -6,7 +6,7 @@ export const handleApiError = (error: any) => {
     const errorMessage = error?.message || error?.response?.data.error || "An unexpected error occurred.";
 
     if (error?.response?.status === 401) {
-      window.location.href = "/";
+    window.location.href = "/";
     }
 
     return { error: errorMessage, data: null };

@@ -48,25 +48,17 @@ const Login = () => {
         navigate("/");
       }
     }
-  }, [loggedUser]);
+  }, []);
 
   return (
     <>
       <div className="flex w-auto overflow-hidden md:p-10 justify-center">
         <div className="flex w-full md:w-[85%] bg-white drop-shadow-[0_0_10px_rgba(0,0,0,0.5)] rounded-xl overflow-hidden h-screen">
           <div className="bg-contain relative hidden md:block">
-            <img
-              src={background}
-              alt=""
-              className="h-full relative select-none"
-            />
+            <img src={background} alt="" className="h-full relative select-none" />
             <img src={logofpt} width={100} className="absolute top-5 left-5" />
-            <span className="text-white absolute top-[220px] left-24 text-5xl font-semibold">
-              Welcome
-            </span>
-            <span className="text-white absolute top-[280px] left-56">
-              Log-in to continue
-            </span>
+            <span className="text-white absolute top-[220px] left-24 text-5xl font-semibold">Welcome</span>
+            <span className="text-white absolute top-[280px] left-56">Log-in to continue</span>
             <span
               className="cursor-pointer absolute bottom-5 left-8 text-[18px] text-white"
               onClick={() => navigate("/")}
@@ -84,9 +76,7 @@ const Login = () => {
             <div className="flex flex-col items-center justify-center pt-32 gap-4">
               <div className="flex items-center gap-4 w-full">
                 <hr className="border-gray-500 flex-1 border-t-1" />
-                <span className="px-4 text-gray-700 flex-1">
-                  Login for Student
-                </span>
+                <span className="px-4 text-gray-700 flex-1">Login for Student</span>
                 <hr className="border-gray-500 flex-1 border-t-1" />
               </div>
 

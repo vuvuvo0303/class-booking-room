@@ -15,11 +15,11 @@ const BookingHistory = () => {
   const loggedUser = useAuthStore((state) => state.user);
   const [selectedStudent, setSelectedStudent] = useState<Booking | null>(null);
   const [openModal, setOpenModal] = useState(false);
-  const [openReportModal, setOpenReportModal] = useState(false); // Modal cho báo cáo
-  const [reportTitle, setReportTitle] = useState(""); // Thêm state cho tiêu đề
+  const [openReportModal, setOpenReportModal] = useState(false); 
+  const [reportTitle, setReportTitle] = useState(""); 
   const [reportContent, setReportContent] = useState("");
   const [data, setData] = useState<Booking[]>([]);
-  const [selectedBookingId, setSelectedBookingId] = useState<number | null>(null); // Để lưu ID của booking cần báo cáo
+  const [selectedBookingId, setSelectedBookingId] = useState<number | null>(null); 
 
   const handleCancelBooking = async (id: number) => {
     setLoadingCancel(id);

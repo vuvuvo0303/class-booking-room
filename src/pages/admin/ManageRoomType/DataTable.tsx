@@ -12,22 +12,13 @@ import { cn } from "@/lib/utils";
 // import DeleteCohort from "./DeleteCohort";
 // import UpdateCohort from "./UpdateCohort";
 
-const DataTable = ({
-  data,
-  rerender,
-}: {
-  data: RoomTypes[];
-  rerender: () => void;
-}) => {
+const DataTable = ({ data, rerender }: { data: RoomTypes[]; rerender: () => void }) => {
   const columns = [
     {
       title: " Name",
       key: "name",
       render: (record: RoomTypes) => (
-        <Link
-          to={`/admin/room-types/${record.id}`}
-          className="font-semibold text-blue-500 underline"
-        >
+        <Link to={`${record.id}`} className="font-semibold text-blue-500 underline">
           {record.name}
         </Link>
       ),
@@ -40,14 +31,15 @@ const DataTable = ({
           {record.allowedCohorts.map((cohort) => {
             const color = getRandomColor(cohort.cohortCode);
             return (
-              <Badge className={cn(`bg-${color}-500 hover:bg-${color}-300`)} key={`roomtype-cohort-${record.id}-${cohort.id}`}>
+              <Badge
+                className={cn(`bg-${color}-500 hover:bg-${color}-300`)}
+                key={`roomtype-cohort-${record.id}-${cohort.id}`}
+              >
                 {cohort.cohortCode}
               </Badge>
             );
           })}
-          {
-            record.allowedCohorts.length == 0 && "None"
-          }
+          {record.allowedCohorts.length == 0 && "None"}
         </div>
       ),
     },
@@ -55,17 +47,13 @@ const DataTable = ({
       title: "Created at",
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (createAt: string) => (
-        <span>{new Date(createAt).toLocaleDateString()}</span>
-      ),
+      render: (createAt: string) => <span>{new Date(createAt).toLocaleDateString()}</span>,
     },
     {
       title: "Updated at",
       dataIndex: "updatedAt",
       key: "updatedAt",
-      render: (updatedAt: string) => (
-        <span>{new Date(updatedAt).toLocaleDateString()}</span>
-      ),
+      render: (updatedAt: string) => <span>{new Date(updatedAt).toLocaleDateString()}</span>,
     },
 
     {

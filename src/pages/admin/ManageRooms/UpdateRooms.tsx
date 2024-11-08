@@ -72,7 +72,7 @@ const UpdateRoom = ({
   });
 
   const [dataRoomTypes, setDataRoomTypes] = useState<RoomTypes[]>([]);
-  const [imagePreview, setImagePreview] = useState<string | null>(room.picture || null); // Để preview ảnh
+  const [imagePreview, setImagePreview] = useState<string | null>(room.picture || null); 
 
   useEffect(() => {
     const fetchRoomTypes = async () => {
@@ -129,8 +129,8 @@ const UpdateRoom = ({
     if (files && files[0]) {
       const file = files[0];
       const imageUrl = URL.createObjectURL(file);
-      setImagePreview(imageUrl); // Cập nhật preview ảnh
-      form.setValue("picture", file); // Gán giá trị file cho form
+      setImagePreview(imageUrl); 
+      form.setValue("picture", file); 
     }
   };
   return (

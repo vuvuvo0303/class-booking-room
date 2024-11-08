@@ -55,7 +55,7 @@ const AddNewRoom = ({ rerender }: { rerender: () => void }) => {
   });
 
   const [dataRoomTypes, setDataRoomTypes] = useState<RoomTypes[]>([]);
-  const [imagePreview, setImagePreview] = useState<string | null>(null); // State for image preview
+  const [imagePreview, setImagePreview] = useState<string | null>(null); 
 
   useEffect(() => {
     const fetchRoomTypes = async () => {

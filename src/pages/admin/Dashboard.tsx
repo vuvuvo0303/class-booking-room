@@ -1,16 +1,13 @@
 import Header from "@/components/admin/Header";
-
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import PieChart from "@/components/ui/piechart";
 import VerticalBarChart from "@/components/ui/verticalbarchart";
 import useAuthStore from "@/store/AuthStore";
 import { useEffect, useState } from "react";
-import { getDashBoardAdmin } from "@/lib/api/dashboard-api"; // Import API
+import { getDashBoardAdmin } from "@/lib/api/dashboard-api";
 import { DashboardAdmin } from "@/types/dashboard-admin";
 import DashboardCard from "@/components/admin/dashboard/DashboardCard";
-
-// Import các icon bạn muốn sử dụng
-import { User, Users, Building, Calendar } from "lucide-react"; 
+import { User, Users, Building, Calendar } from "lucide-react";
 import Loader from "@/components/Loader";
 
 const Dashboard = () => {
@@ -18,22 +15,29 @@ const Dashboard = () => {
   const basePath = "/" + loggedUser.role;
 
   const [dashboardData, setDashboardData] = useState<DashboardAdmin | null>(null);
+  const [loading, setLoading] = useState(true); // Loading state
 
   useEffect(() => {
     const fetchDashboardData = async () => {
+      setLoading(true); // Start loading
       const result = await getDashBoardAdmin();
-      if (result && result.error) {
+      if (result && result.data) {
         setDashboardData(result.data);
       } else {
         console.error("Failed to fetch dashboard data", result.error);
       }
+      setLoading(false); // Stop loading
     };
 
     fetchDashboardData();
   }, []);
 
+  if (loading) {
+    return <div><Loader /></div>;
+  }
+
   if (!dashboardData) {
-    return <div><Loader/></div>;
+    return <div>No data available</div>;
   }
 
   const bookingDataForChart = dashboardData.totalBookinginMonth.map((value, index) => ({
@@ -51,25 +55,25 @@ const Dashboard = () => {
         <DashboardCard
           title="Total Students"
           value={dashboardData.totalStudent}
-          icon={<User />} // Icon cho tổng số sinh viên
+          icon={<User />}
           headerStyle="bg-blue-600 bg-gradient-to-l from-blue-400"
         />
         <DashboardCard
           title="Total Managers"
           value={dashboardData.totalManager}
-          icon={<Users />} // Icon cho tổng số quản lý
+          icon={<Users />}
           headerStyle="bg-purple-600 bg-gradient-to-l from-purple-400"
         />
         <DashboardCard
           title="Total Rooms"
           value={dashboardData.totalRoom}
-          icon={<Building />} // Icon cho tổng số phòng
+          icon={<Building />}
           headerStyle="bg-green-600 bg-gradient-to-l from-green-400"
         />
         <DashboardCard
           title="Total Bookings"
           value={dashboardData.totalBooking}
-          icon={<Calendar />} // Icon cho tổng số lượt đặt phòng
+          icon={<Calendar />}
           headerStyle="bg-orange-600 bg-gradient-to-l from-orange-400"
         />
       </div>
@@ -96,8 +100,6 @@ const Dashboard = () => {
           </Card>
         </div>
       </div>
-
-    
     </div>
   );
 };

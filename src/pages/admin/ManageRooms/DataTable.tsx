@@ -19,7 +19,7 @@ const DataTable = ({
       title: "Room Name",
       key: "roomName",
       render: (record: Room) => (
-        <Link to={`/admin/rooms/${record.id}`} className="font-semibold text-blue-500 underline">{record.roomName}</Link>
+        <Link to={`${record.id}`} className="font-semibold text-blue-500 underline">{record.roomName}</Link>
       ),
     },
     {

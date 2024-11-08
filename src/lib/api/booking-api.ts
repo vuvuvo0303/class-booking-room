@@ -93,7 +93,9 @@ export const getBookingById = async (id: number) => {
 export const getTodayBookingByRoomId = async (roomId: number) => {
   try {
     const { data } = await axiosClient.get(`/api/rooms/${roomId}/today-bookings`);
-    return { error: null, data: data, success: true };
+    const bookingRequest = data.filter((booking: Booking) => booking.status === "Accepted");
+
+    return { error: null, data: bookingRequest, success: true };
   } catch (error) {
     return handleApiError(error);
   }

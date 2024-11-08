@@ -55,7 +55,7 @@ const Admin = () => {
         <Route path="/student" element={<AdminStudentPage />} />
         <Route path="/booking-history" element={<Booking />} />
         <Route path="/booking/:bookingId" element={<AdminBookingDetailPage />} />
-        <Route path="/staff" element={<AdminStaffPage />} />
+        <Route path="/staff-request" element={<AdminStaffPage />} />
       </Routes>
     </AdminLayout>
   );

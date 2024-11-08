@@ -76,3 +76,22 @@ export const getReportById = async (id: number) => {
     return handleApiError(error);
   }
 };
+export const postReport = async (
+  reportData: {
+    creatorId: string;
+    roomId: number;
+    title: string;
+    description: string;
+  }
+) => {
+  try {
+    const { data } = await axiosClient.post(`/api/reports`, reportData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return { error: null, data: data, success: true };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};

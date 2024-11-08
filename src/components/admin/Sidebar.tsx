@@ -74,7 +74,7 @@ const navItems: NavItemType[] = [
   },
   {
     title: "Staff's Request",
-    to: "staff",
+    to: "staff-request",
     icon: <Contact />,
     isAdminOnly: true,
   },
