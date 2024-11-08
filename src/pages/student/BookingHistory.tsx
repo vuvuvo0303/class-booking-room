@@ -1,9 +1,10 @@
 import Loader from "@/components/Loader";
 import { cancelBooking, getBookingById } from "@/lib/api/booking-api";
+import { postReport } from "@/lib/api/report-api";
 import useAuthStore from "@/store/AuthStore";
 import { Booking } from "@/types/booking";
 import { formatDateToTimeString } from "@/utils/time";
-import { Button, Modal, Space, Table, Tag } from "antd";
+import { Button, Modal, Space, Table, Tag, Input } from "antd";
 import type { TableProps } from "antd";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -14,7 +15,11 @@ const BookingHistory = () => {
   const loggedUser = useAuthStore((state) => state.user);
   const [selectedStudent, setSelectedStudent] = useState<Booking | null>(null);
   const [openModal, setOpenModal] = useState(false);
+  const [openReportModal, setOpenReportModal] = useState(false); // Modal cho báo cáo
+  const [reportTitle, setReportTitle] = useState(""); // Thêm state cho tiêu đề
+  const [reportContent, setReportContent] = useState("");
   const [data, setData] = useState<Booking[]>([]);
+  const [selectedBookingId, setSelectedBookingId] = useState<number | null>(null); // Để lưu ID của booking cần báo cáo
 
   const handleCancelBooking = async (id: number) => {
     setLoadingCancel(id);
@@ -26,6 +31,50 @@ const BookingHistory = () => {
       fetchData();
     } else {
       toast.error(`Error: ${response.error}`);
+    }
+  };
+
+  const handleReportBooking = (id: number) => {
+    setSelectedBookingId(id); 
+    setOpenReportModal(true);
+  };
+
+  const submitReport = async () => {
+    if (!reportTitle.trim()) {
+      toast.error("Please enter a title for the report.");
+      return;
+    }
+
+    if (!reportContent.trim()) {
+      toast.error("Please enter report details before submitting.");
+      return;
+    }
+
+
+    const booking = data.find((item) => item.id === selectedBookingId);
+    const roomId = booking ? booking.roomId : null;
+
+    if (roomId === null) {
+      toast.error("Unable to find room ID for the selected booking.");
+      return;
+    }
+
+    const reportData = {
+      creatorId: loggedUser.id,
+      roomId: roomId,
+      title: reportTitle,
+      description: reportContent,
+    };
+
+    const response = await postReport(reportData);
+
+    if (response.error) {
+      toast.error(`Error: ${response.error}`);
+    } else {
+      toast.success("Report submitted successfully!");
+      setOpenReportModal(false);
+      setReportTitle(""); 
+      setReportContent("");
     }
   };
 
@@ -119,9 +168,9 @@ const BookingHistory = () => {
     {
       title: "Action",
       key: "action",
-      render: (record: Booking) =>
-        record.status !== "Cancelled" && (
-          <Space size="middle">
+      render: (record: Booking) => (
+        <Space size="middle">
+          {record.status !== "Cancelled" && record.status !== "Checked-in" && (
             <Button
               style={{ backgroundColor: "orange", color: "white" }}
               onClick={() => handleCancelBooking(record.id)}
@@ -130,8 +179,17 @@ const BookingHistory = () => {
             >
               Cancel
             </Button>
-          </Space>
-        ),
+          )}
+          {record.status === "Checked-in" && (
+            <Button
+              style={{ backgroundColor: "pink", color: "black" }}
+              onClick={() => handleReportBooking(record.id)}
+            >
+              Report
+            </Button>
+          )}
+        </Space>
+      ),
     },
   ];
 
@@ -177,6 +235,27 @@ const BookingHistory = () => {
             </p>
           </div>
         )}
+      </Modal>
+      <Modal
+        title="Report Room"
+        visible={openReportModal}
+        onOk={submitReport}
+        onCancel={() => setOpenReportModal(false)}
+        okText="Submit"
+        cancelText="Cancel"
+      >
+        <Input
+          value={reportTitle}
+          onChange={(e) => setReportTitle(e.target.value)}
+          placeholder="Enter report title"
+          style={{ marginBottom: 16 }}
+        />
+        <Input.TextArea
+          rows={4}
+          value={reportContent}
+          onChange={(e) => setReportContent(e.target.value)}
+          placeholder="Enter your report details here"
+        />
       </Modal>
     </div>
   );
