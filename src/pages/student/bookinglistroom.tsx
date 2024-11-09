@@ -78,7 +78,7 @@ const BookingListRoom = () => {
 
       const resultRoom = await getAvailableRooms({
         activityId: activity,
-        cohortId: loggedUser?.departmentId || 0,
+        cohortId: loggedUser?.cohortId || 0,
         startTime,
         endTime,
         bookingDate,

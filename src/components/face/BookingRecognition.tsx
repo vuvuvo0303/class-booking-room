@@ -111,7 +111,7 @@ const BookingRecognition = ({
       const compareResult = await compareFaceDescriptors(
         booking.faceDescriptor.descriptor,
         Array.from(currentFace),
-        0.5
+        0.37
       );
       if (compareResult) {
         setRecognizedUser(booking.studentEmail);
